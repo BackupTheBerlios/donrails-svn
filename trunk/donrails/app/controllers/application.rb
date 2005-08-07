@@ -14,8 +14,8 @@ class ApplicationController < ActionController::Base
 
     if ymd =~ /(\d\d\d\d)-(\d\d)-(\d\d)/
       t2 = Time.local($1,$2,$3)
-      t2 += 86400 * 10 - 1
-      @ymd10a = t2
+      @ymd10a = t2 + 86400 * 10 - 1
+      @ymd1a = t2 + 86400 - 1
     end
   end
 

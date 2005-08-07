@@ -91,7 +91,7 @@ class NotesController < ApplicationController
     get_ymd
     if @ymd
       @articles_pages, @articles =  paginate(:article, :per_page => 30,
-                                             :conditions => ["article_date = ?", @ymd]
+                                             :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd1a]
                                              )
     else
       render_text = "正しく日付を指定してください"

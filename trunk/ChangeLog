@@ -1,3 +1,7 @@
+2005-08-07  araki yasuhiro  <yasu@debian.or.jp>
+
+	* Fix: the function (show_date in notes_controler.rb) does not run well.
+
 2005-08-06  araki yasuhiro  <yasu@debian.or.jp>
 
 	* convert all euc-jp files to utf-8.
