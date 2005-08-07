@@ -24,10 +24,10 @@ URL(あれば):
 <%= password_field "comment", "password", "maxsize" => 10 %>
 <br>
 タイトル:
-<%= text_field "comment", "title", "size" => 60,"value" => "Re: #{article.title}" %>
+<%= text_field "comment", "title", "size" => 60, "value" => "Re: #{article.title}" %>
 <br>
 本文:
-<%= text_area "comment", "body" %>
+<%= text_area "comment", "body", "rows" => 5, "cols" => 80 %>
 
 <br>
 <%= hidden_field "comment", "article_id", "value" => article.id %>

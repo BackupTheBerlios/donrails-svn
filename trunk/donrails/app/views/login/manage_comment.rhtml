@@ -1,17 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="ja">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Manage Comment</title>
-<%= stylesheet_link_tag "araki" %>
-<%= javascript_include_tag "code-toggle-popup.js" %>
-<%= javascript_include_tag "prototype.js" %>
-
-</head>
-
-<body>
-<h1>comment management</h1>
-
+<% @heading = "comment management" %>
 
 <% if @comments %>
 
@@ -57,8 +44,4 @@
  <% if @comments_pages %>
  <%= pagination_links @comments_pages %>
  <% end %>
-
- <hr>
-<address></address>
-<!-- hhmts start -->Last modified: Sun Aug  7 00:14:27 JST 2005 <!-- hhmts end -->
-</body> </html>
+x

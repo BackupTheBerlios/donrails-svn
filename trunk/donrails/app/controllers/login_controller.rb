@@ -1,5 +1,4 @@
 class LoginController < ApplicationController
-  layout :only => [:login_index, :authenticate]
   before_filter :authorize, :except => [:login_index, :authenticate]
 
   def login_index
@@ -46,6 +45,23 @@ class LoginController < ApplicationController
     redirect_to :action => "manage_comment"
   end
 
+  def form_article
+    @article = Article.find(@params['pickid'].to_i)
+  end
+
+  def fix_article
+    c = @params["article"]
+    format = @params["format"]
+    title = c["title"]
+    body = c["body"]
+    id = c["id"].to_i
+    aris = Article.find(id)
+    aris.title = title
+    aris.body = body
+    aris.format = format
+    aris.save
+    redirect_to :action => "manage_article"
+  end
 
   def add_article
     c = @params["article"]
