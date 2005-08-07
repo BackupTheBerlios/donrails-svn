@@ -1,0 +1,31 @@
+インストール手順。
+
+注意:
+http://www.araki.net/wiki/donrails-wiliki.cgi?donrails%3ainstall
+に最新の情報があります。
+
+(sqliteを使える形の例)
+1. railsをインストールする。
+2. gemsをインストールする。
+3. $ sudo gem install sqlite-ruby 
+	sqliteのライブラリがないときlibsqlite0-devをいれる
+4. $ make 
+	すると、railsのファイルと必要なツリーが構築される
+5. donrails/tool/donrails-setup.rb を実行する。
+	設定ファイルが作成される。
+	問題なければ、これで終了。
+6. 設定ファイルの編集
+	donrails/config/database.yml
+	donrails/config/donrails_env.rb
+7. ユーザが自分のやりたいようにいじるファイル(必須)
+	donrails/app/views/notes/index.rhtml
+	donrails/app/views/layouts/notes.rhtml
+
+	rails/public/
+	以下はスタティックなファイルを置くために自由においてかまいません。
+
+	画像のuploadを行うには、
+	rails/public/images/dump
+	のディレクトリを動作ユーザから書きこめるようにしておく必要があります。
+
+	

@@ -1,0 +1,6 @@
+2005-08-06  araki yasuhiro  <yasu@debian.or.jp>
+
+	* convert all euc-jp files to utf-8.
+	* prepare import to "svn://svn.berlios.de/donrails/trunk" or "svn+ssh://developername@svn.berlios.de/svnroot/repos/donrails/trunk"
+	* hnf2db.rb: Fix dialogue.
+

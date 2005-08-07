@@ -1,0 +1,78 @@
+
+<% if @notice %>
+<div class="notice">
+ <%= @notice %>
+</div> <!-- end notice -->
+<% end %>
+
+<% if @ymd3 && @ymd4 %>
+<div class="ymd34">
+From <%= @ymd3 %> to <%= @ymd4 %>
+</div>
+<% end %>
+
+<% if @articles_pages and @articles_pages.length > 1 %>
+<div class="pagelink">
+ページ選択: <%= render ("shared/pagelink", "pages" => @articles_pages) %>
+</div>
+<% end %>
+
+<%
+day0 = Time.new
+day1 = day0
+an = 0
+@articles.each do |article|
+%>
+  <% day0 = article.article_date.to_date %>
+   <% if day1 != day0 %>
+<div class="nnenhead">
+<h3>
+    <%= link_to "#{article.article_date.year}年#{article.article_date.month}月#{article.article_date.day}日(#{article.article_date.strftime('%a')})",
+         {:action => "show_date",
+          :year => article.article_date.year,
+          :month => article.article_date.month,
+          :day => article.article_date.day
+         } %>
+</h3>
+</div> <!-- end nnenhead -->
+<%
+day1 = article.article_date.to_date 
+an = 0
+%>
+   <% end %>
+
+   <% an += 1 %>
+<div class="nnenhead">
+   <%= link_to "\##{an}", {:action => "show_title", :title => article.title} %>
+
+   <% article.categories.each do |cat| %>
+     [<%= link_to cat.name, {:action => "show_category", :category => cat.name} %>]
+   <% end %>
+
+   <%= don_lnew(article.title, article.format) %>
+</div> <!-- end nnenhead -->
+
+<div class="section">
+<%= auto_link don_link(article.body, article.format) %>
+<%= render ("shared/comment", "article" => article) %>
+</div> <!-- end section -->
+
+ <% end %>
+
+<%
+if @params['action'] == "show_date"
+  firstart = @articles.last
+  lastart = @articles.first
+%>
+<div class="pagelink">
+<%= render ("shared/nextlink", "srcdate" => firstart.article_date, "lag" => "yesterday", "term" => "前日" ) if firstart %>
+<%= render ("shared/nextlink", "srcdate" => lastart.article_date, "lag" => "tomorrow", "term" => "翌日" ) if lastart %>
+<br>
+</div> <!-- end pagelink -->
+<% end %>
+
+<% if @articles_pages %>
+<div class="pagelink">
+  <%= render ("shared/pagelink-j", "pages" => @articles_pages) %>
+</div> <!-- end pagelink -->
+<% end %>

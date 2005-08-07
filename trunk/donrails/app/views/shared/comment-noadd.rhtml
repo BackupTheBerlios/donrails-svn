@@ -1,0 +1,11 @@
+
+<% if article.comments %>
+<% article.comments.each do |x| %>
+<div class="tsukkomi" >
+<dl class="comments">
+<dt><span class="poster">この記事へのコメント: by <%= x.author %></span></dt>
+<dd><%= x.body %></dd>
+</dl>
+</div>
+<% end %>
+<% end %>

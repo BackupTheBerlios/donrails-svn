@@ -1,0 +1,23 @@
+<!-- no date version. For date, use title-articles.rhtml -->
+<%
+if pages
+i = 0
+pages.each do |article| 
+btmp = strip_links don_lnew(article.title, article.format)
+i += 1
+%>
+
+<% if ((i % 2) == 0) %>
+<div class="even">
+<% else %>
+<div class="odd">
+<% end %>
+
+<%= link_to truncate(btmp, 60), {:action => "show_title", :title => article.title} %>
+
+</div>
+<%
+end
+end
+%>
+

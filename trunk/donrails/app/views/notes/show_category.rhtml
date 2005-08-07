@@ -1,0 +1,26 @@
+<h3>カテゴリ: <%= @category.name %> のリスト</h3>
+
+<% if @articles_pages and @articles_pages.length > 1 %>
+<div class="pagelink">
+ページ選択: <%= render ("shared/pagelink", "pages" => @articles_pages) %>
+</div>
+<% end %>
+
+<% an = 0 %>
+
+<dl>
+<% @articles.each do |art| %>
+  <% an += 1 %>
+  <% btmp = strip_links don_link(art.body, art.format) %>
+  <% btmp = remove_html_gl(btmp, art.format) %>
+  <dt><%= link_to "\##{an}", {:action => "show_title", :title => art.title} %> <%= don_lnew(art.title, art.format) %></dt>
+  <dd><%= truncate(btmp, 150) %>
+     (<%= link_to "#{art.article_date.to_date}",
+         {:action => "show_date",
+          :year => art.article_date.year,
+          :month => art.article_date.month,
+          :day => art.article_date.day
+         } %>)
+  </dd>
+<% end %>
+</dl>

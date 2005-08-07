@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Manage Comment</title>
+<%= stylesheet_link_tag "araki" %>
+<%= javascript_include_tag "code-toggle-popup.js" %>
+<%= javascript_include_tag "prototype.js" %>
+
+</head>
+
+<body>
+<h1>comment management</h1>
+
+
+<% if @comments %>
+
+<% if @comments_pages %>
+<%= pagination_links @comments_pages %>
+<% end %>
+
+<%= form_tag :action => "delete_comment" %>
+<div class="kakomi">
+<div id="ca">
+[記事]を押すと削除対象コメントと親記事が表示されます
+</div>
+</div>
+<%= submit_tag "チェックしたコメントを削除する" %>
+<table  border="1" cellspacing="0">
+   <tr>
+     <td>Delete?</td>
+     <td>Password</td>
+     <td>title</td>
+     <td>author</td>
+     <td>ipaddr</td>
+     <td>body</td>
+   </tr>
+
+   <% @comments.each do |co| %>
+   <tr>
+     <td>
+       <%= check_box "deleteid", co.id %>
+       <%= link_to_remote ("[記事]", :update => "ca", :url => {:controller => "notes", :action => "pick_article_a", :pickid => co.articles.first.id }) %>
+     </td>
+     <td><%= co.password %></td>
+     <td><%= truncate(co.title) %></td>
+     <td><%= co.author %></td>
+     <td><%= co.ipaddr %></td>
+     <td><%= truncate(co.body) %></td>
+   </tr>
+   <% end %>
+ </table>
+ <%= submit_tag "チェックしたコメントを削除する" %>
+ <%= end_form_tag %>
+ <% end %>
+
+ <% if @comments_pages %>
+ <%= pagination_links @comments_pages %>
+ <% end %>
+
+ <hr>
+<address></address>
+<!-- hhmts start -->Last modified: Sun Aug  7 00:14:27 JST 2005 <!-- hhmts end -->
+</body> </html>

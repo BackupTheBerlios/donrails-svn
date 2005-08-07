@@ -1,0 +1,36 @@
+xml.instruct! :xml, :version=>"1.0", :encoding => "utf-8"
+xml.instruct! :rss, :version=>"1.0"
+
+xml.tag!("rdf:RDF",
+         "xmlns" => "http://purl.org/rss/1.0/",
+         "xmlns:rdf" => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+         "xmlns:dc" => "http://purl.org/dc/elements/1.1/",
+         "xml:lang" => "ja") do
+  xml.channel("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => "rdf_recent")) do
+    xml.title RDF_TITLE
+    xml.link(@request.protocol + @request.host_with_port + url_for(:action => "noteslist"))
+    xml.description RDF_DESCRIPTION
+    xml.items do    
+      xml.tag!("rdf:Seq") do
+        for item in @recent_articles
+          xml.rdf(:li, "rdf:resource"=> "#{@request.protocol}#{@request.host_with_port}#{url_for(:action => "pick_article", :pickid => item.id)}")
+
+        end
+      end
+    end
+  end
+
+  for item in @recent_articles
+    xml.item("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id)) do
+      xml.title(item.title)
+      xml.link(@request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id))
+      btmp = remove_html_gl(don_link(item.body, item.format), item.format)
+      xml.description(btmp)
+      xml.tag!("dc:date") do
+        xml.text! "#{item.article_date.to_date}"
+      end
+    end
+  end
+
+
+end

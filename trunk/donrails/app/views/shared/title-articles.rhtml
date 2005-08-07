@@ -1,0 +1,28 @@
+
+<%
+if pages
+i = 0
+pages.each do |article| 
+btmp = strip_links don_lnew(article.title, article.format)
+i += 1
+%>
+
+<% if ((i % 2) == 0) %>
+<div class="even">
+<% else %>
+<div class="odd">
+<% end %>
+
+<%= truncate(btmp, 60) %>
+(<%= link_to article.article_date.to_date,
+{:action => "show_date",
+:year => article.article_date.year,
+:month => article.article_date.month,
+:day => article.article_date.day
+} %>)
+</div>
+<%
+end
+end
+%>
+

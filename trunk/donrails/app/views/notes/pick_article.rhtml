@@ -1,0 +1,35 @@
+
+<% if @notice %>
+<div class="notice">
+ <%= @notice %>
+</div> <!-- end notice -->
+<% end %>
+
+<%
+article = @articles
+%>
+
+<div class="nnenhead">
+<h3>
+<%= link_to "#{article.article_date.year}年#{article.article_date.month}月#{article.article_date.day}日(#{article.article_date.strftime('%a')})",
+{:action => "show_date",
+:year => article.article_date.year,
+:month => article.article_date.month,
+:day => article.article_date.day
+} %>
+</h3>
+</div> <!-- end nnenhead -->
+
+<div class="nnenhead">
+<%= link_to "\#", {:action => "show_title", :title => article.title} %>
+<% article.categories.each do |cat| %>
+[<%= link_to cat.name, {:action => "show_category", :category => cat.name} %>]
+<% end %>
+<%= don_lnew(article.title, article.format) %>
+</div> <!-- end nnenhead -->
+
+<div class="section">
+<%= auto_link don_link(article.body, article.format) %>
+<%= render ("shared/comment", "article" => article) %>
+</div> <!-- end section -->
+

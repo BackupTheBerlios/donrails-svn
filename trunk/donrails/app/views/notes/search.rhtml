@@ -1,0 +1,25 @@
+<% if @articles.size == 0 %>
+<h3>検索結果: <%= @params["q"] %> の該当はありません。</h3>
+<% else %>
+<h3>検索結果: <%= @params["q"] %> のリスト(全<%= @articles.size %>)</h3>
+
+<% an = 0 %>
+
+<dl>
+<% @articles.each do |art| %>
+  <% an += 1 %>
+  <% btmp = strip_links don_link(art.body, art.format) %>
+  <% btmp = remove_html_gl(btmp, art.format) %>
+  <dt>#<%= an %> <%= don_lnew(art.title, art.format) %></dt>
+  <dd><%= truncate(btmp, 150) %>
+    <%= link_to "[全文]", {:action => "pick_article", :pickid => art.id} %>
+     (<%= link_to "#{art.article_date.to_date}",
+         {:action => "show_date",
+          :year => art.article_date.year,
+          :month => art.article_date.month,
+          :day => art.article_date.day
+         } %>)
+  </dd>
+<% end %>
+</dl>
+<% end %>
