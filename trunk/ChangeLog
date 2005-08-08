@@ -1,3 +1,7 @@
+2005-08-08  araki yasuhiro  <yasu@debian.or.jp>
+
+	* Fix: Backup all articles in "hnf" file format is not working.
+
 2005-08-07  araki yasuhiro  <yasu@debian.or.jp>
 
 	* Fix: the function (show_date in notes_controler.rb) does not run well.

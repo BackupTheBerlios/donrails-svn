@@ -1,3 +1,4 @@
+require 'kconv'
 class NotesController < ApplicationController
   layout "notes", :except => [
     :pick_article_a,
@@ -156,7 +157,7 @@ class NotesController < ApplicationController
         hnf_file = "#{predir}/d#{ymd2}.hnf"
         unless hnfbody == "OK \n\n"
           tmpf = File.new(hnf_file, "w")
-          tmpf.puts hnfbody
+          tmpf.puts Kconv.toeuc(hnfbody)
           tmpf.close
         end
 
