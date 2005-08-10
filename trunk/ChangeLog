@@ -1,3 +1,8 @@
+2005-08-10  araki yasuhiro  <yasu@debian.or.jp>
+
+	* Comment validation methods are changed. Now it works in model/comment.rb
+	* In Comment.body, If you want to write HTML format, you can use restricted tags. (Current: allow = ['p','br','i','b','u','ul','li'])
+
 2005-08-08  araki yasuhiro  <yasu@debian.or.jp>
 
 	* Fix: Backup all articles in "hnf" file format is not working.

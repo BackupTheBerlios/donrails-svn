@@ -185,19 +185,20 @@ class NotesController < ApplicationController
   
   def show_title
     @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["title = ?", @params['title']])
-    @heading = "#{@articles.first.title}"
-    cid = @articles.first.id
-    begin
-      @lastarticle = Article.find(cid - 1)
-    rescue
+    if @articles.size >= 1
+      @heading = "#{@articles.first.title}"
+      cid = @articles.first.id
+      begin
+        @lastarticle = Article.find(cid - 1)
+      rescue
+      end
+      begin
+        @nextarticle = Article.find(:first, :conditions => ["id > ?", cid])
+      rescue
+      end
+      recent
     end
-    begin
-      @nextarticle = Article.find(:first, :conditions => ["id > ?", cid])
-    rescue
-    end
-    recent
   end
-
 
   def show_category
     @category = Category.find(:first, :conditions => ["name = ?", @params['category']])
@@ -255,16 +256,6 @@ class NotesController < ApplicationController
     body = c["body"]
     article_id = c["article_id"].to_i
 
-    if author == nil
-      render_text "なまえがありません"
-    end
-    if password == nil or password.size <= 3
-      render_text "パスワードは4文字以上必要です"
-    end
-    if body == nil or body.size <= 5
-      render_text "本文がありません"
-    end
-
     aris1 = Comment.new("password" => password,
                         "date" => Time.now,
                         "title" => title,
@@ -275,8 +266,11 @@ class NotesController < ApplicationController
                         )
     a = Article.find(article_id)
     aris1.articles.push_with_attributes(a)
-    aris1.save
-    redirect_to :action => "pick_article", :pickid => article_id
+    if aris1.save
+      redirect_to :action => "pick_article", :pickid => article_id
+    else
+      redirect_to :action => "noteslist"
+    end
   end
 
   def picture_get
