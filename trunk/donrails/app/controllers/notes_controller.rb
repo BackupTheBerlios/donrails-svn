@@ -79,7 +79,15 @@ class NotesController < ApplicationController
     @recent_articles = Article.find(:all, :order => "id DESC", :limit => 10)
     @recent_road_articles = recent_category("road")
     @recent_ruby_articles = recent_category("ruby")
-    @recent_comments = Comment.find(:all, :order => "id DESC", :limit => 10)
+
+    # 最新のコメントあり一件
+    # @recent_comments = Comment.find(:first, :order => "id DESC", :limit => 10).articles
+
+    @recent_comments = Article.find(:all, :order => "articles.article_date DESC", :limit => 10,
+#                                    :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id AND comments_articles.comment_id = comment.id)"
+                                    :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id)"
+                                   )
+
   end
 
   def recent_category(category)

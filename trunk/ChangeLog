@@ -1,3 +1,7 @@
+2005-08-12  araki yasuhiro  <yasu@debian.or.jp>
+
+	* Add @recent_comment parameters to display recent articles with comments.
+
 2005-08-10  araki yasuhiro  <yasu@debian.or.jp>
 
 	* At displaying search results, seach keyword is highlighted.
