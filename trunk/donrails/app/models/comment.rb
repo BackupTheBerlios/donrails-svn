@@ -5,6 +5,8 @@ class Comment < ActiveRecord::Base
   validates_length_of :password, :minimum => 4, :too_short => "pick a longer password"
   validates_length_of :body, :minimum => 5, :too_short => "too short article"
 
+  validates_antispam :url, :ipaddr, :body
+
   protected
   before_save :correct_url, :strip_html_in_body
 

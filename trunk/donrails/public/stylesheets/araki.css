@@ -16,7 +16,7 @@
  div.linktitle { margin-top: 5pt; }
  div.rubytitle { margin-top: 5pt; color: red; font-weight: bold }
  div.roadtitle { margin-top: 5pt; color: blue; font-weight: bold }
- div.recenttitle { }
+ div.recenttitle { margin-top: 5pt; color: red; font-weight: bold }
  div.odd { background: #bbffff ; margin-right: 2pt }
  div.even { background: #ffffbb ; margin-right: 2pt }
 

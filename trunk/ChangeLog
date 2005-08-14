@@ -1,3 +1,7 @@
+2005-08-14  araki yasuhiro  <yasu@debian.or.jp>
+
+	* add function for comment spam. Many functions derived from "typo".
+
 2005-08-12  araki yasuhiro  <yasu@debian.or.jp>
 
 	* Add @recent_comment parameters to display recent articles with comments.
