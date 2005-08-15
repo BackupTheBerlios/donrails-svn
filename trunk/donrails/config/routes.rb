@@ -42,6 +42,12 @@ ActionController::Routing::Routes.draw do |map|
   }
 
   map.connect "notes/:nums", :controller => "notes", 
+  :action => "indexabc",
+  :requirements => { 
+    :nums => /\d+(a|b|c).html/
+  }
+
+  map.connect "notes/:nums", :controller => "notes", 
   :action => "parse_nums",
   :requirements => { 
     :nums => /\S+.html/

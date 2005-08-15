@@ -1,6 +1,7 @@
 2005-08-15  araki yasuhiro  <yasu@debian.or.jp>
 
 	* Fix: hnf2db.rb could not use rail/lib/antispam.rb. Fixed.
+	* If "yyyymm(a|b|c)", show the (first|2nd|3rd) ten days of a month.
 
 2005-08-14  araki yasuhiro  <yasu@debian.or.jp>
 

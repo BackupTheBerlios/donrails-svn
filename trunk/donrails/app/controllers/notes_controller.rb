@@ -27,6 +27,26 @@ class NotesController < ApplicationController
     @articles = Article.find(@params['pickid'].to_i)
   end
 
+  def articles_long
+    @articles_pages, @articles = paginate(:article, :per_page => 10,
+                                          :order_by => 'size DESC, id DESC'
+                                          )
+    recent
+    @heading = "記事サイズ順の表示"
+    render_action 'noteslist'
+  end
+
+  def indexabc
+    k = @params['nums']
+    if k =~ /(\d\d\d\d)(\d\d)a/
+        redirect_to :action => "tendays", :year => $1, :month => $2, :day => "01"
+    elsif k =~ /(\d\d\d\d)(\d\d)b/
+        redirect_to :action => "tendays", :year => $1, :month => $2, :day => "11"
+    elsif k =~ /(\d\d\d\d)(\d\d)c/
+        redirect_to :action => "tendays", :year => $1, :month => $2, :day => "21"
+    end
+  end
+
   def dateparse
     @params.keys.each do |k|
       if k =~ /(\d\d\d\d)(\d\d)a/
@@ -68,26 +88,21 @@ class NotesController < ApplicationController
   end
 
   def rdf_recent
-    @recent_articles = Article.find(:all, :order => "id DESC", :limit => 10)
+    @recent_articles = Article.find(:all, :order => "id DESC", :limit => 20)
   end
 
   def rdf_recent2
-    @recent_articles = Article.find(:all, :order => "id DESC", :limit => 10)
+    @recent_articles = Article.find(:all, :order => "id DESC", :limit => 20)
   end
 
   def recent
     @recent_articles = Article.find(:all, :order => "id DESC", :limit => 10)
     @recent_road_articles = recent_category("road")
     @recent_ruby_articles = recent_category("ruby")
-
-    # 最新のコメントあり一件
-    # @recent_comments = Comment.find(:first, :order => "id DESC", :limit => 10).articles
-
-    @recent_comments = Article.find(:all, :order => "articles.article_date DESC", :limit => 10,
-#                                    :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id AND comments_articles.comment_id = comment.id)"
+    @recent_comments = Article.find(:all, :order => "articles.article_date DESC", :limit => 30,
                                     :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id)"
                                    )
-
+    @long_articles = Article.find(:all, :order => "size DESC", :limit => 10)
   end
 
   def recent_category(category)
