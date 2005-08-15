@@ -43,7 +43,7 @@ an = 0
 
    <% an += 1 %>
 <div class="nnenhead">
-   <%= link_to "\##{an}", {:action => "show_title", :title => article.title} %>
+   <%= link_to "\##{an}", {:action => "show_title", :id => article.id, :title => article.title} %>
 
    <% article.categories.each do |cat| %>
      [<%= link_to cat.name, {:action => "show_category", :category => cat.name} %>]

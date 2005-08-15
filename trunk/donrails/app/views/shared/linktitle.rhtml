@@ -3,7 +3,7 @@ la = strip_links don_lnew(lastarticle.title, lastarticle.format) if lastarticle
 na = strip_links don_lnew(nextarticle.title, nextarticle.format) if nextarticle
 %>
 &lt;
-<%= link_to la, {:action => "show_title", :title => lastarticle.title} if lastarticle %>
+<%= link_to la, {:action => "show_title", :id => lastarticle.id, :title => lastarticle.title} if lastarticle %>
 |
-<%= link_to na, {:action => "show_title", :title => nextarticle.title} if nextarticle %>
+<%= link_to na, {:action => "show_title", :id => nextarticle.id, :title => nextarticle.title} if nextarticle %>
 &gt;

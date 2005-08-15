@@ -207,7 +207,12 @@ class NotesController < ApplicationController
   end
   
   def show_title
-    @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["title = ?", @params['title']])
+    if @params['id']
+      @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["id = ?", @params['id']]) 
+    elsif @params['title'].size > 0
+      @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["title = ?", @params['title']]) 
+    end
+
     if @articles.size >= 1
       @heading = "#{@articles.first.title}"
       cid = @articles.first.id
