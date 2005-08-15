@@ -1,3 +1,7 @@
+2005-08-15  araki yasuhiro  <yasu@debian.or.jp>
+
+	* Fix: hnf2db.rb could not use rail/lib/antispam.rb. Fixed.
+
 2005-08-14  araki yasuhiro  <yasu@debian.or.jp>
 
 	* add function for comment spam. Many functions derived from "typo".

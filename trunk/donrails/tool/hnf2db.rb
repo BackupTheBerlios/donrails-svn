@@ -1,5 +1,10 @@
 #!/usr/bin/env ruby
 
+ADDITIONAL_LOAD_PATHS = ["../../donrails/lib"]
+ADDITIONAL_LOAD_PATHS.reverse.each { |dir| $:.unshift(dir) if File.directory?(dir) }
+
+require 'antispam'
+
 require '/usr/share/rails/activerecord/lib/active_record'
 require 'logger'
 require '../../donrails/app/models/article'
