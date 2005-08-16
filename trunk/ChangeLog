@@ -1,7 +1,8 @@
 2005-08-16  araki yasuhiro  <yasu@debian.or.jp>
 
 	* Add: show_title search trigger by 'id'. If 'id' is lacked, use 'title'.
-
+	* Change rdf_recent.rxml date format from Article.ariticle_date to Article.article_mdate.
+	
 2005-08-15  araki yasuhiro  <yasu@debian.or.jp>
 
 	* Fix: hnf2db.rb could not use rail/lib/antispam.rb. Fixed.

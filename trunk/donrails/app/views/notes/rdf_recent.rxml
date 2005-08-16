@@ -27,7 +27,7 @@ xml.tag!("rdf:RDF",
       btmp = remove_html_gl(don_link(item.body, item.format), item.format)
       xml.description(btmp)
       xml.tag!("dc:date") do
-        xml.text! "#{item.article_date.to_date}"
+        xml.text! "#{pub_date(item.article_mtime)}"
       end
     end
   end

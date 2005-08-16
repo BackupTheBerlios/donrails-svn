@@ -1,6 +1,10 @@
 # The methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  def pub_date(time)
+    time.strftime "%a, %e %b %Y %H:%M:%S %Z"
+  end
+
   def remove_html_gl(text, format)
     case format
     when "hnf"

@@ -103,6 +103,7 @@ class NotesController < ApplicationController
                                     :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id)"
                                    )
     @long_articles = Article.find(:all, :order => "size DESC", :limit => 10)
+    @categories = Category.find_all
   end
 
   def recent_category(category)
