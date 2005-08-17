@@ -49,9 +49,7 @@ day1 = day0
 </div>
 
 <div class="pagelink">
-<%= render ("shared/nextlink", "srcdate" => article.article_date, "lag" => "yesterday", "term" => "前日" ) %>
-<%= render ("shared/nextlink", "srcdate" => article.article_date, "lag" => "tomorrow", "term" => "翌日" ) %>
-<br>
+<%= render("shared/nextlink3", "article" => article) %>
 </div> <!-- end pagelink -->
 <% end %>
 

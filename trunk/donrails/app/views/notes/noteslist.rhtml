@@ -1,7 +1,7 @@
 
 <% if @notice %>
 <div class="notice">
- <%= @notice %>
+ <%=h @notice %>
 </div> <!-- end notice -->
 <% end %>
 
@@ -40,7 +40,6 @@ day1 = article.article_date.to_date
 an = 0
 %>
    <% end %>
-
    <% an += 1 %>
 <div class="nnenhead">
    <%= link_to "\##{an}", {:action => "show_title", :id => article.id, :title => article.title} %>
@@ -59,15 +58,10 @@ an = 0
 
  <% end %>
 
-<%
-if @params['action'] == "show_date"
-  firstart = @articles.last
-  lastart = @articles.first
-%>
+
+<% if @params['action'] == "show_date" %>
 <div class="pagelink">
-<%= render ("shared/nextlink", "srcdate" => firstart.article_date, "lag" => "yesterday", "term" => "前日" ) if firstart %>
-<%= render ("shared/nextlink", "srcdate" => lastart.article_date, "lag" => "tomorrow", "term" => "翌日" ) if lastart %>
-<br>
+<%= render ("shared/nextlink2", "articles" => @articles) %>
 </div> <!-- end pagelink -->
 <% end %>
 

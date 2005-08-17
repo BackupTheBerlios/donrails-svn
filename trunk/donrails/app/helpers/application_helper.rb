@@ -32,6 +32,8 @@ module ApplicationHelper
     stext = Array.new
     text.split("\n").each do |line|
 
+      line = hnf_don_line_ok(line)
+      line = hnf_don_line_user_var(line)
       line = hnf_don_line_sub(line)
       line = hnf_don_line_link(line)
       line = hnf_don_line_img(line)
@@ -43,6 +45,23 @@ module ApplicationHelper
     return stext.join("\n")
   end
   private :hnf_don_link
+
+  def  hnf_don_line_ok(text)
+    if text =~ /^OK/
+      text = ""
+    end
+    return text
+  end
+  private :hnf_don_line_ok
+
+  # http://www.h14m.org/docs/user_var-j.html
+  def hnf_don_line_user_var(text)
+    if text =~ /^(TENKI|WEATHER|BASHO|LOCATION|TAIJU|WEIGHT|TAION|TEMPERATURE|SUIMIN|SLEEP|BGM|HOSU|STEP|HON|BOOK|KITAKU|HOMECOMING|WALK|RUN)\s+(.+)/
+      text = ""
+    end
+    return text
+  end
+  private :hnf_don_line_user_var
 
   def hnf_don_line_sub(text)
     if text =~ /^SUB\s+(.+)/

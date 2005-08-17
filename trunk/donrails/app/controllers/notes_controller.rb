@@ -112,6 +112,17 @@ class NotesController < ApplicationController
     return articles.reverse!
   end
 
+  def show_month
+    get_ymd
+    if @ymd
+      @articles_pages, @articles =  paginate(:article, :per_page => 30,
+                                             :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd31a]
+                                             )
+    end
+    @heading = "#{@articles.first.article_date.to_date} - #{@articles.last.article_date.to_date}"
+    render_action 'noteslist'
+  end
+
   def show_date
     get_ymd
     if @ymd

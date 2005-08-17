@@ -11,9 +11,16 @@ ActionController::Routing::Routes.draw do |map|
     :year => /(19|20)\d\d/,
     :month => /[01]?\d/,
     :day => /[0-3]?\d/
-  },
-  :day => nil,
-  :month => nil
+  }
+#  :day => nil,
+#  :month => nil
+
+  map.connect "notes/:year/:month", :controller => "notes", 
+  :action => "show_month",
+  :requirements => { 
+    :year => /(19|20)\d\d/,
+    :month => /[01]?\d/,
+  }
 
   map.connect "notes/hnf/:year/:month/:day", :controller => "notes", 
   :action => "hnf_save_date",

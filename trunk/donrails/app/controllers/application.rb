@@ -7,15 +7,19 @@ class ApplicationController < ActionController::Base
       ymd = @ymd
     elsif @params['ymd2']
       ymd = convert_ymd(@params['ymd2']) 
-    else
+    elsif (@params["year"] and @params["month"] and @params["day"])
       ymd = convert_ymd("#{@params["year"]}-#{@params["month"]}-#{@params["day"]}")
+    elsif (@params["year"] and @params["month"])
+      ymd = convert_ymd("#{@params["year"]}-#{@params["month"]}-01")
     end
     @ymd = ymd
 
     if ymd =~ /(\d\d\d\d)-(\d\d)-(\d\d)/
       t2 = Time.local($1,$2,$3)
       @ymd10a = t2 + 86400 * 10 - 1
-      @ymd1a = t2 + 86400 - 1
+#      @ymd1a = t2 + 86400 - 1
+      @ymd1a = t2.tomorrow
+      @ymd31a = t2.next_month
     end
   end
 
