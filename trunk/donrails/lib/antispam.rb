@@ -22,6 +22,7 @@ class AntiSpam
       elsif name == "ipaddr"
         self.scan_ipaddr(string)
       elsif name == "body"
+        self.scan_text(string)
       else
         return false # is not spam!
       end
@@ -33,7 +34,7 @@ class AntiSpam
     end
   end
 
-  def scan_ip(ip_address)
+  def scan_ipaddr(ip_address)
     logger.info("[SP] Scanning IP #{ip_address}")
     
     @IP_RBL.each do |rbl|
@@ -46,7 +47,7 @@ class AntiSpam
     end
     return false
   end
-  protected :scan_ip
+  protected :scan_ipaddr
 
   def scan_uri(host)
     host_parts = host.split('.').reverse
