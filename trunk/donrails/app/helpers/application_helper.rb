@@ -30,16 +30,19 @@ module ApplicationHelper
   def hnf_don_link(text)
     if text.nil? then return end
     stext = Array.new
+    @pre_tag = false
     text.split("\n").each do |line|
 
-      line = hnf_don_line_ok(line)
-      line = hnf_don_line_user_var(line)
-      line = hnf_don_line_sub(line)
-      line = hnf_don_line_link(line)
-      line = hnf_don_line_img(line)
-      line = hnf_don_line_7e(line)
-      line = hnf_don_line_ul(line)
-
+      line = hnf_don_line_pre(line)
+      unless @pre_tag
+        line = hnf_don_line_ok(line)
+        line = hnf_don_line_user_var(line)
+        line = hnf_don_line_sub(line)
+        line = hnf_don_line_link(line)
+        line = hnf_don_line_img(line)
+        line = hnf_don_line_7e(line)
+        line = hnf_don_line_ul(line)
+      end
       stext.push(line)
     end
     return stext.join("\n")
@@ -74,8 +77,19 @@ module ApplicationHelper
   end
   private :hnf_don_line_sub
 
+  def hnf_don_line_pre(text)
+    if text =~ /^PRE/
+      text = "<PRE>"
+      @pre_tag = true
+    elsif text =~ /^\/PRE/
+      text = "</PRE>"
+      @pre_tag = false
+    end
+    return text
+  end
+
   def hnf_don_line_ul(text)
-    if text =~ /^(\/)?(UL|PRE|P|OL|DL)/
+    if text =~ /^(\/)?(UL|P|OL|DL)/
       text = "<#{$1}#{$2}>"
     end
     if text =~ /^(\/)?(CITE)/

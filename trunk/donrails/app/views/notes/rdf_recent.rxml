@@ -22,6 +22,8 @@ xml.tag!("rdf:RDF",
 
   for item in @recent_articles
     xml.item("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id)) do
+
+      item.title.gsub!(/http:\/\/\S+/,'')
       xml.title(item.title)
       xml.link(@request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id))
       btmp = remove_html_gl(don_link(item.body, item.format), item.format)
