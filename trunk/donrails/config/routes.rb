@@ -59,7 +59,7 @@ ActionController::Routing::Routes.draw do |map|
   :requirements => { 
     :nums => /\S+.html/
   }
-  
+
   # Here's a sample route:
   # map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action

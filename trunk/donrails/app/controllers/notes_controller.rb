@@ -55,6 +55,8 @@ class NotesController < ApplicationController
         redirect_to :action => "tendays", :year => $1, :month => $2, :day => "11"
       elsif k =~ /(\d\d\d\d)(\d\d)c/
         redirect_to :action => "tendays", :year => $1, :month => $2, :day => "21"
+      elsif k =~ /([01]\d)([0-3]\d)/
+        redirect_to :action => "show_nnen", :month => $1, :day => $2
       end
     end
   end
@@ -120,6 +122,24 @@ class NotesController < ApplicationController
                                              )
     end
     @heading = "#{@articles.first.article_date.to_date} - #{@articles.last.article_date.to_date}"
+    render_action 'noteslist'
+  end
+
+  def show_nnen
+    if (@params["day"] and @params["month"])
+      ymdnow = convert_ymd("#{Time.now.year}-#{@params["month"]}-#{@params["day"]}")
+    end
+    
+    if ymdnow =~ /(\d\d\d\d)-(\d\d)-(\d\d)/
+      t2 = Time.local($1,$2,$3)
+    end
+
+    @articles = Article.find(:all, :order => "id DESC", :conditions => ["article_date >= ? AND article_date < ?", t2, t2.tomorrow])
+    for i in 1..10
+      t2 = t2.last_year
+      i += 1
+      @articles += Article.find(:all, :order => "id DESC", :conditions => ["article_date >= ? AND article_date < ?", t2, t2.tomorrow])
+    end
     render_action 'noteslist'
   end
 
