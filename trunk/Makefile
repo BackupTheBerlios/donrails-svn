@@ -6,10 +6,10 @@ link: linkrails linkinit links linkj
 copy: copyrails copyinit
 
 linkrails:
-	rails -d rails
+	rails rails
 
 copyrails:
-	rails -d -C rails
+	rails -C rails
 
 linkinit:
 	cd rails; rm -rf app; ln -s ../donrails/app .

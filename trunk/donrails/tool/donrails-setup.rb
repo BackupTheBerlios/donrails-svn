@@ -22,9 +22,9 @@ unless topdir.directory?
   exit 1
 end
 if topdir.children.include? topdir + "rails"
-  print "You have already run \"rails -d (-C)? rails\". Go next.\n"
+  print "You have already run \"rails rails\". Go next.\n"
 else
-  print "You have to run \"rails -d (-C)? rails\" or \"make link\" at #{topdir}. \n"
+  print "You have to run \"rails rails\" or \"make link\" at #{topdir}. \n"
   print "exit\n"
   exit 1
 end

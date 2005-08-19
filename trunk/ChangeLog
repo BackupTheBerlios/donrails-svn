@@ -1,5 +1,8 @@
 2005-08-19  araki yasuhiro  <yasu@debian.or.jp>
 
+	* Change: Makefile and donrails-setup.rb: "rails -d rails" is maybe debian extension. I change "rails rails" to setup by 'make' command. (thanks: tagoh)
+	* Fix: At artilce format is HNF, "<img src=... >" is not rendered.
+
 	* Add: can show cross year same day articles. For example, "notes/?0101" show Jun.1 day's articles. Now it limits 10 years.
 
 2005-08-18  araki yasuhiro  <yasu@debian.or.jp>
