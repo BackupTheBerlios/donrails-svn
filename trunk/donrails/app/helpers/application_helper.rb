@@ -118,7 +118,7 @@ module ApplicationHelper
   private :hnf_don_line_link
 
   def hnf_don_line_img(line)
-    if line =~ /^L?IMG\s+(l|r)\s+(\S+)\.(jpg|gif|png)/i
+    if line =~ /^L?IMG\s+(l|r|n)\s+(\S+)\.(jpg|jpeg|gif|png)/i
       line = $2
       if $1 == "l"
         line = "<img align=\"left\" src=\"#{$2}.#{$3}\">"
