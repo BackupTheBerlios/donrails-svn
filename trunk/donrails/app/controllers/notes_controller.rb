@@ -209,18 +209,17 @@ class NotesController < ApplicationController
     @debug_oneday = @request.request_uri
     get_ymd
     if @ymd
-      @articles_pages, @articles =  paginate(:article, :per_page => 30,
-                                             :conditions => ["article_date >= ?", @ymd]
-                                             )
+      @articles =  Article.find(:all, :limit => 30,
+                                :conditions => ["article_date >= ?", @ymd])
       @heading = "#{@articles.first.title}"
 
-      @notice = "#{@articles.first.article_date.to_date} 以降の記事を表示します。"
+      @notice = "#{@articles.first.article_date.to_date} 以降 30件の記事を表示します。"
       @noindex = true
+      recent
       render_action 'noteslist'
     else
       render_text "please select only one day"
     end
-    recent
   end
 
   def tendays
