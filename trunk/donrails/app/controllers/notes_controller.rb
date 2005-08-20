@@ -14,6 +14,7 @@ class NotesController < ApplicationController
   def search
     @articles = Article.search(@params["q"])
     @heading = "#{@params["q"]}"
+    @noindex = true
   end
   
   def pick_article
@@ -33,6 +34,7 @@ class NotesController < ApplicationController
                                           )
     recent
     @heading = "記事サイズ順の表示"
+    @noindex = true
     render_action 'noteslist'
   end
 
@@ -60,12 +62,14 @@ class NotesController < ApplicationController
       end
     end
   end
+  protected :dateparse
 
   def noteslist
     @articles_pages, @articles = paginate(:article, :per_page => 30,
                                           :order_by => 'article_date DESC, id DESC'
                                           )
     @heading = "#{@articles.first.title} at #{@articles.first.article_date.to_date}"
+    @notice = @params['notice'] unless @notice
     recent
   end
 
@@ -122,6 +126,7 @@ class NotesController < ApplicationController
                                              )
     end
     @heading = "#{@articles.first.article_date.to_date} - #{@articles.last.article_date.to_date}"
+    @noindex = true
     render_action 'noteslist'
   end
 
@@ -140,6 +145,7 @@ class NotesController < ApplicationController
       i += 1
       @articles += Article.find(:all, :order => "id DESC", :conditions => ["article_date >= ? AND article_date < ?", t2, t2.tomorrow])
     end
+    @noindex = true
     render_action 'noteslist'
   end
 
@@ -150,6 +156,7 @@ class NotesController < ApplicationController
                                              :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd1a]
                                              )
     else
+      @noindex = true
       render_text = "正しく日付を指定してください"
     end
     recent
@@ -157,86 +164,12 @@ class NotesController < ApplicationController
       @heading = "#{@articles.first.title} at #{@articles.first.article_date.to_date}"
       render_action 'noteslist'
     rescue
-      @notice = "The specified article doesn't exist. The latest articles are displayed."
+      @notice = "指定された記事はありません。代わりに最近の記事から表示します。"
+      @noindex = true
       redirect_to :action => 'noteslist', :notice => @notice
     end
   end
   alias :oneday :show_date 
-
-  def hnf_save_date_inner
-    day0 = Time.new
-    day1 = day0
-    hnfbody = "OK \n\n"
-    @articles.each do |article|
-      day0 = article.article_date.to_date 
-      if day1 != day0 
-        day1 = article.article_date.to_date 
-      end 
-      
-      hnfbody += 'CAT '
-      article.categories.each do |cat|
-        hnfbody += cat.name 
-      end 
-      hnfbody += "\n"
-
-      if article.title =~ /^https?:\/\// 
-        hnfbody += "LNEW "
-      else
-        hnfbody += "NEW "
-      end
-      hnfbody += article.title + "\n"
-      hnfbody += article.body + "\n"
-    end
-    ymd2 = day0.to_date.to_s.gsub('-','')
-    hnf_file = "d#{ymd2}.hnf"
-    return hnfbody, hnf_file
-  end
-
-  def hnf_save_date_inner_all
-    if File.exist? "/tmp/hnfall.tar.gz"
-      File.delete "/tmp/hnfall.tar.gz"
-    end
-    firstday = @articles.first.article_date.to_date.to_s.gsub('-','')
-    lastday = @articles.last.article_date.to_date.to_s.gsub('-','')
-    hnf_tar_file_name = "hnf-#{firstday}_#{lastday}.tar.gz"
-
-    day0 = Time.new
-    day1 = day0
-    hnfbody = "OK \n\n"
-    predir = "/tmp/" + Process.pid.to_s 
-    Dir.mkdir(predir) unless FileTest.exist? predir
-    @articles.each do |article|
-      day0 = article.article_date.to_date 
-      if day1 != day0
-        ymd2 = day1.to_date.to_s.gsub('-','')
-        hnf_file = "#{predir}/d#{ymd2}.hnf"
-        unless hnfbody == "OK \n\n"
-          tmpf = File.new(hnf_file, "w")
-          tmpf.puts Kconv.toeuc(hnfbody)
-          tmpf.close
-        end
-
-        day1 = article.article_date.to_date 
-        hnfbody = "OK \n\n"
-      end 
-      
-      hnfbody += 'CAT '
-      article.categories.each do |cat|
-        hnfbody += cat.name 
-      end 
-      hnfbody += "\n"
-
-      if article.title =~ /^https?:\/\// 
-        hnfbody += "LNEW "
-      else
-        hnfbody += "NEW "
-      end
-      hnfbody += article.title + "\n"
-      hnfbody += article.body + "\n"
-    end
-    system("cd #{predir} && tar zcf /tmp/hnfall.tar.gz *.hnf")
-    return hnf_tar_file_name
-  end
   
   def show_title
     if @params['id']
@@ -282,6 +215,7 @@ class NotesController < ApplicationController
       @heading = "#{@articles.first.title}"
 
       @notice = "#{@articles.first.article_date.to_date} 以降の記事を表示します。"
+      @noindex = true
       render_action 'noteslist'
     else
       render_text "please select only one day"
@@ -304,6 +238,7 @@ class NotesController < ApplicationController
       @notice = "記事がありません。"
     end
     recent
+    @noindex = true
     render_action 'noteslist'
   end
 

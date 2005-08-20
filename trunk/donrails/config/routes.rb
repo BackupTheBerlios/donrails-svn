@@ -60,6 +60,8 @@ ActionController::Routing::Routes.draw do |map|
     :nums => /\S+.html/
   }
 
+  map.connect "notes/di.cgi", :controller => "notes", :action => "rdf_recent"
+
   # Here's a sample route:
   # map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action

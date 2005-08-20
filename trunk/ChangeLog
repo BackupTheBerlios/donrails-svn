@@ -1,3 +1,9 @@
+2005-08-20  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* New: "@noindex" class parameter to control add '''<meta name="robots" content="noindex">''' tag in header. (Please show notes.rhtml)
+
+	* Change: notes_controller.rb: 'dateparse' method is now protected.
+
 2005-08-19  araki yasuhiro  <yasu@debian.or.jp>
 
 	* Change: Makefile and donrails-setup.rb: "rails -d rails" is maybe debian extension. I change "rails rails" to setup by 'make' command. (thanks: tagoh)

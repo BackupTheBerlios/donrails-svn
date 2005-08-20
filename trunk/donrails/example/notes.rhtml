@@ -12,7 +12,11 @@
 <%= javascript_include_tag "code-toggle-popup.js" %>
 <%= javascript_include_tag "prototype.js" %>
 
-<title>donrails日記<%=h @heading %></title>
+<% if @noindex %>
+<meta name="robots" content="noindex">
+<% end %>
+
+<title>donrails日記 <%=h @heading %></title>
 </head>
 
 <body>
