@@ -1,3 +1,7 @@
+2005-08-21  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* New: wsse_generate and wsse_match. These will be used for AtomAPI.
+
 2005-08-20  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* Change: Paginate for notes/afterday is broken. Now notes/afterday is not paginated. Simply show 30 articles.

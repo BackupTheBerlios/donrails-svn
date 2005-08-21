@@ -1,5 +1,10 @@
 # The filters added to this controller will be run for all controllers in the application.
 # Likewise will all the methods added be available for all controllers.
+
+require 'time'
+require 'digest/sha1'
+require 'base64'
+
 class ApplicationController < ActionController::Base
 
   def get_ymd
@@ -57,5 +62,35 @@ class ApplicationController < ActionController::Base
     end
     return ymd
   end
+
+  
+  def wsse_generate(user, pass)
+    created = Time.now.iso8601
+    nonce = open("/dev/random").read(20).unpack("H*").first
+    pd = Digest::SHA1.digest(nonce + created + pass)
+    wsse = "UsernameToken Username=\"#{user}\", PasswordDigest=\"#{Base64.encode64(pd).chomp}\", Created=\"#{created}\", Nonce=\"#{Base64.encode64(nonce).chomp}\""
+  end
+
+  def wsse_match(user, pass, wsse) 
+    if wsse =~ /UsernameToken Username="(\w+)"/
+      return false if user != $1
+    end
+    if wsse =~ /Created="(\w+)"/
+      created = $1
+    end
+    if wsse =~ /PasswordDigest="(\w+)"/
+      passdigest = Base64.decode64($1)
+    end
+    if wsse =~ /Nonce="(\w+)"/
+      nonce = Base64.decode64($1)
+    end
+
+    pd = Digest::SHA1.digest(nonce + created + pass)
+    if pd == passdigest
+      return true
+    end
+    return false
+  end
+  
 
 end
