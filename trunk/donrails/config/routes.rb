@@ -60,6 +60,14 @@ ActionController::Routing::Routes.draw do |map|
     :nums => /\S+.html/
   }
 
+  map.connect "notes/every_year/:month/:day", :controller => "notes", 
+  :action => "show_nnen",
+  :requirements => { 
+    :month => /[01]?\d/,
+    :day => /[0-3]?\d/
+  }
+
+
   map.connect "notes/di.cgi", :controller => "notes", :action => "rdf_recent"
 
   # Here's a sample route:

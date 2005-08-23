@@ -138,13 +138,14 @@ class NotesController < ApplicationController
     if ymdnow =~ /(\d\d\d\d)-(\d\d)-(\d\d)/
       t2 = Time.local($1,$2,$3)
     end
-
+    t3 = t2
     @articles = Article.find(:all, :order => "id DESC", :conditions => ["article_date >= ? AND article_date < ?", t2, t2.tomorrow])
     for i in 1..10
       t2 = t2.last_year
       i += 1
       @articles += Article.find(:all, :order => "id DESC", :conditions => ["article_date >= ? AND article_date < ?", t2, t2.tomorrow])
     end
+    @notice = "#{t2.month}月 #{t2.day}日の記事(#{@articles.first.article_date.year}年から#{@articles.last.article_date.year}年まで)"
     @noindex = true
     render_action 'noteslist'
   end

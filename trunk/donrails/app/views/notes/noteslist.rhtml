@@ -59,7 +59,7 @@ an = 0
  <% end %>
 
 
-<% if @params['action'] == "show_date" %>
+<% if @params['action'] =~ /(show_date|show_nnen)/ %>
 <div class="pagelink">
 <%= render ("shared/nextlink2", "articles" => @articles) %>
 </div> <!-- end pagelink -->
