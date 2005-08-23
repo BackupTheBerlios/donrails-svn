@@ -32,6 +32,7 @@ end
 
 cfpath = topdir + "rails/config/database.yml"
 unless cfpath.exist?
+  print "Use example database.yml\n"
   example_path = topdir + "donrails/config/database.yml"
   exe_yaml = example_path.read
   cf = open(cfpath, "w")
@@ -44,9 +45,9 @@ config_obj = YAML::load(config_yaml)
 pre_obj = YAML::load(config_yaml)
 print "Founded database.yml\n"
 puts config_yaml
-buf = Readline.readline("Do you want to keep? [y/n]", true)
+buf = Readline.readline("Do you want to use/keep this? [y/n]", true)
 if buf == "y"
-  print "Sure. I Keep database.yml\n"
+  print "Sure. I Use/Keep database.yml\n"
 else
   adapter = ''
   config_obj.delete('development')
@@ -134,21 +135,55 @@ else
     penv += "IMAGE_DUMP_PATH = \"/public/image/dump/\"\n"
   end
 
-  buf = Readline.readline("Input username for administration. >", true)
-  penv += "ADMIN_USER = \"#{buf}\"\n"
-  buf = Readline.readline("Input password for administration. >", nil)
-  penv += "ADMIN_PASSWORD = \"#{buf}\"\n"
+  buf = Readline.readline("Input username for administration. YOU MUST input. >", true)
+  if buf == ""
+    d_username = open("/dev/random").read(2).unpack("H*").first
+    penv += "ADMIN_USER = \"#{d_username}\"\n"
+    print "Generated. you have to use #{d_username}\n"
+  else
+    penv += "ADMIN_USER = \"#{buf}\"\n"
+    d_username = buf
+  end
+  buf = Readline.readline("Input password for administration. YOU MUST input>", nil)
+  if buf == ""
+    d_password = open("/dev/random").read(4).unpack("H*").first
+    penv += "ADMIN_PASSWORD = \"#{d_password}\"\n"
+    print "Generated. you have to use #{d_password}\n"
+  else
+    penv += "ADMIN_PASSWORD = \"#{buf}\"\n"
+  end
 
-  buf = Readline.readline("Input RDF_TITLE >", nil)
-  penv += "RDF_TITLE = \"#{buf}\"\n"
-  buf = Readline.readline("Input RDF_DESCRIPTION >", nil)
-  penv += "RDF_DESCRIPTION = \"#{buf}\"\n"
-  buf = Readline.readline("Input RDF_COPYRIGHT >", nil)
-  penv += "RDF_COPYRIGHT = \"#{buf}\"\n"
-  buf = Readline.readline("Input RDF_MANAGINGEDITOR >", nil)
-  penv += "RDF_MANAGINGEDITOR = \"#{buf}\"\n"
-  buf = Readline.readline("Input RDF_WEBMASTER >", nil)
-  penv += "RDF_WEBMASTER = \"#{buf}\"\n"
+  buf = Readline.readline("Input RDF_TITLE (default: #{d_username}.blog.donrails) >", nil)
+  if buf == ""
+    penv += "RDF_TITLE = \"#{d_username}.blog.donrails\"\n"
+    rdf_title = "#{d_username}.blog.donrails"
+  else
+    penv += "RDF_TITLE = \"#{buf}\"\n"
+  end
+  buf = Readline.readline("Input RDF_DESCRIPTION (default: #{rdf_title} >", nil)
+  if buf == ""
+    penv += "RDF_DESCRIPTION = \"#{rdf_title}\"\n"
+  else
+    penv += "RDF_DESCRIPTION = \"#{buf}\"\n"
+  end
+  buf = Readline.readline("Input RDF_COPYRIGHT (default: (c) 2005 #{d_username} >", nil)
+  if buf == ""
+    penv += "RDF_COPYRIGHT = \"(c) 2005 #{d_username}\"\n"
+  else
+    penv += "RDF_COPYRIGHT = \"#{buf}\"\n"
+  end
+  buf = Readline.readline("Input RDF_MANAGINGEDITOR (default: #{d_username} >", nil)
+  if buf == ""
+    penv += "RDF_MANAGINGEDITOR = \"#{d_username}\"\n"
+  else
+    penv += "RDF_MANAGINGEDITOR = \"#{buf}\"\n"
+  end
+  buf = Readline.readline("Input RDF_WEBMASTER (default: #{d_username} >", nil)
+  if buf == ""
+    penv += "RDF_WEBMASTER = \"#{d_username}\"\n"
+  else
+    penv += "RDF_WEBMASTER = \"#{buf}\"\n"
+  end
 
   print "\v Please confirm NEW donrails_env.rb\n"
   puts penv

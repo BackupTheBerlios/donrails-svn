@@ -1,3 +1,7 @@
+2005-08-23  araki yasuhiro  <yasu@debian.or.jp>
+
+	* Change: donrails-setup.rb: Now some values set dafault.(thanks tagoh)
+
 2005-08-22  araki yasuhiro  <yasu@debian.or.jp>
 
 	* Add: In map.connect "notes/every_year/:month/:day" to display the same day of the year.
