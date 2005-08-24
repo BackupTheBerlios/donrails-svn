@@ -15,12 +15,12 @@ http://www.araki.net/wiki/donrails-wiliki.cgi?donrails%3ainstall
 	設定ファイルが作成される。
 	問題なければ、これで終了。
 6. 設定ファイルの編集
-	donrails/config/database.yml
-	donrails/config/donrails_env.rb
+	rails/config/database.yml
+	rails/config/donrails_env.rb
 7. ユーザが自分のやりたいようにいじるファイル(必須)
-	donrails/app/views/notes/index.rhtml
+	rails/app/views/notes/index.rhtml
 		("donrails/example/index.rhtml"にサンプルがあります)
-	donrails/app/views/layouts/notes.rhtml
+	rails/app/views/layouts/notes.rhtml
 		("donrails/example/notes.rhtml"にサンプルがあります)
 	rails/public/
 	以下はスタティックなファイルを置くために自由においてかまいません。

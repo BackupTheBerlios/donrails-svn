@@ -152,6 +152,7 @@ class NotesController < ApplicationController
 
   def show_date
     get_ymd
+    recent
     if @ymd
       @articles_pages, @articles =  paginate(:article, :per_page => 30,
                                              :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd1a]
@@ -160,7 +161,7 @@ class NotesController < ApplicationController
       @noindex = true
       render_text = "正しく日付を指定してください"
     end
-    recent
+
     begin
       @heading = "#{@articles.first.title} at #{@articles.first.article_date.to_date}"
       render_action 'noteslist'
@@ -207,26 +208,31 @@ class NotesController < ApplicationController
   end
 
   def afterday
+    @noindex = true
+    recent
     @debug_oneday = @request.request_uri
     get_ymd
     if @ymd
       @articles =  Article.find(:all, :limit => 30,
                                 :conditions => ["article_date >= ?", @ymd])
-      @heading = "#{@articles.first.title}"
-
-      @notice = "#{@articles.first.article_date.to_date} 以降 30件の記事を表示します。"
-      @noindex = true
-      recent
-      render_action 'noteslist'
+      if @articles.first
+        @heading = "#{@articles.first.title}"
+        @notice = "#{@articles.first.article_date.to_date} 以降 30件の記事を表示します。"
+        render_action 'noteslist'
+      else
+        @notice = "#{@ymd}以降に該当する記事はありません"
+        render_action 'noteslist', 404
+      end
     else
-      render_text "please select only one day"
+      render_text "please select only one day", 404
     end
   end
 
   def tendays
     @debug_oneday = @request.request_uri
     get_ymd
-
+    recent
+    @noindex = true
     @articles = Article.find(:all,
                              :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd10a]
                                            )
@@ -234,12 +240,11 @@ class NotesController < ApplicationController
       @heading = "#{@articles.first.title}"
     
       @notice = "#{@articles.first.article_date.to_date} 以降の10日間の記事を表示します。"
+      render_action 'noteslist'
     else
-      @notice = "記事がありません。"
+      @notice = "該当する記事はありません"
+      render_action 'noteslist', 404
     end
-    recent
-    @noindex = true
-    render_action 'noteslist'
   end
 
   def add_comment2

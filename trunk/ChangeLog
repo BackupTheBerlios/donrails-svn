@@ -1,3 +1,15 @@
+2005-08-24  araki yasuhiro  <yasu@debian.or.jp>
+
+	* New: apply for "plain" article format.
+
+	* Change: at no articles, return 404.
+
+	* Split application_helper.rb's HNF related lines to "hnf_helper.rb".
+
+	* Add: Makefile: "make init" make link to donrails/lib to use antispam.rb.
+
+	* Fix: INSTALL.ja: config files are located under rails/config. (wrong: donrails/config) (thanks tagoh)
+
 2005-08-23  araki yasuhiro  <yasu@debian.or.jp>
 
 	* Change: donrails-setup.rb: Now some values set dafault.(thanks tagoh)

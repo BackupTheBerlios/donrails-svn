@@ -13,6 +13,7 @@ copyrails:
 
 linkinit:
 	cd rails; rm -rf app; ln -s ../donrails/app .
+	cd rails; rm -rf lib; ln -s ../donrails/lib .
 	cd rails/config; rm routes.rb; ln -s ../../donrails/config/routes.rb .
 
 links:

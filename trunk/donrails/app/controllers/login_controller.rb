@@ -11,6 +11,7 @@ class LoginController < ApplicationController
     unless @session["person"] == "ok"
       redirect_to :action => "login_index"
     end
+    @response.headers["X-donrails"] = "login"
   end
   
   def authenticate
