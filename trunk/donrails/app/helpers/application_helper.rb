@@ -57,7 +57,7 @@ module ApplicationHelper
   private :plain_don_line_link
 
   def plain_don_line_2kaigyo(line)
-    if line = ""
+    if line == ""
       line = "<br>"
     end
     return line

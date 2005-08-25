@@ -1,5 +1,7 @@
 2005-08-25  Akira TAGOH  <at@gclab.org>
 
+	* donrails/app/helpers/application_helper.rb (ApplicationHelper::plain_don_line_2kaigyo): fixed a typo.
+
 	* donrails/tool/tables-postgresql.txt: New file for PostgreSQL.
 
 	* donrails/app/controllers/login_controller.rb (LoginController::delete_article): prevent NoMethodError for nil.
