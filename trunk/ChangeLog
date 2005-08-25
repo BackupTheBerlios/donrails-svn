@@ -1,3 +1,7 @@
+2005-08-25  Akira TAGOH  <at@gclab.org>
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::recent_category): returns the empty Array when there is no categories.
+
 2005-08-24  araki yasuhiro  <yasu@debian.or.jp>
 
 	* New: apply for "plain" article format.

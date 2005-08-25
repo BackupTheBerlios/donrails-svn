@@ -114,6 +114,7 @@ class NotesController < ApplicationController
 
   def recent_category(category)
     categories = Category.find(:first, :conditions => ["name = ?", category])
+    return [] if categories.nil?
     articles = categories.articles
     return articles.reverse!
   end
