@@ -114,7 +114,7 @@ class LoginController < ApplicationController
   end
 
   def delete_article
-    c = @params["deleteid"]
+    c = @params["deleteid"].nil? ? [] : @params["deleteid"]
     c.each do |k, v|
       if v.to_i == 1
         b = Article.find(k.to_i)

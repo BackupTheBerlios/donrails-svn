@@ -1,3 +1,9 @@
+2005-08-25  Akira TAGOH  <at@gclab.org>
+
+	* donrails/tool/tables-postgresql.txt: New file for PostgreSQL.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::delete_article): prevent NoMethodError for nil.
+
 2005-08-25  araki yasuhiro  <yasu@debian.or.jp>
 
 	* Add: """map.connect '', :controller => "notes", :action => "index" """ in routes.rb. 
