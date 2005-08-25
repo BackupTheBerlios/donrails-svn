@@ -1,3 +1,7 @@
+2005-08-25  araki yasuhiro  <yasu@debian.or.jp>
+
+	* Add: """map.connect '', :controller => "notes", :action => "index" """ in routes.rb. 
+
 2005-08-25  Akira TAGOH  <at@gclab.org>
 
 	* donrails/app/controllers/notes_controller.rb (NotesController::recent_category): returns the empty Array when there is no categories.

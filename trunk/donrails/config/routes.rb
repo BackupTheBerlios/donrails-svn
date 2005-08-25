@@ -1,6 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
   # Add your own custom routes here.
   # The priority is based upon order of creation: first created -> highest priority.
+  map.connect '', :controller => "notes", :action => "index"
+
   map.connect "notes/", :controller => "notes", :action => "index"
 
   map.connect "notes/d/", :controller => "notes", :action => "noteslist"
