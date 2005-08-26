@@ -1,3 +1,11 @@
+2005-08-26  Akira TAGOH  <at@gclab.org>
+
+	* donrails/lib/modules/rd.rb: New module. RD parser.
+
+	* donrails/lib/modules/hnf.rb: New module. hnf parser.
+
+	* donrails/lib/delegator.rb: New class to delegate the object to each output format module.
+
 2005-08-25  Akira TAGOH  <at@gclab.org>
 
 	* donrails/app/views/login/authenticate.rhtml: fixed a typo. plainf should be plain.
