@@ -120,13 +120,6 @@ module HNF
   end
   private :hnf_don_line_7e
 
-  def don_lnew(text, format)
-    case format
-    when "hnf"
-      hnf_don_lnew(text)
-    end
-  end
-
   def hnf_don_lnew(text)
     if text =~ /^(http|https|mailto|ftp):\/\/(\S+)\s+(.+)/i
       text = "<a href=\"#{$1}://#{$2}\">#{$3}</a>"

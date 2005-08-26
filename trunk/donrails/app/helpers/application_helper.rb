@@ -18,6 +18,15 @@ module ApplicationHelper
     end
   end
 
+  def don_lnew(text, format)
+    case format
+    when "hnf"
+      hnf_don_lnew(text)
+    else
+      plain_don_lnew(text)
+    end
+  end
+
   def don_link(text, format)
     case format
     when "hnf"
@@ -63,6 +72,11 @@ module ApplicationHelper
     return line
   end
   private :plain_don_line_2kaigyo
+
+  def plain_don_lnew(text)
+    return text
+  end
+  private :plain_don_lnew
 
 
 end

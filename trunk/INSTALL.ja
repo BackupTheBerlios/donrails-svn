@@ -24,6 +24,7 @@ http://www.araki.net/wiki/donrails-wiliki.cgi?donrails%3ainstall
 		("donrails/example/notes.rhtml"にサンプルがあります)
 	rails/public/
 	以下はスタティックなファイルを置くために自由においてかまいません。
+	directoryだけでアクセスすると、rails/public/index.html が参照されるので、必要ない場合は消してください。railsの動作確認用のfileです。
 
 	画像のuploadを行うには、
 	rails/public/images/dump

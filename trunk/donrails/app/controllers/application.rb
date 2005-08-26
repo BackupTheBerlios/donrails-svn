@@ -72,13 +72,14 @@ class ApplicationController < ActionController::Base
   end
 
   def wsse_match(user, pass, wsse) 
+    logger.info(wsse)
     if wsse =~ /UsernameToken Username="(\w+)"/
       return false if user != $1
     end
-    if wsse =~ /Created="(\w+)"/
+    if wsse =~ /Created="(\S+)"/
       created = $1
     end
-    if wsse =~ /PasswordDigest="(\w+)"/
+    if wsse =~ /PasswordDigest="(\S+)"/
       passdigest = Base64.decode64($1)
     end
     if wsse =~ /Nonce="(\w+)"/
@@ -88,8 +89,9 @@ class ApplicationController < ActionController::Base
     pd = Digest::SHA1.digest(nonce + created + pass)
     if pd == passdigest
       return true
+    else
+      return false
     end
-    return false
   end
   
 

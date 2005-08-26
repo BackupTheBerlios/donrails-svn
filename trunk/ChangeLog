@@ -1,3 +1,15 @@
+2005-08-26  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/application.rb: Fix regexp error.
+
+	* donrails/app/helpers/application_helper.rb: Add don_lnew() and plain_don_lnew(). These are removed from hnf_helper.rb.
+
+	* INSTALL.ja: Add information for setup.
+
+	* donrails/app/views/atom/{index|post}.rxml: New AtomAPI template.
+
+	* donrails/app/controllers/atom_controller.rb: New controler. AtomAPI controller.
+
 2005-08-26  Akira TAGOH  <at@gclab.org>
 
 	* donrails/lib/modules/rd.rb: New module. RD parser.
