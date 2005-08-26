@@ -24,6 +24,21 @@ module DonRails
 
 =begin rdoc
 
+=== DonRails::HNF#title
+
+=end
+
+    def title
+      retval = self.to_s
+      if self.to_s =~ (/\A(http|https|mailto|ftp):\/\/(\S+)\s+(.+)/i) then
+        retval = sprintf("<a href=\"%s://%s\">%s</a>", $1, $2, $3)
+      end
+
+      return retval
+    end # def title
+
+=begin rdoc
+
 === DonRails::HNF#to_html
 
 =end

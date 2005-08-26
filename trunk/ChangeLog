@@ -1,11 +1,38 @@
+2005-08-26  Akira TAGOH  <at@gclab.org>
+
+	* donrails/app/helpers/hnf_helper.rb: REMOVED.
+
+	* donrails/lib/delegator.rb (DonRails::PlainText::title): New method.
+	(DonRails::DataFormatDelegator::formatmap): hack to find the input format modules all.
+
+	* donrails/lib/modules/hnf.rb (DonRails::HNF::title): New method.
+
+	* donrails/lib/modules/rd.rb (DonRails::RD::title): New method.
+	(DonRails::RD::to_html): ensure "\n" at the end of the given string.
+
+	* donrails/app/views/notes/noteslist.rhtml: modified against the application_helper.rb's change.
+
+	* donrails/app/views/notes/pick_article_a.rhtml: likewise.
+
+	* donrails/app/views/login/authenticate.rhtml: show the supported input format from
+	  don_supported_formats instead of hardcoded stuff.
+
+	* donrails/app/helpers/application_helper.rb (ApplicationHelper::don_supported_formats):
+	  New method to get which input format DonRails supported.
+	(ApplicationHelper::don_to_title): New method to convert String to the article title.
+	(ApplicationHelper::don_to_html): New method to convert String to HTML.
+	(ApplicationHelper::remove_html_gl, don_lnew, don_link, plain_remove_html_gl):
+	(ApplicationHelper::plain_don_link, plain_don_line_link, plain_don_line_2kaigyo):
+	(ApplicationHelper::plain_don_lnew): REMOVED.
+
 2005-08-26  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/models/authors.rb: New models. It store user/pass entry for AtomAPI post/edit/delete.
 
-		* donrails/app/controllers/application.rb: Change wsse_match(user,pass,wsse) to wsse_match(wsse). wsse_match(wsse) search user and pass from Authors.
-		* donrails/tool/tables-sqlite.txt: Add authors table.
-		* donrails/tool/tables-postgresql.txt: Add authors table.
-		* donrails/tool/tables.txt: REMOVE.
+	* donrails/app/controllers/application.rb: Change wsse_match(user,pass,wsse) to wsse_match(wsse). wsse_match(wsse) search user and pass from Authors.
+	* donrails/tool/tables-sqlite.txt: Add authors table.
+	* donrails/tool/tables-postgresql.txt: Add authors table.
+	* donrails/tool/tables.txt: REMOVE.
 
 	* donrails/app/helpers/application_helper.rb: Fix pub_date time format. Now use Time.iso8601.
 

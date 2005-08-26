@@ -34,12 +34,26 @@ module DonRails
 
 =begin rdoc
 
+=== DonRails::RD#title
+
+=end
+
+    def title
+      src = sprintf("=begin\n= %s\n=end\n", self.to_s.sub(/\A=+\s+(.*)/, '\1').chomp)
+      tree = ::RD::RDTree.new(src)
+      retval = @_rd_visitor.visit(tree)
+
+      return retval.gsub(/.*<body>(.*)/m, '\1').gsub(/(.*)<\/body>.*/m, '\1').sub(/\A\n/,'').chomp
+    end # def title
+
+=begin rdoc
+
 === DonRails::RD#to_html
 
 =end
 
     def to_html
-      src = sprintf("=begin\n%s=end\n", self.to_s)
+      src = sprintf("=begin\n%s\n=end\n", self.to_s.chomp)
       tree = ::RD::RDTree.new(src)
       retval = @_rd_visitor.visit(tree)
 

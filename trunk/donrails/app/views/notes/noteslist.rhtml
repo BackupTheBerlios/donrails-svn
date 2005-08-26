@@ -48,11 +48,11 @@ an = 0
      [<%= link_to cat.name, {:action => "show_category", :category => cat.name} %>]
    <% end %>
 
-   <%= don_lnew(article.title, article.format) %>
+   <%= don_to_title(article.title, article.format) %>
 </div> <!-- end nnenhead -->
 
 <div class="section">
-<%= auto_link don_link(article.body, article.format) %>
+<%= auto_link don_to_html(article.body, article.format) %>
 <%= render ("shared/comment", "article" => article) %>
 </div> <!-- end section -->
 

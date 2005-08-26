@@ -27,7 +27,7 @@ module DonRails
       def formatmap
         retval = {}
 
-        pp = File.join('modules', '*rb')
+        pp = File.join(File.dirname(__FILE__), 'modules', '*rb')
         Dir.glob(pp).each do |fn|
           begin
             Kernel.load(fn)
@@ -93,6 +93,8 @@ module DonRails
 
 === DonRails::DataFormatdelegator#chomp_tags
 
+=== DonRails::DataFormatDelegator#title
+
 === DonRails::DataFormatDelegator#to_html
 
 =end
@@ -124,6 +126,16 @@ module DonRails
     def chomp_tags
       return self.to_s.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
     end # def chomp_tags
+
+=begin rdoc
+
+=== DonRails::PlainText#title
+
+=end
+
+    def title
+      return self.to_s
+    end # def title
 
 =begin rdoc
 
