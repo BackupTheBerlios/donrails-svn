@@ -26,10 +26,10 @@ cattmp = @articles[ma]
 <% for i in mi..ma
      art = @articles[i]
      an += 1 
-     btmp = strip_links don_link(art.body, art.format)
-     btmp = remove_html_gl(btmp, art.format)
+     btmp = strip_links don_to_html(art.body, art.format)
+     btmp = don_chomp_tags(btmp, art.format)
 %>
-  <dt><%= link_to "\##{an}", {:action => "show_title", :title => art.title, :id => art.id} %> <%= don_lnew(art.title, art.format) %></dt>
+  <dt><%= link_to "\##{an}", {:action => "show_title", :title => art.title, :id => art.id} %> <%= don_to_title(art.title, art.format) %></dt>
   <dd><%= truncate(btmp, 150) %>
      (<%= link_to "#{art.article_date.to_date}",
          {:action => "show_date",
@@ -46,9 +46,9 @@ cattmp = @articles[ma]
 <dl>
 <% @articles.each do |art| %>
   <% an += 1 %>
-  <% btmp = strip_links don_link(art.body, art.format) %>
-  <% btmp = remove_html_gl btmp %>
-  <dt><%= link_to "\##{an}", {:action => "show_title", :title => art.title} %> <%= don_lnew(art.title, art.format) %></dt>
+  <% btmp = strip_links don_to_html(art.body, art.format) %>
+  <% btmp = don_chomp_tags btmp %>
+  <dt><%= link_to "\##{an}", {:action => "show_title", :title => art.title} %> <%= don_to_title(art.title, art.format) %></dt>
   <dd><%= truncate(btmp, 150) %>
      (<%= link_to "#{art.article_date.to_date}",
          {:action => "show_date",

@@ -8,11 +8,11 @@
 <dl>
 <% @articles.each do |art| %>
   <% an += 1 %>
-  <% btmp = strip_links don_link(art.body, art.format) %>
-  <% btmp = remove_html_gl(btmp, art.format) %>
+  <% btmp = strip_links don_to_html(art.body, art.format) %>
+  <% btmp = don_chomp_tags(btmp, art.format) %>
   <% btmp = excerpt(btmp, @params["q"], 150) %>
   <% btmp = highlight(btmp, @params["q"]) %>
-  <dt>#<%= an %> <%= don_lnew(art.title, art.format) %></dt>
+  <dt>#<%= an %> <%= don_to_title(art.title, art.format) %></dt>
   <dd>
     <%= btmp %>
     <%= link_to "[全文]", {:action => "pick_article", :pickid => art.id} %>

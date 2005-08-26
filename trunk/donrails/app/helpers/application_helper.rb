@@ -39,6 +39,18 @@ module ApplicationHelper
     return s.to_html
   end # def don_to_html
 
+=begin rdoc
+
+=== ApplicationHelper#don_chomp_tags(text, format)
+
+=end
+
+  def don_chomp_tags(text, format)
+    s = DonRails::DataFormatDelegator.new(text, fmt)
+
+    return s.chomp_tags
+  end # def don_chomp_tags
+
   def pub_date(time)
     time.iso8601
   end

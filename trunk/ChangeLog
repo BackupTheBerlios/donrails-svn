@@ -1,5 +1,14 @@
 2005-08-26  Akira TAGOH  <at@gclab.org>
 
+	* donrails/app/views/notes/show_category.rhtml: modified to fit to the latest application helper.
+	* donrails/app/views/notes/show_category2.rhtml: likewise.
+	* donrails/app/views/notes/show_title.rhtml: likewise.
+	* donrails/app/views/notes/search.rhtml: likewise.
+	* donrails/app/views/notes/pick_article.rhtml: likewise.
+
+	* donrails/app/helpers/application_helper.rb (ApplicationHelper::don_chomp_tags):
+	  New method.
+
 	* donrails/app/helpers/hnf_helper.rb: REMOVED.
 
 	* donrails/lib/delegator.rb (DonRails::PlainText::title): New method.
