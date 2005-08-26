@@ -71,10 +71,12 @@ class ApplicationController < ActionController::Base
     wsse = "UsernameToken Username=\"#{user}\", PasswordDigest=\"#{Base64.encode64(pd).chomp}\", Created=\"#{created}\", Nonce=\"#{Base64.encode64(nonce).chomp}\""
   end
 
-  def wsse_match(user, pass, wsse) 
+  def wsse_match(wsse) 
     logger.info(wsse)
+    user = ''
+    pass = ''
     if wsse =~ /UsernameToken Username="(\w+)"/
-      return false if user != $1
+      user = $1
     end
     if wsse =~ /Created="(\S+)"/
       created = $1
@@ -85,6 +87,8 @@ class ApplicationController < ActionController::Base
     if wsse =~ /Nonce="(\w+)"/
       nonce = Base64.decode64($1)
     end
+
+    pass = Authors.find(:first, :conditions => ["name = ?", user]).pass
 
     pd = Digest::SHA1.digest(nonce + created + pass)
     if pd == passdigest

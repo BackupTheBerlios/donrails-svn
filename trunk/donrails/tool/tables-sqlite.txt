@@ -53,3 +53,8 @@ constraint fk_cp_article foreign key (article_id) references articles(id),
 primary key (comment_id, article_id)
 );
 
+CREATE TABLE authors (
+id     INTEGER PRIMARY KEY,
+name   VARCHAR,
+pass   VARCHAR
+);

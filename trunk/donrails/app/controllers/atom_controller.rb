@@ -8,7 +8,7 @@ class AtomController < ApplicationController
 
   def wsse_auth
     if request.env["HTTP_X_WSSE"]
-      if false == wsse_match("araki", "tone", request.env["HTTP_X_WSSE"])
+      if false == wsse_match(request.env["HTTP_X_WSSE"])
         render :text => "you are not valid user for atom", :status => 401
       end
     elsif request.env["REMOTE_ADDR"] == "192.168.216.122"

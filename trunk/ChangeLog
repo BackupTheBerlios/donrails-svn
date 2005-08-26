@@ -1,5 +1,14 @@
 2005-08-26  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/models/authors.rb: New models. It store user/pass entry for AtomAPI post/edit/delete.
+
+		* donrails/app/controllers/application.rb: Change wsse_match(user,pass,wsse) to wsse_match(wsse). wsse_match(wsse) search user and pass from Authors.
+		* donrails/tool/tables-sqlite.txt: Add authors table.
+		* donrails/tool/tables-postgresql.txt: Add authors table.
+		* donrails/tool/tables.txt: REMOVE.
+
+	* donrails/app/helpers/application_helper.rb: Fix pub_date time format. Now use Time.iso8601.
+
 	* donrails/app/controllers/application.rb: Fix regexp error.
 
 	* donrails/app/helpers/application_helper.rb: Add don_lnew() and plain_don_lnew(). These are removed from hnf_helper.rb.

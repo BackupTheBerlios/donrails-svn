@@ -1,12 +1,13 @@
 # The methods added to this helper will be available to all templates in the application.
 
 require 'hnf_helper'
+require 'time'
 
 module ApplicationHelper
   include HNF
 
   def pub_date(time)
-    time.strftime "%a, %e %b %Y %H:%M:%S %Z"
+    time.iso8601
   end
 
   def remove_html_gl(text, format)
