@@ -8,7 +8,7 @@ no = 10 unless no
 pages.each do |article|
 next if doneid.include? article.id
 doneid.push article.id
-btmp = strip_links don_lnew(article.title, article.format)
+btmp = strip_links don_to_title(article.title, article.format)
 i += 1
 break if i > no.to_i
 %>

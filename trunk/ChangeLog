@@ -1,5 +1,11 @@
 2005-08-26  Akira TAGOH  <at@gclab.org>
 
+	* donrails/app/views/shared/linktitle.rhtml: modified to fit to the latest application helper.
+	* donrails/app/views/shared/title-articles2no.rhtml: likewise.
+	* donrails/app/views/shared/title-articles2.rhtml: likewise.
+	* donrails/app/views/shared/title-articles.rhtml: likewise.
+	* donrails/app/views/shared/rundom-article.rhtml: likewise.
+
 	* donrails/app/views/notes/show_category.rhtml: modified to fit to the latest application helper.
 	* donrails/app/views/notes/show_category2.rhtml: likewise.
 	* donrails/app/views/notes/show_title.rhtml: likewise.
