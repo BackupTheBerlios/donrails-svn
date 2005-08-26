@@ -1,5 +1,7 @@
 2005-08-26  Akira TAGOH  <at@gclab.org>
 
+	* donrails/lib/modules/hnf.rb (DonRails::HNF::to_html): fixed a typo.
+
 	* donrails/app/views/shared/linktitle.rhtml: modified to fit to the latest application helper.
 	* donrails/app/views/shared/title-articles2no.rhtml: likewise.
 	* donrails/app/views/shared/title-articles2.rhtml: likewise.

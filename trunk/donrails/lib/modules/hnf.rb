@@ -47,7 +47,7 @@ module DonRails
       retval = ""
 
       pre_tag = false
-      self.to_s.split.each do |line|
+      self.to_s.split("\n").each do |line|
         if line =~ (/\APRE/) then
           retval << '<pre>'
           pre_tag = true
@@ -100,8 +100,8 @@ module DonRails
           elsif line =~ (/\ALI\s+(.+)/) then
             retval << sprintf("<li>%s", $1)
             next
-          elsif line =~ (/\ALI/) then
-            retval << '<li>'
+          elsif line =~ (/\A\/LI/) then
+            retval << '</li>'
             next
           end
         end
