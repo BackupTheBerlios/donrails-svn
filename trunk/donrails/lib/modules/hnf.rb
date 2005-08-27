@@ -27,13 +27,13 @@ module DonRails
 === DonRails::HNF#title
 
 =end
-
+    
     def title
       retval = self.to_s
       if self.to_s =~ (/\A(http|https|mailto|ftp):\/\/(\S+)\s+(.+)/i) then
         retval = sprintf("<a href=\"%s://%s\">%s</a>", $1, $2, $3)
       end
-
+      
       return retval
     end # def title
 
@@ -60,7 +60,7 @@ module DonRails
 
         if pre_tag then
           retval << CGI.escapeHTML(line)
-        else
+        elsif line =~ /\A[A-Z]+/        # hnf command begin CAPITAL letters.
           if line =~ (/\AOK/) then
             next
           elsif line =~ (/\A(TENKI|WEATHER|BASHO|LOCATION|TAIJU|WEIGHT|TAION|TEMPERATURE|SUIMIN|SLEEP|BGM|HOSU|STEP|HON|BOOK|KITAKU|HOMECOMING|WALK|RUN)\s+(.+)/) then
@@ -104,6 +104,9 @@ module DonRails
             retval << '</li>'
             next
           end
+        else
+          retval << line
+
         end
       end
 

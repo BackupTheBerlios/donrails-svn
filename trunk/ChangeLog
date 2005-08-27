@@ -1,5 +1,7 @@
 2005-08-27  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/lib/modules/hnf.rb: Fix for not displaying body.
+
 	* donrails/app/views/login/authenticate.rhtml: Remove links to manage_article/manage_comment/hnf_save_all. Because these links now in layouts/login.rhtml
 
 	* donrails/app/views/layouts/login.rhtml: Change for easy navigation.
