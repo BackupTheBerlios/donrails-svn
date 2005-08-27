@@ -22,7 +22,6 @@ class ApplicationController < ActionController::Base
     if ymd =~ /(\d\d\d\d)-(\d\d)-(\d\d)/
       t2 = Time.local($1,$2,$3)
       @ymd10a = t2 + 86400 * 10 - 1
-#      @ymd1a = t2 + 86400 - 1
       @ymd1a = t2.tomorrow
       @ymd31a = t2.next_month
     end
@@ -77,6 +76,7 @@ class ApplicationController < ActionController::Base
     pass = ''
     if wsse =~ /UsernameToken Username="(\w+)"/
       user = $1
+      pass = Authors.find(:first, :conditions => ["name = ?", user]).pass
     end
     if wsse =~ /Created="(\S+)"/
       created = $1
@@ -87,8 +87,6 @@ class ApplicationController < ActionController::Base
     if wsse =~ /Nonce="(\w+)"/
       nonce = Base64.decode64($1)
     end
-
-    pass = Authors.find(:first, :conditions => ["name = ?", user]).pass
 
     pd = Digest::SHA1.digest(nonce + created + pass)
     if pd == passdigest

@@ -8,12 +8,23 @@
 <%= stylesheet_link_tag "araki" %>
 <%= javascript_include_tag "code-toggle-popup.js" %>
 <%= javascript_include_tag "prototype.js" %>
+<meta name="robots" content="noindex,nofollows">
 
 <title>login <%=h @heading %></title>
 </head>
 
 <body>
+<div class="head">
+<%= link_to "トップ", {:action => "index", :controller => "notes"} %>/
+<%= link_to "日記", {:action => "noteslist", :controller => "notes"} %>/ 
+<%= link_to "記事管理", {:action => "manage_article"} %>/
+<%= link_to "コメント管理", {:action => "manage_comment"} %>/
+<%= link_to "hnf保存", {:action => "hnf_save_all"}, :confirm => "Really login for save hnf files?" %>
+<br>
+</div> <!-- end of head -->
+
+<div class="mainarticle">
 <%= @content_for_layout %>
-<hr>
+</div>
 </body>
 </html>

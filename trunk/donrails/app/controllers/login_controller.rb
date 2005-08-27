@@ -27,6 +27,7 @@ class LoginController < ApplicationController
   end
 
   def logout
+    @session["person"].delete
   end
 
   def manage_comment

@@ -1,3 +1,13 @@
+2005-08-27  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/login/authenticate.rhtml: Remove links to manage_article/manage_comment/hnf_save_all. Because these links now in layouts/login.rhtml
+
+	* donrails/app/views/layouts/login.rhtml: Change for easy navigation.
+
+	* donrails/app/controllers/login_controller.rb: NEW logout().
+
+	* donrails/app/controllers/application.rb: WSSE authentification function change. Now use user/pass pair is sotred in Authors.
+
 2005-08-26  Akira TAGOH  <at@gclab.org>
 
 	* donrails/lib/modules/hnf.rb (DonRails::HNF::to_html): fixed a typo.
