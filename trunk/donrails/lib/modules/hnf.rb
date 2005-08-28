@@ -60,7 +60,7 @@ module DonRails
 
         if pre_tag then
           retval << CGI.escapeHTML(line)
-        elsif line =~ /\A[A-Z]+/        # hnf command begin CAPITAL letters.
+        elsif line =~ /\A\/?[A-Z]+/        # hnf command begin CAPITAL letters.
           if line =~ (/\AOK/) then
             next
           elsif line =~ (/\A(TENKI|WEATHER|BASHO|LOCATION|TAIJU|WEIGHT|TAION|TEMPERATURE|SUIMIN|SLEEP|BGM|HOSU|STEP|HON|BOOK|KITAKU|HOMECOMING|WALK|RUN)\s+(.+)/) then

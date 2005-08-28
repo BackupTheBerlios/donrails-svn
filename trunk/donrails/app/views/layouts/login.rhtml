@@ -17,7 +17,10 @@
 <div class="head">
 <%= link_to "トップ", {:action => "index", :controller => "notes"} %>/
 <%= link_to "日記", {:action => "noteslist", :controller => "notes"} %>/ 
+<br>
+<%= link_to "管理トップ", {:action => "authenticate"} %>/
 <%= link_to "記事管理", {:action => "manage_article"} %>/
+<%= link_to "AtomAPI投稿者管理", {:action => "manage_author"} %>/
 <%= link_to "コメント管理", {:action => "manage_comment"} %>/
 <%= link_to "hnf保存", {:action => "hnf_save_all"}, :confirm => "Really login for save hnf files?" %>
 <br>

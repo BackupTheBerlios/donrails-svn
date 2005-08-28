@@ -130,6 +130,24 @@ class LoginController < ApplicationController
     redirect_to :action => "manage_article"
   end
 
+  def manage_author
+    @authors_pages, @authors = paginate(:author, :per_page => 30,
+                                          :order_by => 'id DESC'
+                                          )
+  end
+
+  def delete_author
+    c = @params["deleteid"].nil? ? [] : @params["deleteid"]
+    c.each do |k, v|
+      if v.to_i == 1
+        b = Article.find(k.to_i)
+        b.destroy
+      end
+    end
+    redirect_to :action => "manage_author"
+  end
+
+
   def hnf_save_all
     @articles = Article.find(:all, :order => "article_date")
     rf = hnf_save_date_inner_all
@@ -241,5 +259,7 @@ class LoginController < ApplicationController
       render_action :picture_get
     end
   end
+
+
 
 end

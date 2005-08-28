@@ -1,3 +1,13 @@
+2005-08-28  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/lib/modules/hnf.rb: Fix for not processing HNF command line which begin with "/".
+
+	* donrails/app/views/login/authenticate.rhtml: Little change <hr><hr> to <hr>.
+
+	* donrails/app/views/layouts/login.rhtml: Add link to manage_author(), delete_author()
+
+	* donrails/app/controllers/login_controller.rb: New manage_author(), delete_author() for atom author management.
+
 2005-08-27  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/lib/modules/hnf.rb: Fix for not displaying body.
