@@ -27,7 +27,8 @@ class LoginController < ApplicationController
   end
 
   def logout
-    @session["person"].delete
+    @session["person"] = "logout"
+    redirect_to :action => "login_index"
   end
 
   def manage_comment
@@ -136,17 +137,35 @@ class LoginController < ApplicationController
                                           )
   end
 
-  def delete_author
+  def delete_unwrite_author
+    c = @params["unwriteid"].nil? ? [] : @params["unwriteid"]
+    c.each do |k, v|
+      if v.to_i == 1
+        b = Author.find(k.to_i)
+        if b.writable == 1
+          b.writable = 0
+          b.save
+        end
+      end
+    end
     c = @params["deleteid"].nil? ? [] : @params["deleteid"]
     c.each do |k, v|
       if v.to_i == 1
-        b = Article.find(k.to_i)
+        b = Author.find(k.to_i)
         b.destroy
       end
     end
     redirect_to :action => "manage_author"
   end
 
+  def add_author
+    c = @params["author"]
+    aris1 = Author.new("name" => c["name"],
+                       "pass" => c["pass"],
+                       "writable" => 1)
+    aris1.save
+    redirect_to :action => "manage_author"
+  end
 
   def hnf_save_all
     @articles = Article.find(:all, :order => "article_date")
