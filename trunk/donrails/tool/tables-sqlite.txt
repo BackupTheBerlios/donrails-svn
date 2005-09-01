@@ -56,5 +56,6 @@ primary key (comment_id, article_id)
 CREATE TABLE authors (
 id     INTEGER PRIMARY KEY,
 name   VARCHAR,
-pass   VARCHAR
+pass   VARCHAR,
+writable INTEGER NOT NULL
 );
