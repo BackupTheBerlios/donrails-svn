@@ -46,7 +46,11 @@ day1 = day0
 </div> <!-- end section -->
 
 <div class="linktitle">
+<% if (@lastarticle and @nextarticle) %>
 <%= render ("shared/linktitle", "lastarticle" => don_get_object(@lastarticle, 'html'), "nextarticle" => don_get_object(@nextarticle, 'html')) %>
+<% else %>
+(sorry, I can not link previous and next articles)
+<% end %>
 </div>
 
 <div class="pagelink">

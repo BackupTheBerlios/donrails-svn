@@ -4,6 +4,11 @@
 http://www.araki.net/wiki/donrails-wiliki.cgi?donrails%3ainstall
 に最新の情報があります。
 
+
+使用する外部ライブラリ
+- RD(librd-ruby1.8)
+
+
 (sqliteを使える形の例)
 1. railsをインストールする。
 2. gemsをインストールする。

@@ -1,3 +1,16 @@
+2005-09-02  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/notes/show_title.rhtml: (Partially) Fix for don_get_object.
+
+	* INSTALL.ja: Donrails now depends on RD library.
+
+        * donrails/tools/table-{sqlite,postgresql}.txt: Add Author.writable
+
+        * donrails/app/controller/login_controller.rb: Change for manage_author.rhtml
+
+        * donrails/app/views/login/manage_author.rhtml: New view for management
+AtomAPI authors.
+
 2005-09-01  Akira TAGOH  <at@gclab.org>
 
 	* donrails/lib/delegator.rb (DonRails::DataFormatDelegator): undef id
