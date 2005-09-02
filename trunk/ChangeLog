@@ -1,5 +1,7 @@
 2005-09-02  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/models/author.rb: Fix filename.(wrong file name: authors.rb)
+
 	* donrails/app/views/notes/show_title.rhtml: (Partially) Fix for don_get_object.
 
 	* INSTALL.ja: Donrails now depends on RD library.
