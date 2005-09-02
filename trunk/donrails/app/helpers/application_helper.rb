@@ -17,38 +17,26 @@ module ApplicationHelper
 
 =begin rdoc
 
-=== ApplicationHelper#don_to_title(text, fmt)
+=== ApplicationHelper#don_get_object(obj, type)
 
 =end
 
-  def don_to_title(text, fmt)
-    s = DonRails::DataFormatDelegator.new(text, fmt)
-
-    return s.title
-  end # def don_to_title
+  def don_get_object(obj, type)
+    return DonRails::DataFormatDelegator.new(obj, type)
+  end # def don_get_object
 
 =begin rdoc
 
-=== ApplicationHelper#don_to_html(text, fmt)
+=== ApplicationHelper#don_chomp_tags(text)
 
 =end
 
-  def don_to_html(text, fmt)
-    s = DonRails::DataFormatDelegator.new(text, fmt)
-
-    return s.to_html
-  end # def don_to_html
-
-=begin rdoc
-
-=== ApplicationHelper#don_chomp_tags(text, format)
-
-=end
-
-  def don_chomp_tags(text, format)
-    s = DonRails::DataFormatDelegator.new(text, fmt)
-
-    return s.chomp_tags
+  def don_chomp_tags(text)
+    if text.nil? then
+      return ""
+    else
+      return text.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+    end
   end # def don_chomp_tags
 
   def pub_date(time)

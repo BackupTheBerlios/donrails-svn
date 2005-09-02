@@ -1,6 +1,6 @@
 <%
-la = strip_links don_to_title(lastarticle.title, lastarticle.format) if lastarticle
-na = strip_links don_to_title(nextarticle.title, nextarticle.format) if nextarticle
+la = strip_links lastarticle.title_to_html if lastarticle
+na = strip_links nextarticle.title_to_html if nextarticle
 %>
 &lt;
 <%= link_to la, {:action => "show_title", :id => lastarticle.id, :title => lastarticle.title} if lastarticle %>

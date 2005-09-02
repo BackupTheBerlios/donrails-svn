@@ -4,6 +4,7 @@
 
  Copyright (C) 2005 Akira TAGOH <at@gclab.org>
 
+ You can redistribute it and/or modify it under the same term as GPL2 or later.
 =end
 
 
@@ -27,31 +28,35 @@ module DonRails
       def formatmap
         retval = {}
 
-        pp = File.join(File.dirname(__FILE__), 'modules', '*rb')
-        Dir.glob(pp).each do |fn|
-          begin
-            Kernel.load(fn)
-            fmt = File.basename(fn).sub(/.rb\Z/, '').downcase
-            modlist = []
-            modlist.push(sprintf("DonRails::%s", fmt.upcase))
-            modlist.push(sprintf("DonRails::%s", fmt.capitalize))
+        unless defined?($formatmap) then
+          pp = File.join(File.dirname(__FILE__), 'modules', '*rb')
+          Dir.glob(pp).each do |fn|
+            begin
+              Kernel.load(fn)
+              fmt = File.basename(fn).sub(/.rb\Z/, '').downcase
+              modlist = []
+              modlist.push(sprintf("DonRails::%s", fmt.upcase))
+              modlist.push(sprintf("DonRails::%s", fmt.capitalize))
 
-            catch(:map) do
-              modlist.each do |m|
-                ObjectSpace.each_object(Module)  do |k|
-                  if k.ancestors.map{|n| n.to_s}.include?(m) then
-                    retval[fmt] = m
-                    throw(:map)
+              catch(:map) do
+                modlist.each do |m|
+                  ObjectSpace.each_object(Module)  do |k|
+                    if k.ancestors.map{|n| n.to_s}.include?(m) then
+                      retval[fmt] = m
+                      throw(:map)
+                    end
                   end
                 end
-              end
-            end # catch
-          rescue => e
-          end
-        end # Dir.glob
-        retval['plain'] = 'DonRails::PlainText'
+              end # catch
+            rescue => e
+            end
+          end # Dir.glob
 
-        return retval
+          retval['plain'] = 'DonRails::PlainText'
+          $formatmap = retval
+	end
+
+        return $formatmap
       end # def formatmap
 
 =begin rdoc
@@ -70,40 +75,37 @@ module DonRails
 
 =begin rdoc
 
-=== DonRails::DataFormatDelegator#new(text, fmt)
+=== DonRails::DataFormatDelegator#new(obj, type)
 
 =end
 
-    def initialize(text, fmt)
-      raise TypeError, sprintf("can't convert %s into String", text.class) unless text.kind_of?(String)
-      raise TypeError, sprintf("can't convert %s into String", fmt.class) unless fmt.kind_of?(String)
+    def initialize(obj, type)
+      raise TypeError, sprintf("can't convert %s into String", fmt.class) unless type.kind_of?(String)
 
-      @text = text
-      mod = nil
+      @__obj__ = obj
+      @__module__ = nil
+      @__type__ = type
 
-      if DataFormatDelegator.formatlist.include?(fmt) then
-        mod = eval(DataFormatDelegator.formatmap[fmt])
+      if DataFormatDelegator.formatlist.include?(obj.format) then
+        @__module__ = eval(DataFormatDelegator.formatmap[obj.format])
       else
-        mod = eval(DataFormatDelegator.formatmap['plain'])
+        @__module__ = eval(DataFormatDelegator.formatmap['plain'])
       end
-      @text.extend(mod)
     end # def initialize
 
-=begin rdoc
-
-=== DonRails::DataFormatdelegator#chomp_tags
-
-=== DonRails::DataFormatDelegator#title
-
-=== DonRails::DataFormatDelegator#to_html
-
-=end
+    undef :id
 
     def method_missing(m, *args)
-      if @text.respond_to?(m) then
-        @text.__send__(m, *args)
+      if m.to_s =~ /\A(\w+)_to_#{@__type__.downcase}\Z/ then
+        text = @__obj__.__send__($1)
+        text.extend(@__module__)
+        if text.respond_to?(m) then
+          text.__send__(m, *args)
+        else
+          raise NoMethodError, sprintf("undefined method `%s' for %s", m, self)
+        end
       else
-        raise NoMethodError, sprintf("undefined method `%s' for %s", m, self)
+        @__obj__.__send__(m, *args)
       end
     end # def method_missing
 
@@ -119,33 +121,36 @@ module DonRails
 
 =begin rdoc
 
-=== DonRails::PlainText#chomp_tags
+=== DonRails::PlainText#title_to_html
 
+=== DonRails::PlainText#title_to_xml
 =end
 
-    def chomp_tags
-      return self.to_s.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
-    end # def chomp_tags
-
-=begin rdoc
-
-=== DonRails::PlainText#title
-
-=end
-
-    def title
+    def title_to_html
       return self.to_s
-    end # def title
+    end # def title_to_html
+
+    alias :title_to_xml :title_to_html
 
 =begin rdoc
 
-=== DonRails::PlainText#to_html
+=== DonRails::PlainText#body_to_html
 
 =end
 
-    def to_html
-      return self.chomp_tags.gsub("\n", "<br>\n")
-    end # def to_html
+    def body_to_html
+      return self.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '').gsub("\n", "<br>\n")
+    end # def body_to_html
+
+=begin rdoc
+
+=== DonRails::PlainText#body_to_xml
+
+=end
+
+    def body_to_xml
+      return self.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+    end # def body_to_xml
 
   end # module PlainText
 

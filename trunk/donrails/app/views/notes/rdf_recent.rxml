@@ -20,14 +20,13 @@ xml.tag!("rdf:RDF",
     end
   end
 
-  for item in @recent_articles
+  for i in @recent_articles
+    item = don_get_object(i, 'xml')
     xml.item("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id)) do
 
-      item.title.gsub!(/http:\/\/\S+/,'')
-      xml.title(item.title)
+      xml.title(item.title_to_xml)
       xml.link(@request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id))
-      btmp = remove_html_gl(don_link(item.body, item.format), item.format)
-      xml.description(btmp)
+      xml.description(item.body_to_xml)
       xml.tag!("dc:date") do
         xml.text! "#{pub_date(item.article_mtime)}"
       end

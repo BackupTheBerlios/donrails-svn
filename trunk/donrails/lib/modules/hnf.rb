@@ -4,7 +4,7 @@
 
  Copyright (C) 2005 Akira TAGOH <at@gclab.org>
 
- You can redistribute it and/or modify it under the same term as Ruby.
+ You can redistribute it and/or modify it under the same term as GPL2 or later.
 
 =end
 
@@ -24,26 +24,36 @@ module DonRails
 
 =begin rdoc
 
-=== DonRails::HNF#title
+=== DonRails::HNF#title_to_html
 
 =end
     
-    def title
+    def title_to_html
       retval = self.to_s
       if self.to_s =~ (/\A(http|https|mailto|ftp):\/\/(\S+)\s+(.+)/i) then
         retval = sprintf("<a href=\"%s://%s\">%s</a>", $1, $2, $3)
       end
       
       return retval
-    end # def title
+    end # def title_to_html
 
 =begin rdoc
 
-=== DonRails::HNF#to_html
+=== DonRails::HNF#title_to_xml
 
 =end
 
-    def to_html
+    def title_to_xml
+      return self.title_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+    end # def title_to_xml
+
+=begin rdoc
+
+=== DonRails::HNF#body_to_html
+
+=end
+
+    def body_to_html
       retval = ""
 
       pre_tag = false
@@ -111,7 +121,17 @@ module DonRails
       end
 
       return retval
-    end # def to_html
+    end # def body_to_html
+
+=begin rdoc
+
+=== DonRails::HNF#body_to_xml
+
+=end
+
+    def body_to_xml
+      return self.body_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+    end # def body_to_xml
 
   end # module HNF
 

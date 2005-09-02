@@ -1,3 +1,50 @@
+2005-09-01  Akira TAGOH  <at@gclab.org>
+
+	* donrails/lib/delegator.rb (DonRails::DataFormatDelegator): undef id
+	to pass it to the original object.
+	(DonRails::DataFormatDelegator::formatmap): store the modules list
+	into $formatmap and ensure to do Dir.glob just one time.
+
+2005-08-31  Akira TAGOH  <at@gclab.org>
+
+	* donrails/app/helpers/application_helper.rb (ApplicationHelper::don_get_object):
+	New method to get DataFormatDelegator object for the article.
+	(ApplicationHelper::don_to_title): removed.
+	(ApplicationHelper::don_to_html): removed.
+
+	* donrails/lib/modules/rd.rb (DonRails::RD::title_to_html): renamed from title.
+	(DonRails::RD::body_to_html): renamed from to_html.
+	(DonRails::RD::title_to_xml): New method.
+	(DonRails::RD::body_to_xml): New method.
+
+	* donrails/lib/modules/hnf.rb (DonRails::HNF::title_to_html): renamed from title.
+	(DonRails::HNF::body_to_html): renamed from to_html.
+	(DonRails::HNF::title_to_xml): New method.
+	(DonRails::HNF::body_to_xml): New method.
+
+	* donrails/lib/delegator.rb (DonRails::DataFormatDelegator::initialize): API changes.
+	(DonRails::DataFormatDelegator::method_missing): extend String and call
+	the method here when the method name '<fieldname>_to_<type>' is given.
+	(DonRails::PlainText::title_to_html): renamed from title
+	(DonRails::PlainText::body_to_html): renamed from to_html
+	(DonRails::PlainText::chomp_tags): moved to ApplicationHelper#don_chomp_tags
+	(DonRails::PlainText::title_to_xml): New method.
+	(DonRails::PlainText::body_to_xml): New method.
+
+	* donrails/app/views/shared/linktitle.rhtml: applied the above changes.
+	* donrails/app/views/shared/title-articles2no.rhtml: likewise.
+	* donrails/app/views/shared/title-articles2.rhtml: likewise.
+	* donrails/app/views/shared/title-articles.rhtml: likewise.
+	* donrails/app/views/shared/random-article.rhtml: likewise.
+	* donrails/app/views/notes/show_category.rhtml: likewise.
+	* donrails/app/views/notes/show_category2.rhtml: likewise.
+	* donrails/app/views/notes/show_title.rhtml: likewise.
+	* donrails/app/views/notes/noteslist.rhtml: likewise.
+	* donrails/app/views/notes/search.rhtml: likewise.
+	* donrails/app/views/notes/pick_article.rhtml: likewise.
+	* donrails/app/views/notes/pick_article_a.rhtml: likewise.
+	* donrails/app/views/notes/rdf_recent.rxml: likewise.
+
 2005-08-28  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/lib/modules/hnf.rb: Fix for not processing HNF command line which begin with "/".

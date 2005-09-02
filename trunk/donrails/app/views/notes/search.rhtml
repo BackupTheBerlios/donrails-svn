@@ -6,13 +6,16 @@
 <% an = 0 %>
 
 <dl>
-<% @articles.each do |art| %>
+<%
+@articles.each do |a|
+  art = don_get_object(a, 'html')
+%>
   <% an += 1 %>
-  <% btmp = strip_links don_to_html(art.body, art.format) %>
-  <% btmp = don_chomp_tags(btmp, art.format) %>
+  <% btmp = strip_links art.body_to_html %>
+  <% btmp = don_chomp_tags(btmp) %>
   <% btmp = excerpt(btmp, @params["q"], 150) %>
   <% btmp = highlight(btmp, @params["q"]) %>
-  <dt>#<%= an %> <%= don_to_title(art.title, art.format) %></dt>
+  <dt>#<%= an %> <%= art.title_to_html %></dt>
   <dd>
     <%= btmp %>
     <%= link_to "[全文]", {:action => "pick_article", :pickid => art.id} %>

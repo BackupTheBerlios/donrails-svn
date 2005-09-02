@@ -21,7 +21,8 @@ From <%= @ymd3 %> to <%= @ymd4 %>
 day0 = Time.new
 day1 = day0
 an = 0
-@articles.each do |article|
+@articles.each do |a|
+  article = don_get_object(a, 'html')
 %>
   <% day0 = article.article_date.to_date %>
    <% if day1 != day0 %>
@@ -48,11 +49,11 @@ an = 0
      [<%= link_to cat.name, {:action => "show_category", :category => cat.name} %>]
    <% end %>
 
-   <%= don_to_title(article.title, article.format) %>
+   <%= article.title_to_html %>
 </div> <!-- end nnenhead -->
 
 <div class="section">
-<%= auto_link don_to_html(article.body, article.format) %>
+<%= auto_link article.body_to_html %>
 <%= render ("shared/comment", "article" => article) %>
 </div> <!-- end section -->
 

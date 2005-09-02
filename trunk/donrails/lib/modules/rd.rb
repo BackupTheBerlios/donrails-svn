@@ -34,31 +34,51 @@ module DonRails
 
 =begin rdoc
 
-=== DonRails::RD#title
+=== DonRails::RD#title_to_html
 
 =end
 
-    def title
-      src = sprintf("=begin\n= %s\n=end\n", self.to_s.sub(/\A=+\s+(.*)/, '\1').chomp)
+    def title_to_html
+      src = sprintf("=begin\n%s\n=end\n", self.to_s.sub(/\A=+\s+(.*)/, '\1').chomp)
       tree = ::RD::RDTree.new(src)
       retval = @_rd_visitor.visit(tree)
 
-      return retval.gsub(/.*<body>(.*)/m, '\1').gsub(/(.*)<\/body>.*/m, '\1').sub(/\A\n/,'').chomp
-    end # def title
+      return retval.gsub(/.*<body>(.*)<\/body>.*/m, '\1').gsub(/.*<p>(.*)<\/p>.*/m, '\1').sub(/\A\n/,'').chomp
+    end # def title_to_html
 
 =begin rdoc
 
-=== DonRails::RD#to_html
+=== DonRails::RD#title_to_xml
 
 =end
 
-    def to_html
+    def title_to_xml
+      return self.title_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+    end # def title_to_xml
+
+=begin rdoc
+
+=== DonRails::RD#body_to_html
+
+=end
+
+    def body_to_html
       src = sprintf("=begin\n%s\n=end\n", self.to_s.chomp)
       tree = ::RD::RDTree.new(src)
       retval = @_rd_visitor.visit(tree)
 
       return retval.gsub(/.*<body>(.*)/m, '\1').gsub(/(.*)<\/body>.*/m, '\1').sub(/\A\n/,'').chomp
-    end # def to_html
+    end # def body_to_html
+
+=begin rdoc
+
+=== DonRails::RD#body_to_xml
+
+=end
+
+    def body_to_xml
+      return self.body_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+    end # def body_to_xml
 
   end # module RD
 
