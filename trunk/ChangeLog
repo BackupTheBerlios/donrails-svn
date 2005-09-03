@@ -1,3 +1,8 @@
+2005-09-04  Akira TAGOH  <at@gclab.org>
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::noteslist):
+	Added an exception.
+
 2005-09-03  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/login/manage_author.rhtml: Change description in english to japanese.
