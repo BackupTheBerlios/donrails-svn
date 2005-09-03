@@ -21,11 +21,11 @@ password:
 <%= form_tag :action => "delete_unwrite_author" %>
 <table  border="1" cellspacing="0">
   <tr>
-    <td>Do Delete</td>
+    <td>著者を消去</td>
     <td>id</td>
     <td>name</td>
     <td>writable</td>
-    <td>Do Unwritable</td>
+    <td>書きこみ禁止</td>
   </tr>
 
   <% @authors.each do |co| %>
@@ -38,7 +38,7 @@ password:
   </tr>
   <% end %>
 </table>
-<%= submit_tag "チェックした著者を書きこみできなくする" %>
+<%= submit_tag "send" %>
 <%= end_form_tag %>
 <% end %>
 
