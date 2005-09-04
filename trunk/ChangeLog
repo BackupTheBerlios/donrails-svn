@@ -1,3 +1,16 @@
+2005-09-04  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/atom/index.rxml: Add link to service.feed and service.categories.
+
+	* donrails/app/views/atom/categories.rxml: New file.
+
+	* donrails/app/views/atom/feed.rxml: New file.
+
+	* donrails/app/controllers/atom_controller.rb:
+	- Change wsse_auth debug ip address. Localhost client pass without wsse.
+	- New method feed().
+	- New method categories().
+
 2005-09-04  Akira TAGOH  <at@gclab.org>
 
 	* donrails/app/controllers/notes_controller.rb (NotesController::noteslist):

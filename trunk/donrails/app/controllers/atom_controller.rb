@@ -9,18 +9,32 @@ class AtomController < ApplicationController
   def wsse_auth
     if request.env["HTTP_X_WSSE"]
       if false == wsse_match(request.env["HTTP_X_WSSE"])
-        render :text => "you are not valid user for atom", :status => 401
+        render :text => "you are not valid user for atom", :status => 403
       end
-    elsif request.env["REMOTE_ADDR"] == "192.168.216.122"
+    elsif request.env["REMOTE_ADDR"] == "127.0.0.1"
       # for debug
     else
-      render :text => "you are not valid user for atom", :status => 401
+      render :text => "you are not valid user for atom", :status => 403
     end
   end
 
   # atom endpoint 
   def index
     @latest_article = Article.find(:first, :order => 'id DESC')
+  end
+
+  def feed
+    if @params['id'] == nil
+      render :text => "no method #{request.method}", :status => 400
+    end
+
+    if @params['id']
+      begin
+        @article = Article.find(@params['id'])
+      rescue
+        render :text => "no this id", :status => 400
+      end
+    end
   end
 
   # atom post
@@ -94,4 +108,19 @@ class AtomController < ApplicationController
       render :text => "no method #{request.method}", :status => 403
     end
   end
+
+  def categories
+    if @params['id'] == nil
+      render :text => "no method #{request.method}", :status => 400
+    end
+
+    if @params['id']
+      begin
+        @article = Article.find(@params['id'])
+      rescue
+        render :text => "no this id", :status => 400
+      end
+    end
+  end
+
 end

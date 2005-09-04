@@ -1,0 +1,27 @@
+xml.instruct! :xml, :version=>"1.0", :encoding => "utf-8"
+
+article = don_get_object(@article, 'html')
+
+xml.entry("xmlns" => "http://purl.org/atom/ns\#") do
+  xml.title article.title_to_html
+  xml.link("type" => "text/html",
+           "rel" => "alternate", 
+           "href" => @request.protocol + @request.host_with_port + url_for(:action => "show_article", :id => article.id))
+  xml.link("type" => "application/atom+xml",
+           "rel" => "service.edit",
+           "href" => @request.protocol + @request.host_with_port + url_for(:action => "edit", :id => article.id),
+           "title" => article.title)
+  xml.modified pub_date(article.article_mtime)
+  xml.issued pub_date(article.article_date)
+  xml.id 'tag:' + @request.host + ',:' + article.id.to_s
+
+  article.categories.each do |cat|
+    xml.category cat.name
+  end
+
+  xml.content("type" => "text/html",
+              "xml:lang" => "ja",
+              "xml:base" => @request.protocol + @request.host_with_port + url_for(:action => "edit", :id => article.id)) do
+    xml.text! article.body_to_html
+  end
+end
