@@ -1,3 +1,7 @@
+2005-09-06  Akira TAGOH  <at@gclab.org>
+
+	* donrails/lib/modules/rd.rb: trivial fix.
+
 2005-09-04  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/atom/index.rxml: Add link to service.feed and service.categories.

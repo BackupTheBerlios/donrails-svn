@@ -16,7 +16,7 @@ module DonRails
 
 =begin rdoc
 
-== RD
+== DonRails::RD
 
 =end
 
