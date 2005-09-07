@@ -14,14 +14,15 @@ class AntiSpam
   end
 
   def is_spam?(name, string)
-    logger.info("#{name} => #{string}")
+    return false if string.nil?
+    return false if string == ""
 
     reason = catch(:hit) do
-      if name == "url"
+      if name == :url
         self.scan_uri(URI.parse(string).host)
-      elsif name == "ipaddr"
+      elsif name == :ipaddr
         self.scan_ipaddr(string)
-      elsif name == "body"
+      elsif name == :body
         self.scan_text(string)
       else
         return false # is not spam!
@@ -50,6 +51,7 @@ class AntiSpam
   protected :scan_ipaddr
 
   def scan_uri(host)
+    logger.info(host)
     host_parts = host.split('.').reverse
     domain = Array.new
 
@@ -71,6 +73,8 @@ class AntiSpam
   protected :scan_uri
 
   def scan_text(string)
+    logger.info("[SP] Scanning text #{string}")
+
     # Scan contained URLs
     uri_list = string.scan(/(http:\/\/[^\s"]+)/m).flatten
 
@@ -82,6 +86,8 @@ class AntiSpam
     uri_list.collect { |uri| URI.parse(uri).host rescue nil }.uniq.compact.each do |host|
       scan_uri(host)
     end
+
+    # add blacklist match here.
     
     return false
   end

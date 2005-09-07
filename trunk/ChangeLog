@@ -1,6 +1,16 @@
+2005-09-07  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/lib/modules/hnf.rb: Fix for luck of LF in PRE /PRE commands.
+
+	* donrails/lib/antispam.rb: Fix for call subroutine.
+	
 2005-09-06  Akira TAGOH  <at@gclab.org>
 
 	* donrails/lib/modules/rd.rb: trivial fix.
+
+2005-09-05  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/lib/modules/hnf.rb: Fix for does not process line which is started with "~".
 
 2005-09-04  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
