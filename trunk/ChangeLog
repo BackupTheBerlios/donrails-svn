@@ -1,3 +1,9 @@
+2005-09-09  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/models/author.rb: Validates presence.
+
+	* donrails/app/models/blacklist.rb: Validates presence.
+
 2005-09-08  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/tool/tables-postgresql.txt: Add new 'blacklists' table.
