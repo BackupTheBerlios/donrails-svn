@@ -137,6 +137,32 @@ class LoginController < ApplicationController
     redirect_to :action => "manage_article"
   end
 
+  def manage_blacklist
+    @blacklists_pages, @blacklists = paginate(:blacklist, :per_page => 30,
+                                          :order_by => 'id DESC'
+                                          )
+  end
+
+  def delete_blacklist
+    c = @params["deleteid"].nil? ? [] : @params["deleteid"]
+    c.each do |k, v|
+      if v.to_i == 1
+        b = Blacklist.find(k.to_i)
+        b.destroy
+      end
+    end
+    redirect_to :action => "manage_blacklist"
+  end
+
+  def add_blacklist
+    c = @params["blacklist"]
+    aris1 = Blacklist.new("pattern" => c["pattern"],
+                          "format" => @params["format"])
+    aris1.save
+    redirect_to :action => "manage_blacklist"
+  end
+
+
   def manage_author
     @authors_pages, @authors = paginate(:author, :per_page => 30,
                                           :order_by => 'id DESC'

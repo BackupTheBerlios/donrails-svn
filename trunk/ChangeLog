@@ -1,3 +1,17 @@
+2005-09-08  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/tool/tables-postgresql.txt: Add new 'blacklists' table.
+
+	* donrails/tool/tables-sqlite.txt: Add new 'blacklists' table.
+
+	* donrails/lib/antispam.rb: Change for using 'blacklists' table.
+
+	* donrails/app/controllers/login_controller.rb: New method: {manage|delete|add}_blacklist.
+
+	* donrails/app/models/blacklist.rb: New file.
+
+	* donrails/app/models/blacklist_pattern.rb: Delete file.
+
 2005-09-08  Akira TAGOH  <at@gclab.org>
 
 	* donrails/app/views/login/authenticate.rhtml: choose the preferred

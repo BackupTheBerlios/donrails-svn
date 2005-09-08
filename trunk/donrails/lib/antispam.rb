@@ -6,6 +6,8 @@
 ##    some code derived from "typo"
 ##
 
+require_dependency 'blacklist'
+
 class AntiSpam
   def initialize
     @IP_RBL = [ 'bsb.empty.us', 'list.dsbl.org' ]
@@ -88,7 +90,16 @@ class AntiSpam
     end
 
     # add blacklist match here.
-    
+    Blacklist.find_all.each do |pattern|
+      logger.info("[SP] Scanning blacklist text #{pattern}")
+      if pattern.format == "string"
+        throw :hit, "String #{pattern.pattern} matched" if string.match(/#{Regexp.quote(pattern.pattern)}/)
+
+      elsif pattern.format == "regexp"
+        throw :hit, "Regex #{pattern.pattern} matched" if string.match(/#{pattern.pattern}/)
+      end
+    end
+
     return false
   end
   protected :scan_text
