@@ -8,6 +8,7 @@
 
 =end
 
+require 'cgi'
 require '../delegator' if $0 == __FILE__
 
 =begin rdoc
@@ -67,7 +68,7 @@ module DonRails
       stop = false
       header = nil
 
-      lines = self.to_s.split("\n")
+      lines = self.to_s.split(/\r\n|\r|\n/)
       len = lines.length
       n = 0
       while n < len do
@@ -328,7 +329,7 @@ module DonRails
         retval << sprintf("<%s>", block[-1])
       end
       if block[-1] == 'pre' then
-        retval << buf.reject {|x| x.empty?}.join("\n")
+        retval << buf.reject {|x| x.empty?}.map {|x| CGI.escapeHTML(x)}.join("\n")
         retval << "\n"
       else
         retval << buf.join
@@ -502,6 +503,10 @@ if $0 == __FILE__ then
       assert_equal("<blockquote><p>test</p><blockquote><p>test</p></blockquote><p>test</p></blockquote>", __getobj__("<<<\ntest\n<<<\ntest\n>>>\ntest\n>>>\n").body_to_html)
       assert_equal("<blockquote><p>test</p><pre> test\n</pre><pre>test\n</pre></blockquote>", __getobj__("<<<\ntest\n test\n{{{\ntest\n}}}\n>>>\n").body_to_html)
       assert_equal("<blockquote><p>test</p></blockquote>", __getobj__("<<<\ntest\n").body_to_html)
+      assert_equal("<p>test</p><pre>;; test\n</pre>", __getobj__("test\r\n\r\n{{{\r\n;; test\r\n}}}\r\n").body_to_html)
+      assert_equal("<p>test</p><pre>;; test\n</pre>", __getobj__("test\r\r{{{\r;; test\r}}}\r").body_to_html)
+      assert_equal("<pre>&lt;&lt;&lt;\n</pre>", __getobj__("{{{\n<<<\n}}}\n").body_to_html)
+      assert_equal("<pre> &gt;\n</pre>", __getobj__(" >\n").body_to_html)
     end # def test_body_to_html
 
   end # class TestDonRails__Wiliki

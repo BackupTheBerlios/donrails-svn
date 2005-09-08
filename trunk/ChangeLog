@@ -2,6 +2,8 @@
 
 	* donrails/lib/modules/wiliki.rb: New input format parser module to
 	support WiLiKi format.
+	(DonRails::Wiliki::body_to_html): split the strings up against CRLF or CR or LF.
+	(DonRails::Wiliki::output_block): escape the strings when it's in pre tag.
 
 2005-09-07  araki yasuhiro  <yasu@debian.or.jp>
 
