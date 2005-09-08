@@ -5,6 +5,7 @@
  Copyright (C) 2005 Akira TAGOH <at@gclab.org>
 
  You can redistribute it and/or modify it under the same term as GPL2 or later.
+
 =end
 
 
