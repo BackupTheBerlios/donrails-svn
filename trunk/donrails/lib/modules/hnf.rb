@@ -57,7 +57,7 @@ module DonRails
       retval = ""
 
       pre_tag = false
-      self.to_s.split("\n").each do |line|
+      self.to_s.split(/\r\n|\r|\n/).each do |line|
         if line =~ (/\APRE/) then
           retval << '<pre>'
           pre_tag = true

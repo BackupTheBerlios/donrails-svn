@@ -54,6 +54,49 @@ module DonRails
 
 =begin rdoc
 
+=== DonRails::Wiliki#title_to_html
+
+=end
+
+    def title_to_html
+      line = self.to_s
+
+      if line =~ (/'''[^(?:''')]*'''/) then
+        line.gsub!(/'''([^(?:''')]*)'''/, '<strong>\1</strong>')
+        line.gsub!(/<strong><\/strong>/, '')
+      elsif line =~ (/\A[^']*'''[^']*\Z/) then
+        # nothing to do help in this case
+      elsif line =~ (/''[^(?:'')]*''/) then
+        line.gsub!(/''([^(?:'')]*)''/, '<em>\1</em>')
+        line.gsub!(/<em><\/em>/, '')
+      elsif line =~ (/\A[^']*''[^']*\Z/) then
+        # nothing to do help in this case
+      end
+      if line =~ (/\[\[/) then
+        if line =~ (/\[\[[^(?:\[\[)]*\]\]/) then
+          # do we really need to support this? how?
+          # FIXME: just drop it ATM.
+          line.gsub!(/\[\[([^(?:\[\[)]*)\]\]/, '\1')
+        else
+          # try to look at next line.
+          if lines[n] =~ (/\A~/) then
+            lprev = line
+            next
+          end
+        end
+      elsif line =~ (/\[/) then
+        if line =~ (/\[[^\[]*\]/) then
+          line.gsub!(/\[((?:(?:http|https|ftp):\/\/)[^\[]*)\s+([^\]]*)\]/, '<a href="\1">\2</a>')
+        else
+          # nothing to do help in this case
+        end
+      end
+
+      return line
+    end # def title_to_html
+
+=begin rdoc
+
 === DonRails::Wiliki#body_to_html
 
 =end

@@ -1,5 +1,11 @@
 2005-09-08  Akira TAGOH  <at@gclab.org>
 
+	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::title_to_html):
+	New method.
+
+	* donrails/lib/modules/hnf.rb (DonRails::HNF::body_to_html): split
+	the strings up against CRLF or CR or LF.
+
 	* donrails/lib/modules/wiliki.rb: New input format parser module to
 	support WiLiKi format.
 	(DonRails::Wiliki::body_to_html): split the strings up against CRLF or CR or LF.
