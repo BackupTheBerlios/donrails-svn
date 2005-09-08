@@ -27,7 +27,7 @@
 フォーマット形式:
 <select name="format">
 <% don_supported_formats.each do |fmt| %>
-  <option value="<%= fmt %><%= '" selected="selected' if fmt == 'plain' %>"><%= fmt %></option>
+  <option value="<%= fmt %><%= '" selected="selected' if fmt == @defaultformat %>"><%= fmt %></option>
 <% end %>
 </select>
 <br>

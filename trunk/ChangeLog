@@ -1,5 +1,11 @@
 2005-09-08  Akira TAGOH  <at@gclab.org>
 
+	* donrails/app/views/login/authenticate.rhtml: choose the preferred
+	format by default.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::authenticate):
+	determine which format is mostly used.
+
 	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::title_to_html):
 	New method.
 

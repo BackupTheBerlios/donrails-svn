@@ -24,6 +24,12 @@ class LoginController < ApplicationController
       redirect_to :action => "login_index"
     end
     @categories = Category.find_all
+    retval = Article.find_by_sql("SELECT format, count(*) AS num FROM articles GROUP BY format ORDER BY num DESC")
+    if retval.nil? || retval.empty? then
+      @defaultformat = 'plain'
+    else
+      @defaultformat = retval[0].format
+    end
   end
 
   def logout
