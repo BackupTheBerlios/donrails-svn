@@ -1,3 +1,11 @@
+2005-09-09  Akira TAGOH  <at@gclab.org>
+
+	* donrails/public/stylesheets/calendar.css: New file.
+
+	* donrails/app/views/shared/calendar.rhtml: New file.
+
+	* donrails/lib/calendar.rb: New file to generate the calendar.
+
 2005-09-09  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/models/author.rb: Validates presence.
