@@ -1,13 +1,13 @@
 
 <%
-require 'calendar'
+require 'plugins/calendar'
 
 cal = DonRails::Calendar.thismonth
 %>
 
 <style type="text/css" media="screen">
 <!--
-  @import url("stylesheets/calendar.css");
+  @import url("<%= stylesheet_path "calendar" %>");
 -->
 </style>
 <div class="calendar">

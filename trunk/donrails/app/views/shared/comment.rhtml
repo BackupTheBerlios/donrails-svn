@@ -11,7 +11,7 @@
 <% end %>
 
 <div class="boardlink">
-<a class="msc-toggle" href="#" onclick="toggleCode('<%= article.id %>');return false;">[コメントする]</a></p>
+<a class="msc-toggle" href="#" onclick="toggleCode('<%= article.id %>');return false;">[コメントする]</a>
 <div style="display: none;" class="msc" id="<%= article.id %>">
 
 <%= form_tag :action => "add_comment2" %>

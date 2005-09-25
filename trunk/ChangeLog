@@ -1,3 +1,20 @@
+2005-09-25  Akira TAGOH  <at@gclab.org>
+
+	* donrails/tool/plugin-setup.rb: Added new program to assist the plugin
+	installation/removal.
+
+	* donrails/tool/tables-sqlite.txt: Added plugins table.
+	* donrails/tool/tables-postgresql.txt: likewise.
+
+	* donrails/plugins/calendar: New plugin for calendar.
+	* donrails/lib/calendar.rb: likewise.
+	* donrails/public/stylesheets/calendar.css: likewise.
+
+	* donrails/app/views/shared/calendar.rhtml: moved onto plugins directory.
+	* donrails/app/views/shared/comment.rhtml: removed the unnecessary </p> tag.
+
+	* donrails/app/models/plugin.rb: New model class.
+
 2005-09-09  Akira TAGOH  <at@gclab.org>
 
 	* donrails/public/stylesheets/calendar.css: New file.

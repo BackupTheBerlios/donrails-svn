@@ -65,3 +65,11 @@ id     SERIAL PRIMARY KEY,
 format   VARCHAR,
 pattern   VARCHAR
 );
+
+CREATE TABLE plugins (
+id     SERIAL PRIMARY KEY,
+name   	      VARCHAR NOT NULL UNIQUE,
+description   VARCHAR NOT NULL,
+manifest      VARCHAR NOT NULL,
+activation    BOOLEAN
+);

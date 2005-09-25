@@ -127,7 +127,7 @@ module DonRails
       0.upto(6) do |n|
         retval << sprintf("<td class=\"calendar-%s\">%s</td>", _class_name(n), @labels[n])
       end
-      retval << "\n</tr></thead>\n<tr></tr><tr>"
+      retval << "\n</tr></thead>\n<tr><td></td></tr><tr>"
 
       # output empty cells
       0.upto(dstart.wday - 1) do |n|
@@ -168,7 +168,7 @@ module DonRails
       retval = "weekday"
 
       if wday == 0 || wday == 6 then
-        retval = Date::DAYNAMES[wday]
+        retval = Date::DAYNAMES[wday].downcase
       end
 
       return retval
