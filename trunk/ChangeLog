@@ -1,3 +1,9 @@
+2005-09-26  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/login_controller.rb: Fix orphaned comments problem. 
+
+	* donrails/donrails/app/controllers/atom_controller.rb: Fix AtomAPI delete success return code 200 to 204. (According to draft-ietf-atompub-protocol-04.txt.)
+
 2005-09-25  Akira TAGOH  <at@gclab.org>
 
 	* donrails/tool/plugin-setup.rb: Added new program to assist the plugin

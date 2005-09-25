@@ -127,9 +127,12 @@ class LoginController < ApplicationController
       if v.to_i == 1
         b = Article.find(k.to_i)
         b_cat = b.categories
-        b_comment = b.comments
-
         b.categories.delete(b_cat)
+
+        b_comment = b.comments
+        b_comment.each do |bc|
+          Comment.destroy(bc.id)
+        end
         b.comments.delete(b_comment)
         b.destroy
       end

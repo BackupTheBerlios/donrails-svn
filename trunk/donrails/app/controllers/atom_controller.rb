@@ -67,7 +67,7 @@ class AtomController < ApplicationController
         aris1.article_mtime = Time.now
         aris1.save
         @article = aris1
-        render :status => 201
+        render :status => 201 # 201 Created @ Location
       end
     end
   end
@@ -103,7 +103,7 @@ class AtomController < ApplicationController
       render :action => "post", :status => 200
     elsif request.method == :delete
       Article.destroy(@params['id'])
-      render :text => "dslete #{@params['id']}", :status => 200
+      render :text => "dslete #{@params['id']}", :status => 204
     else
       render :text => "no method #{request.method}", :status => 403
     end
