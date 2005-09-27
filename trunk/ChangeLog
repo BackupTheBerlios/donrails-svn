@@ -1,3 +1,9 @@
+2005-09-27  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/login/manage_comment.rhtml: Change id='ca' to 'comment_ajax'.
+
+	* donrails/app/views/shared/comment.rhtml: Change 'id' for unique. 
+
 2005-09-26  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/login_controller.rb: Fix orphaned comments problem. 
