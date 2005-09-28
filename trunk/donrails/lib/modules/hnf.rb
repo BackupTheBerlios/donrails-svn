@@ -87,15 +87,15 @@ module DonRails
           elsif line =~ (/\AL?IMG\s+(l|r|n)\s+(\S+)\.(jpg|jpeg|gif|png)/i) then
             line = $2
             if $1 == 'l' then
-              retval << sprintf("<img align=\"left\" src=\"%s.%s\">", $2, $3)
+              retval << sprintf("<img align=\"left\" src=\"%s.%s\" />", $2, $3)
             elsif $1 == 'r' then
-              retval << sprintf("<img align=\"right\" src=\"%s.%s\">", $2, $3)
+              retval << sprintf("<img align=\"right\" src=\"%s.%s\" />", $2, $3)
             else
-              retval << sprintf("<img src=\"%s.%s\">", $2, $3)
+              retval << sprintf("<img src=\"%s.%s\" />", $2, $3)
             end
           end
           if line =~ (/\A~/) then
-            retval << '<br>'
+            retval << '<br />'
             next
           elsif line =~ (/\A(\/)?(UL|P|OL|DL)/) then
             retval << sprintf("<%s%s>", $1, $2)
@@ -116,7 +116,6 @@ module DonRails
           end
         else
           retval << line
-
         end
       end
 

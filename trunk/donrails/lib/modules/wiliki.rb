@@ -165,7 +165,7 @@ module DonRails
               lprev = nil
             end
           end
-          line.gsub!(/~%/, "<br>")
+          line.gsub!(/~%/, "<br />")
 
           # inline
           if line =~ (/'''[^(?:''')]*'''/) then
@@ -492,8 +492,8 @@ if $0 == __FILE__ then
       assert_equal("<hr>", __getobj__("----\n").body_to_html)
       assert_equal("<p>test</p>", __getobj__("test\n\n").body_to_html)
       assert_equal("<p>test</p><p>test2</p>", __getobj__("test\n\ntest2\n").body_to_html)
-      assert_equal("<p>test<br>test</p>", __getobj__("test~%\ntest\n").body_to_html)
-      assert_equal("<p>test<br></p>", __getobj__("test~\n~%\n").body_to_html)
+      assert_equal("<p>test<br />test</p>", __getobj__("test~%\ntest\n").body_to_html)
+      assert_equal("<p>test<br /></p>", __getobj__("test~\n~%\n").body_to_html)
       assert_equal("<p><em>test</em></p>", __getobj__("''test''\n").body_to_html)
       assert_equal("<p>test~%</p>", __getobj__("test~''''%\n").body_to_html)
       assert_equal("<p><em>test</em></p>", __getobj__("''\n~test\n~''\n").body_to_html)

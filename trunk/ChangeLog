@@ -1,3 +1,11 @@
+2005-09-28  Akira TAGOH  <at@gclab.org>
+
+	* donrails/lib/modules/hnf.rb (DonRails::HNF::body_to_html):
+	Modified to be XHTML compliant.
+
+	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::body_to_html):
+	Use <br/> instead of <br> to be XHTML compliant.
+
 2005-09-27  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/login/manage_comment.rhtml: Change id='ca' to 'comment_ajax'.
