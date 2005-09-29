@@ -283,25 +283,15 @@ module DonRails
             ln = $1.length
             item = $2
             buf.push(output_table(table_stack)) unless table_stack.empty?
-            if list_stack.empty? then
-              buf.push("<ul>")
-              list_stack.push('ul')
-            end
             buf.push(output_list(list_stack, ln, 'ul'))
-            buf.push(sprintf("<li>%s", item))
-            list_stack.push('li')
+            buf.push(item)
             next
           elsif line =~ (/\A(#+)\s+(.*)\Z/) then
             ln = $1.length
             item = $2
             buf.push(output_table(table_stack)) unless table_stack.empty?
-            if list_stack.empty? then
-              buf.push("<ol>")
-              list_stack.push('ol')
-            end
             buf.push(output_list(list_stack, ln, 'ol'))
-            buf.push(sprintf("<li>%s", item))
-            list_stack.push('li')
+            buf.push(item)
             next
           elsif line =~ (/\A:([^:]*):(.*)\Z/) then
             buf.push(output_table(table_stack)) unless table_stack.empty?
@@ -407,26 +397,29 @@ module DonRails
 
     def output_list(list, listlevel, listtype)
       retval = ""
+      flag = false
 
-      if list[-1] == 'li' then
-        retval << "</li>"
-        list.pop
-      end
       if list.length > listlevel then
         1.upto(list.length - listlevel) do |n|
+          retval << '</li>'
           retval << sprintf("</%s>", list[-1])
           list.pop
         end
       elsif list.length < listlevel then
 	1.upto(listlevel - list.length) do |n|
           retval << sprintf("<%s>", listtype)
+          retval << sprintf("<li%s>", (listlevel - list.length) > 1 ? ' class="hidden"' : '')
           list.push(listtype)
+          flag = true
         end
       end
       if list[-1] != listtype then
         retval << sprintf("<%s>", listtype)
+        retval << '<li>'
         list.pop
         list.push(listtype)
+      elsif !listtype.nil? && !flag then
+	retval << '</li><li>'
       end
 
       return retval
@@ -527,11 +520,11 @@ if $0 == __FILE__ then
       assert_equal("<h2>* test</h2>", __getobj__("* * test\n").body_to_html)
       assert_equal("<h3>test</h3>", __getobj__("** test\n").body_to_html)
       assert_equal("<ul><li>test</li><li>test</li></ul>", __getobj__("- test\n- test\n").body_to_html)
-      assert_equal("<ul><li>test</li><ul><li>test</li></ul><li>test</li></ul>", __getobj__("- test\n-- test\n- test\n").body_to_html)
-      assert_equal("<ul><ul><ul><li>test</li></ul><li>test</li></ul><li>test</li></ul>", __getobj__("--- test\n-- test\n- test\n").body_to_html)
+      assert_equal("<ul><li>test<ul><li>test</li></ul></li><li>test</li></ul>", __getobj__("- test\n-- test\n- test\n").body_to_html)
+      assert_equal("<ul><li class=\"hidden\"><ul><li class=\"hidden\"><ul><li>test</li></ul></li><li>test</li></ul></li><li>test</li></ul>", __getobj__("--- test\n-- test\n- test\n").body_to_html)
       assert_equal("<ul><li>test<pre>test\n</pre></li><li>test</li></ul>", __getobj__("- test\n{{{\ntest\n}}}\n- test\n").body_to_html)
       assert_equal("<ol><li>test</li><li>test</li></ol>", __getobj__("# test\n# test\n").body_to_html)
-      assert_equal("<ol><li>test</li><ol><li>test</li></ol><li>test</li></ol>", __getobj__("# test\n## test\n# test\n").body_to_html)
+      assert_equal("<ol><li>test<ol><li>test</li></ol></li><li>test</li></ol>", __getobj__("# test\n## test\n# test\n").body_to_html)
       assert_equal("<dl><dt>test</dt><dd><p>test2</p></dd></dl>", __getobj__(":test:test2\n").body_to_html)
       assert_equal("<ul><li>test<dl><dt>test</dt><dd><p>test</p></dd></dl></li><li>test</li></ul>", __getobj__("- test\n:test:test\n- test\n").body_to_html)
       assert_equal("<table><tr><td>test</td></tr></table>", __getobj__("||test||\n").body_to_html)

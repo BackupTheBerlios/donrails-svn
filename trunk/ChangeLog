@@ -1,3 +1,9 @@
+2005-09-30  Akira TAGOH  <at@gclab.org>
+
+	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::body_to_html):
+	Modified to be XHTML compliant.
+	(DonRails::Wiliki::output_list): likewise.
+
 2005-09-28  Akira TAGOH  <at@gclab.org>
 
 	* donrails/lib/modules/hnf.rb (DonRails::HNF::body_to_html):
