@@ -1,5 +1,8 @@
 2005-09-30  Akira TAGOH  <at@gclab.org>
 
+	* donrails/app/views/shared/comment.rhtml: Use maxlength instead of
+	maxsize.
+
 	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::body_to_html):
 	Modified to be XHTML compliant.
 	(DonRails::Wiliki::output_list): likewise.

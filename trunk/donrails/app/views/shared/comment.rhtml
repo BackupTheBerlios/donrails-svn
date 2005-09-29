@@ -22,7 +22,7 @@ URL(あれば):
 <%= text_field "comment", "url", "size" => 20, "id" => "dx_addcomment2url_#{article.id}" %>
 <br />
 パスワード(10文字まで):
-<%= password_field "comment", "password", "maxsize" => 10, "id" => "dx_addcomment2password_#{article.id}" %>
+<%= password_field "comment", "password", "maxlength" => 10, "id" => "dx_addcomment2password_#{article.id}" %>
 <br />
 タイトル:
 <%= text_field "comment", "title", "size" => 60, "value" => "Re: #{article.title}", "id" => "dx_addcomment2title_#{article.id}" %>
