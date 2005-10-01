@@ -1,3 +1,13 @@
+2005-10-01  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/lib/antispam.rb: Modify to apply 'ipaddr' and 'hostname' in Blacklist.format.
+
+	* donrails/app/views/login/manage_blacklist.rhtml: New file.
+
+	* donrails/app/views/layouts/login.rhtml: Add link to manage_blacklist.
+
+	* donrails/app/views/shared/comment.rhtml: Remove unused comment line.
+
 2005-10-01  Akira TAGOH  <at@gclab.org>
 
 	* donrails/lib/donplugin.rb (DonRails::Plugin): New class.

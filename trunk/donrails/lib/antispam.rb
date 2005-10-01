@@ -39,6 +39,12 @@ class AntiSpam
 
   def scan_ipaddr(ip_address)
     logger.info("[SP] Scanning IP #{ip_address}")
+
+    Blacklist.find(:all, :conditions => ["format = ?", "ipaddr"]).each do |bp|
+      logger.info("[SP] Scanning blacklist ipaddr #{bp}")
+      throw :hit, "IPaddress #{bp.pattern} matched" if ip_address.match(/#{bp.pattern}/)
+    end
+
     
     @IP_RBL.each do |rbl|
       begin
@@ -56,8 +62,12 @@ class AntiSpam
     logger.info(host)
     host_parts = host.split('.').reverse
     domain = Array.new
-
     logger.info("[SP] Scanning domain #{domain.join('.')}")
+
+    Blacklist.find(:all, :conditions => ["format = ?", "hostname"]).each do |bp|
+      logger.info("[SP] Scanning blacklist host #{bp}")
+      throw :hit, "Hostname #{bp.pattern} matched" if host.match(/#{bp.pattern}/)
+    end
     
     @HOST_RBL.each do |rbl|
       begin
@@ -90,14 +100,14 @@ class AntiSpam
     end
 
     # add blacklist match here.
-    Blacklist.find_all.each do |pattern|
-      logger.info("[SP] Scanning blacklist text #{pattern}")
-      if pattern.format == "string"
-        throw :hit, "String #{pattern.pattern} matched" if string.match(/#{Regexp.quote(pattern.pattern)}/)
+    Blacklist.find(:all, :conditions => ["format = ?", "regexp"]).each do |bp|
+      logger.info("[SP] Scanning blacklist text #{bp}")
+      throw :hit, "String #{bp.pattern} matched" if string.match(/#{Regexp.quote(bp.pattern)}/)
+    end
 
-      elsif pattern.format == "regexp"
-        throw :hit, "Regex #{pattern.pattern} matched" if string.match(/#{pattern.pattern}/)
-      end
+    Blacklist.find(:all, :conditions => ["format = ?", "string"]).each do |bp|
+      logger.info("[SP] Scanning blacklist text #{bp}")
+      throw :hit, "Regex #{bp.pattern} matched" if string.match(/#{bp.pattern}/)
     end
 
     return false
