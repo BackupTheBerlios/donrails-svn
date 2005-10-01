@@ -1,5 +1,7 @@
 2005-10-01  Akira TAGOH  <at@gclab.org>
 
+	* donrails/lib/donplugin.rb (DonRails::Plugin): New class.
+
 	* donrails/tool/plugin-setup.rb (Installer::uninstall):
 	removed the unnecessary debug code.
 	(TableInstaller::initialize): prefer the absolute path.
