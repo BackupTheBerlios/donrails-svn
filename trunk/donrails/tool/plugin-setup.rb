@@ -92,8 +92,6 @@ class Installer
     list.each do |n|
       message(UNINSTALL, n, '')
       f = File.join(@path, n)
-      p f
-      p @conf.dryrun?
       if FileTest.exist?(f) then
 	File.unlink(f) unless @conf.dryrun?
       else
@@ -185,7 +183,7 @@ if $0 == __FILE__ then
       $:.unshift(conf.confdir)
       require 'environment'
 
-      dir = ARGV.shift
+      dir = File.expand_path(ARGV.shift)
 
       begin
         list = YAML.load(File.open(File.join(dir, 'MANIFEST.yml')).read)

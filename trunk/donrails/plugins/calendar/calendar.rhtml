@@ -5,11 +5,6 @@ require 'plugins/calendar'
 cal = DonRails::Calendar.thismonth
 %>
 
-<style type="text/css" media="screen">
-<!--
-  @import url("<%= stylesheet_path "calendar" %>");
--->
-</style>
 <div class="calendar">
   <div class="calendar-title"><%= cal.header %></div>
   <div class="calendar-main"><%= cal.to_html %></div>

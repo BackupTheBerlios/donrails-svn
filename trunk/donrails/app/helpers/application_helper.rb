@@ -1,6 +1,7 @@
 # The methods added to this helper will be available to all templates in the application.
 
 require 'delegator'
+require 'donplugin'
 require 'time'
 
 module ApplicationHelper
@@ -42,5 +43,15 @@ module ApplicationHelper
   def pub_date(time)
     time.iso8601
   end
+
+=begin rdoc
+
+=== ApplicationHelper#don_insert_stylesheet_link_tags
+
+=end
+
+  def don_get_stylesheets
+    DonRails::Plugin.stylesheets
+  end # def don_get_stylesheets
 
 end

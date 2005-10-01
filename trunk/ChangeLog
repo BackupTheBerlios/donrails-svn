@@ -1,3 +1,15 @@
+2005-10-01  Akira TAGOH  <at@gclab.org>
+
+	* donrails/tool/plugin-setup.rb (Installer::uninstall):
+	removed the unnecessary debug code.
+	(TableInstaller::initialize): prefer the absolute path.
+
+	* donrails/plugins/calendar/calendar.rhtml: removed style tag to be
+	XHTML compliant.
+
+	* donrails/app/helpers/application_helper.rb (ApplicationHelper::don_get_stylesheets):
+	New method to get the list of stylesheets required.
+
 2005-09-30  Akira TAGOH  <at@gclab.org>
 
 	* donrails/app/views/shared/comment.rhtml: Use maxlength instead of
