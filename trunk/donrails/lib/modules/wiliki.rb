@@ -110,6 +110,7 @@ module DonRails
       table_stack = []
       stop = false
       header = nil
+      onelinepre = false
 
       lines = self.to_s.split(/\r\n|\r|\n/)
       len = lines.length
@@ -147,7 +148,7 @@ module DonRails
         end
 
         if stop then
-          buf.push(line)
+          buf.push(CGI.escapeHTML(line))
         else
           if line =~ (/\A~/) then
             # continuous line.
@@ -164,6 +165,9 @@ module DonRails
               retval << output_header(lprev, header)
               lprev = nil
             end
+          end
+          if line !~ (/\A<<<\Z/) && line !~ (/\A>>>\Z/) then
+            line = CGI.escapeHTML(line)
           end
           line.gsub!(/~%/, "<br />")
 
@@ -266,8 +270,14 @@ module DonRails
             else
               buf.push(line)
             end
+            onelinepre = true
             next
-          elsif line =~ (/\A(\*+)\s+(.*)\Z/) then
+          else
+            if onelinepre then
+              retval << output_block(buf, block_stack)
+            end
+          end
+          if line =~ (/\A(\*+)\s+(.*)\Z/) then
             hn = $1.length + 1
             l = $2
             list_stack.push(nil) unless list_stack.empty?
@@ -362,7 +372,7 @@ module DonRails
         retval << sprintf("<%s>", block[-1])
       end
       if block[-1] == 'pre' then
-        retval << buf.reject {|x| x.empty?}.map {|x| CGI.escapeHTML(x)}.join("\n")
+        retval << buf.reject {|x| x.empty?}.join("\n")
         retval << "\n"
       else
         retval << buf.join
@@ -543,6 +553,8 @@ if $0 == __FILE__ then
       assert_equal("<p>test</p><pre>;; test\n</pre>", __getobj__("test\r\r{{{\r;; test\r}}}\r").body_to_html)
       assert_equal("<pre>&lt;&lt;&lt;\n</pre>", __getobj__("{{{\n<<<\n}}}\n").body_to_html)
       assert_equal("<pre> &gt;\n</pre>", __getobj__(" >\n").body_to_html)
+      assert_equal("<pre> <em>test</em>\n</pre>", __getobj__(" ''test''\n").body_to_html)
+      assert_equal("<pre> test\n</pre><p>test</p>", __getobj__(" test\ntest\n").body_to_html)
     end # def test_body_to_html
 
   end # class TestDonRails__Wiliki

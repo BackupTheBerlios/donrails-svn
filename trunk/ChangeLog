@@ -1,3 +1,8 @@
+2005-10-04  Akira TAGOH  <at@gclab.org>
+
+	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::body_to_html):
+	fixed the behavior to work similar to wiliki.
+
 2005-10-01  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/lib/antispam.rb: Modify to apply 'ipaddr' and 'hostname' in Blacklist.format.
