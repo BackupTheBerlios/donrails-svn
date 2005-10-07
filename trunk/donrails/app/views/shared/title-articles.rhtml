@@ -14,7 +14,7 @@ i += 1
 <div class="odd">
 <% end %>
 
-<%= truncate(btmp, 60) %>
+<%= don_mb_truncate(btmp, 60) %>
 (<%= link_to article.article_date.to_date,
 {:action => "show_date",
 :year => article.article_date.year,

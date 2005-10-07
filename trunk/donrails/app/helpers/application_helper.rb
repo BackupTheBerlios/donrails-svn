@@ -3,6 +3,8 @@
 require 'delegator'
 require 'donplugin'
 require 'time'
+require 'jcode'
+
 
 module ApplicationHelper
 
@@ -54,4 +56,22 @@ module ApplicationHelper
     DonRails::Plugin.stylesheets
   end # def don_get_stylesheets
 
+=begin rdoc
+
+=== ApplicationHelper#don_mb_truncate(text, length = 30, truncate_string = "...")
+
+=end
+
+  def don_mb_truncate(text, length = 30, truncate_string = "...")
+    retval = text
+
+    return "" if text.nil?
+    if text.length > length then
+      retval = text.each_char[0..(length - truncate_string.length)].join + truncate_string
+    end
+
+    return retval
+  end # def don_mb_truncate
+
 end
+

@@ -1,3 +1,14 @@
+2005-10-07  Akira TAGOH  <at@gclab.org>
+
+	* donrails/app/views/shared/title-articles.rhtml: use don_mb_truncate
+	instead of truncate.
+	* donrails/app/views/login/manage_comment.rhtml: likewise.
+	* donrails/app/views/login/manage_article.rhtml: likewise.
+	* donrails/app/views/notes/show_category.rhtml: likewise.
+
+	* donrails/app/helpers/application_helper.rb (ApplicationHelper::don_mb_truncate):
+	similar method to truncate, but multibytes support.
+
 2005-10-04  Akira TAGOH  <at@gclab.org>
 
 	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::body_to_html):
