@@ -66,8 +66,9 @@ module ApplicationHelper
     retval = text
 
     return "" if text.nil?
-    if text.length > length then
-      retval = text.each_char[0..(length - truncate_string.length)].join + truncate_string
+    mbtext = text.each_char
+    if mbtext.length > length then
+      retval = mbtext[0..(length - truncate_string.length)].join + truncate_string
     end
 
     return retval
