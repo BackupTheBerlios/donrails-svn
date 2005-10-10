@@ -1,3 +1,13 @@
+2005-10-10  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/atom/index.rxml: Change for adding recent articles in /atom/.
+
+	* donrails/app/views/atom/feed.rxml: Change for adding recent articles in /atom/feed.
+
+	* donrails/app/controllers/atom_controller.rb: Change for no auth at /atom/feed. Change for adding recent articles in /atom/ and /atom/feed.
+
+	* donrails/app/controllers/application.rb: Fix for WSSE auth.
+
 2005-10-07  Akira TAGOH  <at@gclab.org>
 
 	* donrails/app/views/shared/title-articles.rhtml: use don_mb_truncate

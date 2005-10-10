@@ -74,9 +74,12 @@ class ApplicationController < ActionController::Base
     logger.info(wsse)
     user = ''
     pass = ''
+    nonce = ''
     if wsse =~ /UsernameToken Username="(\w+)"/
       user = $1
-      pass = Authors.find(:first, :conditions => ["name = ?", user]).pass
+      aris = Author.find(:first, :conditions => ["name = ?", user])
+      return false if aris == nil
+      pass = aris.pass
     end
     if wsse =~ /Created="(\S+)"/
       created = $1
@@ -84,10 +87,9 @@ class ApplicationController < ActionController::Base
     if wsse =~ /PasswordDigest="(\S+)"/
       passdigest = Base64.decode64($1)
     end
-    if wsse =~ /Nonce="(\w+)"/
+    if wsse =~ /Nonce="(\S+)"/
       nonce = Base64.decode64($1)
     end
-
     pd = Digest::SHA1.digest(nonce + created + pass)
     if pd == passdigest
       return true

@@ -1,6 +1,7 @@
 xml.instruct! :xml, :version=>"1.0", :encoding => "utf-8"
 
 xml.feed("xmlns" => "http://purl.org/atom/ns\#") do
+
   xml.link("type" => "application/atom+xml",
            "rel" => "service.post",
 	   "href" => @request.protocol + @request.host_with_port + url_for(:action => "post", :id => @latest_article.id + 1),
@@ -13,4 +14,22 @@ xml.feed("xmlns" => "http://purl.org/atom/ns\#") do
            "rel" => "service.categories",
 	   "href" => @request.protocol + @request.host_with_port + url_for(:action => "categories", :id => @latest_article.id + 1),
 	   "title" => RDF_TITLE)
+
+  if @recent_articles
+    @recent_articles.each do |ra|
+      xml.link("type" => "application/atom+xml",
+               "rel" => "service.edit",
+               "href" => @request.protocol + @request.host_with_port + url_for(:action => "edit", :id => ra.id),
+               "title" => ra.title)
+      xml.link("type" => "application/atom+xml",
+               "rel" => "service.feed",
+               "href" => @request.protocol + @request.host_with_port + url_for(:action => "feed", :id => ra.id),
+               "title" => ra.title)
+      xml.link("type" => "application/atom+xml",
+               "rel" => "service.categories",
+               "href" => @request.protocol + @request.host_with_port + url_for(:action => "categories", :id => ra.id),
+               "title" => ra.title)
+    end
+  end
+
 end		  

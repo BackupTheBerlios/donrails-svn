@@ -1,8 +1,14 @@
 xml.instruct! :xml, :version=>"1.0", :encoding => "utf-8"
 
-article = don_get_object(@article, 'html')
+@articles = Array.new unless @articles
+if @article
+  @articles[0] = @article
+end
 
 xml.entry("xmlns" => "http://purl.org/atom/ns\#") do
+
+  @articles.each do |@article|
+  article = don_get_object(@article, 'html')
   xml.title article.title_to_html
   xml.link("type" => "text/html",
            "rel" => "alternate", 
@@ -23,5 +29,6 @@ xml.entry("xmlns" => "http://purl.org/atom/ns\#") do
               "xml:lang" => "ja",
               "xml:base" => @request.protocol + @request.host_with_port + url_for(:action => "edit", :id => article.id)) do
     xml.text! article.body_to_html
+  end
   end
 end

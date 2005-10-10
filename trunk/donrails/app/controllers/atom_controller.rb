@@ -4,7 +4,7 @@ class AtomController < ApplicationController
   layout "atom", :only => [
     :preview
   ]
-  before_filter :wsse_auth
+  before_filter :wsse_auth, :except => :feed
 
   def wsse_auth
     if request.env["HTTP_X_WSSE"]
@@ -21,14 +21,14 @@ class AtomController < ApplicationController
   # atom endpoint 
   def index
     @latest_article = Article.find(:first, :order => 'id DESC')
+    @recent_articles = Article.find(:all, :order => 'id DESC', :limit => 20)
   end
 
+  # atom feed
   def feed
     if @params['id'] == nil
-      render :text => "no method #{request.method}", :status => 400
-    end
-
-    if @params['id']
+      @articles = Article.find(:all, :order => 'id DESC', :limit => 20)
+    else
       begin
         @article = Article.find(@params['id'])
       rescue
@@ -56,19 +56,17 @@ class AtomController < ApplicationController
         data['body'] = xml.root.elements['content'].text
       end
 
-      if @params['id']
-        aris1 = Article.new
-        aris1.id = @params['id']
-        aris1.title = data['title']
-        aris1.body = data['body']
-        aris1.format = "plain"
-        aris1.size = aris1.body.size
-        aris1.article_date = Time.now
-        aris1.article_mtime = Time.now
-        aris1.save
-        @article = aris1
-        render :status => 201 # 201 Created @ Location
-      end
+      aris1 = Article.new
+      aris1.id = @params['id'] if @params['id']
+      aris1.title = data['title']
+      aris1.body = data['body']
+      aris1.format = "plain"
+      aris1.size = aris1.body.size
+      aris1.article_date = Time.now
+      aris1.article_mtime = Time.now
+      aris1.save
+      @article = aris1
+      render :status => 201 # 201 Created @ Location
     end
   end
 
