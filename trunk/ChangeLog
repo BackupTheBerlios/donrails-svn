@@ -1,3 +1,8 @@
+2005-10-14  Akira TAGOH  <at@gclab.org>
+
+	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::title_to_html):
+	don't include a space into the front strings matched.
+
 2005-10-10  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/atom/index.rxml: Change for adding recent articles in /atom/.
