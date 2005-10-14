@@ -86,7 +86,7 @@ module DonRails
         end
       elsif line =~ (/\[/) then
         if line =~ (/\[[^\[]*\]/) then
-          line.gsub!(/\[((?:(?:http|https|ftp):\/\/)[^\[ ]*)\s+([^\]]*)\]/, '<a href="\1">\2</a>')
+          line.gsub!(/\[((?:(?:http|https|ftp):\/\/)[^\[\s]*)\s+([^\]]*)\]/, '<a href="\1">\2</a>')
         else
           # nothing to do help in this case
         end
