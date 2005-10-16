@@ -42,6 +42,8 @@ class AtomController < ApplicationController
     logger.info(request.method)
     if request.method == :post
 
+      logger.info(request.raw_post)
+
       xml = REXML::Document.new(request.raw_post)
       data = {}
       data['title'] = xml.root.elements['title'].text

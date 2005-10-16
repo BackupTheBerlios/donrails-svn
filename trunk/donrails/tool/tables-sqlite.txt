@@ -71,5 +71,5 @@ id     INTEGER PRIMARY KEY,
 name   	      VARCHAR NOT NULL UNIQUE,
 description   VARCHAR NOT NULL,
 manifest      VARCHAR NOT NULL,
-activation    BOOLEAN,
+activation    BOOLEAN
 );
