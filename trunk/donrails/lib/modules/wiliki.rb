@@ -97,6 +97,16 @@ module DonRails
 
 =begin rdoc
 
+=== DonRails::Wiliki#title_to_xml
+
+=end
+
+    def title_to_xml
+      return self.title_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+    end # def title_to_xml
+
+=begin rdoc
+
 === DonRails::Wiliki#body_to_html
 
 =end
@@ -354,6 +364,16 @@ module DonRails
 
       return retval
     end # def body_to_html
+
+=begin rdoc
+
+=== DonRails::Wiliki#body_to_xml
+
+=end
+
+    def body_to_xml
+      return self.body_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+    end # def body_to_xml
 
     private
 

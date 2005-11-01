@@ -1,3 +1,9 @@
+2005-11-01  Akira TAGOH  <at@gclab.org>
+
+	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::title_to_xml):
+	added a missing method for XML.
+	(DonRails::Wiliki::body_to_xml): likewise.
+
 2005-10-16  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/atom_controller.rb: Change for logging AtomAPI post.
