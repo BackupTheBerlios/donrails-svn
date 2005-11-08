@@ -39,14 +39,23 @@ class AtomController < ApplicationController
 
   # atom post
   def post
-    logger.info(request.method)
     if request.method == :post
 
       logger.info(request.raw_post)
 
       xml = REXML::Document.new(request.raw_post)
       data = {}
-      data['title'] = xml.root.elements['title'].text
+      if xml.root.elements['title'].text
+        data['title'] = xml.root.elements['title'].text
+      else
+        data['title'] = ''
+      end
+
+      if xml.root.elements['articledate'].text
+        data['article_date'] = xml.root.elements['articledate'].text
+      else
+        data['article_date'] = Time.now
+      end
 
       if xml.root.elements['content'].attributes["mode"] == "escaped"
         data['body'] = xml.root.elements['content'].text
@@ -55,20 +64,42 @@ class AtomController < ApplicationController
         data['body'].gsub(/&lt;/, "<")
         data['body'].gsub(/&gt;/, ">")
       else
-        data['body'] = xml.root.elements['content'].text
+        data['body'] = xml.root.elements['content'].to_s
       end
 
-      aris1 = Article.new
-      aris1.id = @params['id'] if @params['id']
-      aris1.title = data['title']
-      aris1.body = data['body']
-      aris1.format = "plain"
-      aris1.size = aris1.body.size
-      aris1.article_date = Time.now
-      aris1.article_mtime = Time.now
-      aris1.save
-      @article = aris1
-      render :status => 201 # 201 Created @ Location
+      begin
+        aris1 = Article.new
+        aris1.id = @params['id'] if @params['id']
+        aris1.title = data['title']
+        aris1.body = data['body']
+        aris1.format = "html"
+        aris1.size = aris1.body.size
+        aris1.article_date = data['article_date']
+        aris1.article_mtime = Time.now
+
+        if xml.root.elements['category'].text
+          cat0 = xml.root.elements['category'].text
+          cat1 = cat0.split(' ')
+          cat1.each do |cat|
+            aris3 = Category.find(:first, :conditions => ["name = ?", cat])
+            if aris3
+              aris1.categories.push_with_attributes(aris3)
+            else
+              aris2 = Category.new("name" => cat)
+              aris2.save
+              aris1.categories.push_with_attributes(aris2)
+            end
+          end
+        end
+
+        aris1.save
+        @article = aris1
+          render :status => 201 # 201 Created @ Location
+          
+      rescue
+          p $!
+          render :status => 404
+      end
     end
   end
 

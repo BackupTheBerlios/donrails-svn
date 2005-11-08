@@ -81,12 +81,9 @@ def addhnf(hdb,f)
 
     fftmp = open(f, "r")
     mtime = fftmp.mtime
-#    ftmp = fftmp.read.split(/\n/)
-#    ftmp = Kconv.toutf8(fftmp.read).split(/\n/)
     ftmpread = fftmp.read
     ftmp = Kconv.toutf8(ftmpread).split(/\n/)
     fftmp.close
-#    next if ftmp.first != "OK"
     ftmp.shift
 
     y = Hash.new

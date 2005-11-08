@@ -1,3 +1,16 @@
+2005-11-08  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/tool/hnf2db.rb: Some fix.
+
+	* donrails/tool/atomclient/atompost.rb: Support HNF type original file format.
+
+	* donrails/lib/modules/html.rb: New method. Support HTML body.
+
+	* donrails/app/controllers/atom_controller.rb: 
+	- AtomAPI support <title/>, <article_date/> and <category/>.
+	- If AtomAPI post failed, return 404.
+	
+
 2005-11-01  Akira TAGOH  <at@gclab.org>
 
 	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::title_to_xml):
