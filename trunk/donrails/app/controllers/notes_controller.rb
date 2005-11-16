@@ -2,7 +2,8 @@ require 'kconv'
 class NotesController < ApplicationController
   layout "notes", :except => [
     :pick_article_a,
-    :rdf_recent
+    :rdf_recent,
+    :rdf_category
   ]
 
   def index
@@ -65,9 +66,11 @@ class NotesController < ApplicationController
   protected :dateparse
 
   def noteslist
-    @articles_pages, @articles = paginate(:article, :per_page => 30,
-                                          :order_by => 'article_date DESC, id DESC'
-                                          )
+    @articles_pages, 
+    @articles = paginate(:article, :per_page => 30,
+                         :order_by => 'article_date DESC, id DESC'
+                         )
+
     if @articles.empty? then
       @heading = ""
     else
@@ -103,6 +106,15 @@ class NotesController < ApplicationController
 
   def rdf_recent2
     @recent_articles = Article.find(:all, :order => "id DESC", :limit => 20)
+  end
+
+  def rdf_category
+    @category = Category.find(:first, :conditions => ["name = ?", @params['category']])
+    @recent_articles = Article.find(:all, 
+                                    :order_by => 'articles.article_date DESC',
+                                    :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
+                                    )
+    render_action 'rdf_recent'
   end
 
   def recent
@@ -210,6 +222,13 @@ class NotesController < ApplicationController
                )
     @heading = "カテゴリ:#{@params['category']}"
     recent
+  end
+
+  def show_category_noteslist
+    show_category
+    @rdf_category = @params['category']
+    @heading = "カテゴリ:#{@params['category']}"
+    render_action 'noteslist'
   end
 
   def afterday

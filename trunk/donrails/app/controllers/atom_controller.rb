@@ -40,10 +40,15 @@ class AtomController < ApplicationController
   # atom post
   def post
     if request.method == :post
-
       logger.info(request.raw_post)
 
-      xml = REXML::Document.new(request.raw_post)
+      begin
+        xml = REXML::Document.new(request.raw_post)
+      rescue
+        p $!
+        exit
+      end
+
       data = {}
       if xml.root.elements['title'].text
         data['title'] = xml.root.elements['title'].text

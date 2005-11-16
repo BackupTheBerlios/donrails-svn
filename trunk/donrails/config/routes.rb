@@ -7,6 +7,13 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect "notes/d/", :controller => "notes", :action => "noteslist"
 
+  map.connect "notes/d/:category", :controller => "notes", 
+  :action => "show_category_noteslist",
+  :requirements => { 
+	:category => /\w+/,
+  }
+  
+
   map.connect "notes/:year/:month/:day", :controller => "notes", 
   :action => "show_date",
   :requirements => { 
@@ -71,6 +78,12 @@ ActionController::Routing::Routes.draw do |map|
 
 
   map.connect "notes/di.cgi", :controller => "notes", :action => "rdf_recent"
+
+  map.connect "notes/rdf_category/:category", :controller => "notes", 
+  :action => "rdf_category",
+  :requirements => { 
+	:category => /\w+/,
+  }
 
   # Here's a sample route:
   # map.connect 'products/:id', :controller => 'catalog', :action => 'view'

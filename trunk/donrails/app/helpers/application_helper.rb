@@ -63,6 +63,7 @@ module ApplicationHelper
 =end
 
   def don_mb_truncate(text, length = 30, truncate_string = "...")
+    text = text.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
     retval = text
 
     return "" if text.nil?

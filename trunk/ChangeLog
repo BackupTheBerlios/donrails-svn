@@ -1,3 +1,25 @@
+2005-11-16  araki yasuhiro  <yasu@debian.or.jp>
+
+	* atompost:
+	- New file donrails/tool/atomclient/hnfhelper.rb.
+	- New file donrails/tool/atomclient/atomcheck.rb.
+	- donrails/tool/atomclient/atompost.rb: 
+	-- Split HNF related codes.
+	-- New feature: It can post HTML file.
+	-- New feature: Posted information is memorized in DB. (config file is ENV['HOME']}/.donrails/atompost.yaml)
+	-- It needs 'rexml/document', 'htree' and 'time' module.
+
+	* donrails/app/controllers/notes_controller.rb: New method. 'rdf_category' and 'show_category_noteslist'.
+
+	* donrails/config/routes.rb: 
+	- "notes/d/:category" is routed to 'show_category_noteslist'.
+	- "notes/rdf_category/:category" is routed to 'rdf_category'.
+	
+
+	* donrails/app/controllers/atom_controller.rb: Change: At AtomAPI post, invalid input will reject. 
+
+	* donrails/app/helpers/application_helper.rb: 'don_mb_truncate': Change to remove html tag. It is used for article administration.
+
 2005-11-08  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/tool/hnf2db.rb: Some fix.
