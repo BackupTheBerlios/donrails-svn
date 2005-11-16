@@ -11,6 +11,12 @@ From <%= @ymd3 %> to <%= @ymd4 %>
 </div>
 <% end %>
 
+<% if @category %>
+<h3>カテゴリ: <%= @category.name %> の記事
+[<%= link_to "リスト", {:action => "show_category", :category => @category.name} %>]
+</h3>
+<% end %>
+
 <% if @articles_pages and @articles_pages.length > 1 %>
 <div class="pagelink">
 ページ選択: <%= render ("shared/pagelink", "pages" => @articles_pages) %>

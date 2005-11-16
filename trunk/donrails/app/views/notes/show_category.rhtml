@@ -1,4 +1,6 @@
-<h3>カテゴリ: <%= @category.name %> のリスト</h3>
+<h3>カテゴリ: <%= @category.name %> のリスト
+[<%= link_to "記事", {:action => "show_category_noteslist", :category => @category.name} %>]
+</h3>
 
 <% if @articles_pages and @articles_pages.length > 1 %>
 <div class="pagelink">

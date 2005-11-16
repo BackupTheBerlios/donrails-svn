@@ -6,11 +6,9 @@ xml.tag!("rdf:RDF",
          "xmlns:rdf" => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
          "xmlns:dc" => "http://purl.org/dc/elements/1.1/",
          "xml:lang" => "ja") do
-#  xml.channel("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => @action, :category => @rdf_category)) do
-  xml.channel("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => @action)) do
-
+  xml.channel("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => 'rdf_category', :category => @rdf_category)) do
     xml.title RDF_TITLE
-    xml.link(@request.protocol + @request.host_with_port + url_for(:action => "noteslist"))
+    xml.link(@request.protocol + @request.host_with_port + url_for(:action => "show_category_noteslist", :category => @rdf_category))
     xml.description RDF_DESCRIPTION
     xml.items do    
       xml.tag!("rdf:Seq") do

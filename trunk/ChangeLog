@@ -1,3 +1,15 @@
+2005-11-17  araki yasuhiro  <yasu@debian.or.jp>
+
+ 	* donrails/app/views/notes/rdf_category.rxml: New file. It is used for making categorized rdf.
+
+	* donrails/app/views/notes/rdf_recent.rxml: Some change.
+
+	* donrails/app/views/notes/noteslist.rhtml: Add link to show_category
+
+	* donrails/app/views/notes/show_category.rhtml: Add link to show_category_noteslist
+
+	* donrails/app/controllers/notes_controller.rb: Change: rdf_category shows only 20 articles. 
+
 2005-11-16  araki yasuhiro  <yasu@debian.or.jp>
 
 	* atompost:
