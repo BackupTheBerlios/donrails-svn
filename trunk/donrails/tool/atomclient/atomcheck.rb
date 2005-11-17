@@ -35,7 +35,7 @@ class AtomStatus
 
   def check(target_url, title, body)
     aris = Article.find(:first, :conditions => ["target_url = ? AND title = ? AND body = ?", target_url, title, body])
-    return 0 if aris.status == 201
+    return 0 if (aris and aris.status == 201)
     aris2 = Article.new("target_url" => target_url, "title" => title, "body" => body)
     aris2.save
     return aris2.id

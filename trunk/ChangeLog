@@ -1,5 +1,7 @@
 2005-11-17  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/tool/atomclient/atomcheck.rb: Fix in check().
+
  	* donrails/app/views/notes/rdf_category.rxml: New file. It is used for making categorized rdf.
 
 	* donrails/app/views/notes/rdf_recent.rxml: Some change.
