@@ -10,6 +10,7 @@
 =end
 
 require 'cgi'
+require 'htree'
 
 module DonRails
 
@@ -54,7 +55,7 @@ module DonRails
 =end
 
     def body_to_html
-      retval = self.to_s
+      return self.to_s
     end # def body_to_html
 
 =begin rdoc
@@ -64,7 +65,10 @@ module DonRails
 =end
 
     def body_to_xml
-      return self.body_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+#      return self.body_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+#      return self.body_to_html
+      xml = HTree.parse(self.body_to_html).to_rexml
+      return xml.to_s
     end # def body_to_xml
 
   end # module HNF

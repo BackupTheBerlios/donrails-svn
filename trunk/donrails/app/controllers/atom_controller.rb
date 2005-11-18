@@ -71,7 +71,7 @@ class AtomController < ApplicationController
       else
         data['body'] = xml.root.elements['content'].to_s
       end
-
+      
       begin
         aris1 = Article.new
         aris1.id = @params['id'] if @params['id']
