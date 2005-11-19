@@ -1,3 +1,9 @@
+2005-11-19  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/public/stylesheets/araki.css: Change in div.section.
+
+	* donrails/app/controllers/application.rb: New method: set_charset. It used for set the charset and Content-type.
+
 2005-11-18  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/lib/modules/html.rb: Change in body_to_xml. It use htree for convert html to xml.

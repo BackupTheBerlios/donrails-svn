@@ -6,6 +6,11 @@ require 'digest/sha1'
 require 'base64'
 
 class ApplicationController < ActionController::Base
+  before_filter :set_charset
+
+  def set_charset
+    @headers["Content-Type"] = "text/html; charset=utf-8"
+  end
 
   def get_ymd
     if @ymd

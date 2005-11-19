@@ -24,7 +24,7 @@
  h3.new { margin-left: 1em }
  h4.comment { margin-left: 1em }
  div.uservar { font-weight: bold; }
- div.section { margin-left: 2em; margin-top: 0; font-size: 0.9em }
+ div.section { margin-bottom: 8; margin-left: 2em; margin-top: 0; font-size: 0.9em }
  div.sub { margin-left: 1em; margin-top: 0 }
  div.list { margin-left: 1em }
  div.fn { margin-left: 1em; margin-top: 0 }
