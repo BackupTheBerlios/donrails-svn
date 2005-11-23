@@ -1,3 +1,7 @@
+2005-11-24  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/notes/rdf_{article,category,recent}.rxml: add article body in <content:encoded></content:encoded>.
+
 2005-11-23  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/tool/atomclient/hnfhelper.rb: Some fix for HNF to html. 

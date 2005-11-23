@@ -5,6 +5,7 @@ xml.tag!("rdf:RDF",
          "xmlns" => "http://purl.org/rss/1.0/",
          "xmlns:rdf" => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
          "xmlns:dc" => "http://purl.org/dc/elements/1.1/",
+         "xmlns:content" => "http://purl.org/rss/1.0/modules/content/",
          "xml:lang" => "ja") do
 
   xml.channel("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => 'rdf_article', :id => @article.id)) do
@@ -14,30 +15,33 @@ xml.tag!("rdf:RDF",
     xml.description RDF_DESCRIPTION
     xml.items do    
       xml.tag!("rdf:Seq") do
-#        for item in @recent_articles
-          xml.rdf(:li, "rdf:resource"=> "#{@request.protocol}#{@request.host_with_port}#{url_for(:action => "pick_article", :pickid => @article.id)}")
-
-#        end
+        xml.rdf(:li, "rdf:resource"=> "#{@request.protocol}#{@request.host_with_port}#{url_for(:action => "pick_article", :pickid => @article.id)}")
       end
     end
   end
 
-#  for i in @recent_articles
-    item = don_get_object(@article, 'xml')
-    xml.item("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id)) do
+  item = don_get_object(@article, 'xml')
+  xml.item("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id)) do
 
-      xml.title(item.title_to_xml)
-      xml.link(@request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id))
+    xml.title(item.title_to_xml)
+    xml.link(@request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id))
 
-      xml.tag!("description") do
-       xml << item.body_to_xml
-      end    
+    ce = item.body_to_xml
+    if ce =~ (/<content>(.*)<\/content>/m)
+      ce = $1
+    end    
 
-      xml.tag!("dc:date") do
-        xml.text! "#{pub_date(item.article_mtime)}"
-      end
+    xml.tag!("description") do
+      xml << ce.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+    end    
+
+    xml.tag!("content:encoded") do
+      xml.text! ce
+    end    
+
+    xml.tag!("dc:date") do
+      xml.text! "#{pub_date(item.article_mtime)}"
     end
-#  end
-
+  end
 
 end
