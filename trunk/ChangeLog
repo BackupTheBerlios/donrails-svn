@@ -1,3 +1,23 @@
+2005-11-23  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/tool/atomclient/hnfhelper.rb: Some fix for HNF to html. 
+
+	* donrails/lib/modules/hnf.rb:
+	- Now use HTree in body_to_xml.
+	- Some fix for HNF to html.
+
+	* donrails/lib/modules/html.rb: Now use HTree in body_to_xml.
+
+	* donrails/app/views/notes/rdf_category.rxml: Change to no excape <>&. in <description> </description>.
+
+	* donrails/app/views/notes/rdf_recent.rxml: Change to no excape <>&. in <description> </description>.
+
+	* NEW action 'notes/rdf_article':
+	- donrails/app/controllers/notes_controller.rb: New method rdf_article.
+	- donrails/app/views/notes/rdf_article.rxml: New file.
+
+	* donrails/app/controllers/application.rb: Change set_charset to off.
+
 2005-11-19  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/public/stylesheets/araki.css: Change in div.section.

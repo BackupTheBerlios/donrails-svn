@@ -19,7 +19,7 @@ class HNFHelper
 
       if pre_tag then
         retval << CGI.escapeHTML(line + "\n")
-      elsif line =~ /\A\/?[A-Z~]+/        # hnf command begin CAPITAL letters.
+      elsif line =~ /\A\/?[A-Z~]+\b/        # hnf command is consited CAPITAL letters and begin at head of line.
         if line =~ (/\AOK/) then
           next
         elsif line =~ (/\A(TENKI|WEATHER|BASHO|LOCATION|TAIJU|WEIGHT|TAION|TEMPERATURE|SUIMIN|SLEEP|BGM|HOSU|STEP|HON|BOOK|KITAKU|HOMECOMING|WALK|RUN)\s+(.+)/) then
@@ -64,7 +64,7 @@ class HNFHelper
           next
         end
       else
-        retval << line
+        retval << CGI.escapeHTML(line + "\n")
       end
     end
 

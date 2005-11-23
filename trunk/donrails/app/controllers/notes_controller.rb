@@ -3,6 +3,7 @@ class NotesController < ApplicationController
   layout "notes", :except => [
     :pick_article_a,
     :rdf_recent,
+    :rdf_article,
     :rdf_category
   ]
 
@@ -106,6 +107,10 @@ class NotesController < ApplicationController
 
   def rdf_recent2
     @recent_articles = Article.find(:all, :order => "id DESC", :limit => 20)
+  end
+
+  def rdf_article
+    @article = Article.find(@params['id'])
   end
 
   def rdf_category

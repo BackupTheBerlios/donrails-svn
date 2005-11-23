@@ -6,34 +6,38 @@ xml.tag!("rdf:RDF",
          "xmlns:rdf" => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
          "xmlns:dc" => "http://purl.org/dc/elements/1.1/",
          "xml:lang" => "ja") do
-  xml.channel("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => 'rdf_category', :category => @rdf_category)) do
+
+  xml.channel("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => 'rdf_article', :id => @article.id)) do
+
     xml.title RDF_TITLE
-    xml.link(@request.protocol + @request.host_with_port + url_for(:action => "show_category_noteslist", :category => @rdf_category))
+    xml.link(@request.protocol + @request.host_with_port + url_for(:action => "noteslist"))
     xml.description RDF_DESCRIPTION
     xml.items do    
       xml.tag!("rdf:Seq") do
-        for item in @recent_articles
-          xml.rdf(:li, "rdf:resource"=> "#{@request.protocol}#{@request.host_with_port}#{url_for(:action => "pick_article", :pickid => item.id)}")
+#        for item in @recent_articles
+          xml.rdf(:li, "rdf:resource"=> "#{@request.protocol}#{@request.host_with_port}#{url_for(:action => "pick_article", :pickid => @article.id)}")
 
-        end
+#        end
       end
     end
   end
 
-  for i in @recent_articles
-    item = don_get_object(i, 'xml')
+#  for i in @recent_articles
+    item = don_get_object(@article, 'xml')
     xml.item("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id)) do
 
       xml.title(item.title_to_xml)
       xml.link(@request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id))
+
       xml.tag!("description") do
-        xml << item.body_to_xml
-      end
+       xml << item.body_to_xml
+      end    
+
       xml.tag!("dc:date") do
         xml.text! "#{pub_date(item.article_mtime)}"
       end
     end
-  end
+#  end
 
 
 end

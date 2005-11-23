@@ -9,7 +9,7 @@
 =end
 
 require 'cgi'
-
+require 'htree'
 
 module DonRails
 
@@ -70,7 +70,7 @@ module DonRails
 
         if pre_tag then
           retval << CGI.escapeHTML(line + "\n")
-        elsif line =~ /\A\/?[A-Z~]+/        # hnf command begin CAPITAL letters.
+        elsif line =~ /\A\/?[A-Z~]+\b/        # hnf command is consisted CAPITAL letters and begin at the head of line.
           if line =~ (/\AOK/) then
             next
           elsif line =~ (/\A(TENKI|WEATHER|BASHO|LOCATION|TAIJU|WEIGHT|TAION|TEMPERATURE|SUIMIN|SLEEP|BGM|HOSU|STEP|HON|BOOK|KITAKU|HOMECOMING|WALK|RUN)\s+(.+)/) then
@@ -115,7 +115,7 @@ module DonRails
             next
           end
         else
-          retval << line
+          retval << CGI.escapeHTML(line + "\n")
         end
       end
 
@@ -129,7 +129,9 @@ module DonRails
 =end
 
     def body_to_xml
-      return self.body_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+#      return self.body_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+      xml = HTree.parse(self.body_to_html).to_rexml
+      return xml.to_s
     end # def body_to_xml
 
   end # module HNF

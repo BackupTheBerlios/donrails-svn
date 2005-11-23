@@ -66,7 +66,6 @@ module DonRails
 
     def body_to_xml
 #      return self.body_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
-#      return self.body_to_html
       xml = HTree.parse(self.body_to_html).to_rexml
       return xml.to_s
     end # def body_to_xml
