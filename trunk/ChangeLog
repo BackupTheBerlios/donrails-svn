@@ -1,3 +1,19 @@
+2005-11-25  araki yasuhiro  <yasu@debian.or.jp>
+
+	* Remove link ':title' parameter from to :action=>'show_title'. 
+	Because it cause confuse of link uri. (notes/t/:title and notes/show_title/:id:title). 
+	Now all donrails files make link by 'notes/id/:id'.
+	But you also use both 'notes/t/:title' and 'notes/id/:id'.
+	- donrails/app/views/shared/linktitle.rhtml
+	- donrails/app/views/shared/title-articles2no.rhtml
+	- donrails/app/views/shared/title-articles2.rhtml
+	- donrails/app/views/notes/show_category.rhtml
+	- donrails/app/views/notes/show_category2.rhtml
+	- donrails/app/views/notes/show_title.rhtml
+	- donrails/app/views/notes/noteslist.rhtml
+	- donrails/app/views/notes/pick_article.rhtml
+	- donrails/config/routes.rb
+
 2005-11-24  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/notes/rdf_{article,category,recent}.rxml: add article body in <content:encoded><![CDATA[blah blah blah]]></content:encoded>.

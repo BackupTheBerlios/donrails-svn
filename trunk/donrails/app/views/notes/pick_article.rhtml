@@ -21,7 +21,7 @@ article = don_get_object(@articles, 'html')
 </div> <!-- end nnenhead -->
 
 <div class="nnenhead">
-<%= link_to "\#", {:action => "show_title", :title => article.title, :id => article.id} %>
+<%= link_to "\#", {:action => "show_title", :id => article.id} %>
 <% article.categories.each do |cat| %>
 [<%= link_to cat.name, {:action => "show_category", :category => cat.name} %>]
 <% end %>

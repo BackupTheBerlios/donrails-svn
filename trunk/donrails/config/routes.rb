@@ -39,11 +39,18 @@ ActionController::Routing::Routes.draw do |map|
     :day => /[0-3]?\d/
   }
 
+  map.connect "notes/id/:id", :controller => "notes", 
+  :action => "show_title",
+  :requirements => { 
+    :title => /\d+/
+  }
+
   map.connect "notes/t/:title", :controller => "notes", 
   :action => "show_title",
   :requirements => { 
     :title => /\S+/
   }
+
 
 #   map.connect "notes/afterday/", :controller => "notes", 
 #   :action => "afterday"

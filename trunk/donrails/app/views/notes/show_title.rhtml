@@ -31,7 +31,7 @@ day1 = day0
 %>
 <div class="nnenhead">
 <p>
-   <%= link_to "\#", {:action => "show_title", :title => article.title, :id => article.id} %>
+   <%= link_to "\#", {:action => "show_title", :id => article.id} %>
    (<%= link_to article.article_date.to_date, {:action => 'show_date', :year => article.article_date.year, :month => article.article_date.month, :day => article.article_date.day} %>)
    <% article.categories.each do |cat| %>
      [<%= link_to cat.name, {:action => "show_category", :category => cat.name} %>]
