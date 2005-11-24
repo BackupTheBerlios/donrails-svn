@@ -43,7 +43,7 @@ xml.tag!("rdf:RDF",
       end    
 
       xml.tag!("content:encoded") do
-        xml.text! ce
+        xml.cdata! ce
       end    
 
       xml.tag!("dc:date") do

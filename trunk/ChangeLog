@@ -1,6 +1,6 @@
 2005-11-24  araki yasuhiro  <yasu@debian.or.jp>
 
-	* donrails/app/views/notes/rdf_{article,category,recent}.rxml: add article body in <content:encoded></content:encoded>.
+	* donrails/app/views/notes/rdf_{article,category,recent}.rxml: add article body in <content:encoded><![CDATA[blah blah blah]]></content:encoded>.
 
 2005-11-23  araki yasuhiro  <yasu@debian.or.jp>
 
