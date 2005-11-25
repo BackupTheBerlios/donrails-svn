@@ -83,13 +83,24 @@ ActionController::Routing::Routes.draw do |map|
     :day => /[0-3]?\d/
   }
 
+  map.connect "notes/search/:q", :controller => "notes", 
+  :action => "search",
+  :requirements => { 
+	:q => /\w+/
+  }
 
   map.connect "notes/di.cgi", :controller => "notes", :action => "rdf_recent"
 
   map.connect "notes/rdf_category/:category", :controller => "notes", 
   :action => "rdf_category",
   :requirements => { 
-	:category => /\w+/,
+	:category => /\w+/
+  }
+
+  map.connect "notes/rdf_search/:q", :controller => "notes", 
+  :action => "rdf_search",
+  :requirements => { 
+	:q => /\w+/
   }
 
   # Here's a sample route:

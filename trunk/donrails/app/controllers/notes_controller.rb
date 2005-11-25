@@ -4,6 +4,7 @@ class NotesController < ApplicationController
     :pick_article_a,
     :rdf_recent,
     :rdf_article,
+    :rdf_search,
     :rdf_category
   ]
 
@@ -111,12 +112,23 @@ class NotesController < ApplicationController
 
   def rdf_article
     @article = Article.find(@params['id'])
+    @rdf_article = @article.id
+  end
+
+  def rdf_search
+    @recent_articles = Article.search(@params["q"])
+    @rdf_search = @params["q"]
+    if @recent_articles == nil
+      render_text "no entry"
+    end
   end
 
   def rdf_category
     @category = Category.find(:first, :conditions => ["name = ?", @params['category']])
     if @category == nil
-      redirect_to :action => 'rdf_recent'
+      p @params["category"]
+      @params["q"] = @params["category"]
+      redirect_to :action => 'rdf_search', :q => @params["category"]
     else
       @recent_articles_pages, 
       @recent_articles = paginate(:article, :per_page => 20,
@@ -210,6 +222,7 @@ class NotesController < ApplicationController
     if @articles.size >= 1
       @heading = "#{@articles.first.title}"
       cid = @articles.first.id
+      @rdf_article = @articles.first.id
       begin
         @lastarticle = Article.find(cid - 1)
       rescue

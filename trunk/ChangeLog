@@ -1,5 +1,10 @@
 2005-11-25  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/config/routes.rb: 'notes/search/:q' is new method to access search.
+
+	* New action 'rdf_search'.
+	- donrails/app/controllers/notes_controller.rb: add rdf_search. Redirect rdf_search if no category is inputted in rdf_category.
+
 	* donrails/lib/modules/hnf.rb: Change output for 'body_to_xml'. If HTree.parse(self.body_to_html).to_rexml is failed, return self.body_to_html.
 
 	* donrails/app/views/notes/rdf_category.rxml: Change link from rdf_category to show_category_noteslist.
