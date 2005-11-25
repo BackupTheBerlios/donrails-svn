@@ -8,7 +8,7 @@ xml.tag!("rdf:RDF",
          "xmlns:content" => "http://purl.org/rss/1.0/modules/content/",
          "xml:lang" => "ja") do
 
-  xml.channel("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => 'rdf_article', :id => @article.id)) do
+  xml.channel("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => 'show_title', :id => @article.id)) do
 
     xml.title RDF_TITLE
     xml.link(@request.protocol + @request.host_with_port + url_for(:action => "noteslist"))
@@ -25,20 +25,20 @@ xml.tag!("rdf:RDF",
 
     xml.title(item.title_to_xml)
     xml.link(@request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id))
-
-    ce = item.body_to_xml
-    if ce =~ (/<content>(.*)<\/content>/m)
-      ce = $1
-    end    
-
-    xml.tag!("description") do
-      xml << ce.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
-    end    
-
-    xml.tag!("content:encoded") do
-      xml.cdata! ce
-    end    
-
+    begin
+      ce = item.body_to_xml
+      if ce =~ (/<content>(.*)<\/content>/m)
+        ce = $1
+      end    
+      xml.tag!("description") do
+        xml << ce.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
+      end    
+      xml.tag!("content:encoded") do
+        xml.cdata! ce
+      end    
+    rescue
+      print "Error: #{$!} in #{item.id}\n"
+    end
     xml.tag!("dc:date") do
       xml.text! "#{pub_date(item.article_mtime)}"
     end

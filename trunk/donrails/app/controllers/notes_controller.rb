@@ -115,12 +115,16 @@ class NotesController < ApplicationController
 
   def rdf_category
     @category = Category.find(:first, :conditions => ["name = ?", @params['category']])
-    @recent_articles_pages, 
-    @recent_articles = paginate(:article, :per_page => 20,
-                                :order_by => 'id DESC',
-                                :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
-                                    )
-    @rdf_category = @params['category']
+    if @category == nil
+      redirect_to :action => 'rdf_recent'
+    else
+      @recent_articles_pages, 
+      @recent_articles = paginate(:article, :per_page => 20,
+                                  :order_by => 'id DESC',
+                                  :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
+                                  )
+      @rdf_category = @category.name
+    end
   end
 
   def recent

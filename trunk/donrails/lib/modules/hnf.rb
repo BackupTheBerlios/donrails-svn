@@ -129,9 +129,12 @@ module DonRails
 =end
 
     def body_to_xml
-#      return self.body_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, '')
-      xml = HTree.parse(self.body_to_html).to_rexml
-      return xml.to_s
+      begin
+        xml = HTree.parse(self.body_to_html).to_rexml
+        return xml.to_s
+      rescue
+        return self.body_to_html
+      end
     end # def body_to_xml
 
   end # module HNF

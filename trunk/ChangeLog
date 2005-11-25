@@ -1,5 +1,13 @@
 2005-11-25  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/lib/modules/hnf.rb: Change output for 'body_to_xml'. If HTree.parse(self.body_to_html).to_rexml is failed, return self.body_to_html.
+
+	* donrails/app/views/notes/rdf_category.rxml: Change link from rdf_category to show_category_noteslist.
+
+	* donrails/app/views/notes/rdf_article.rxml: Change link from rdf_article to show_title.
+
+	* donrails/app/controllers/notes_controller.rb: Change rdf_category. If inputted category does not exist, redirect to rdf_recent.
+
 	* Remove link ':title' parameter from to :action=>'show_title'. 
 	Because it cause confuse of link uri. (notes/t/:title and notes/show_title/:id:title). 
 	Now all donrails files make link by 'notes/id/:id'.
