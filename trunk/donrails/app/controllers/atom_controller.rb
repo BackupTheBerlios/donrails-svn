@@ -50,8 +50,13 @@ class AtomController < ApplicationController
       end
 
       data = {}
+
       if xml.root.elements['title'].text
         data['title'] = xml.root.elements['title'].text
+      elsif xml.root.elements['title'].to_s
+        if xml.root.elements['title'].to_s =~ (/^<title>(.+)<\/title>$/)
+          data['title'] = $1
+        end
       else
         data['title'] = ''
       end

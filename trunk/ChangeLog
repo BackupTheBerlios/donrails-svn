@@ -1,3 +1,7 @@
+2005-11-26  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/atom_controller.rb: Change to extract title from <title><blah></blah></title>. Former version can not extract title which is not plain text.
+
 2005-11-25  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/config/routes.rb: 'notes/search/:q' is new method to access search.
