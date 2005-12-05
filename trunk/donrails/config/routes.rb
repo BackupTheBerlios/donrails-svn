@@ -42,7 +42,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "notes/id/:id", :controller => "notes", 
   :action => "show_title",
   :requirements => { 
-    :title => /\d+/
+    :id => /\d+/
   }
 
   map.connect "notes/t/:title", :controller => "notes", 

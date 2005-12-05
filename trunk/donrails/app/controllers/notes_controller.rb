@@ -5,7 +5,8 @@ class NotesController < ApplicationController
     :rdf_recent,
     :rdf_article,
     :rdf_search,
-    :rdf_category
+    :rdf_category,
+    :trackback
   ]
 
   def index
@@ -16,7 +17,7 @@ class NotesController < ApplicationController
 
   def search
     @articles = Article.search(@params["q"])
-    @heading = "#{@params["q"]}"
+    @heading = @params["q"]
     @noindex = true
   end
   
@@ -324,6 +325,39 @@ class NotesController < ApplicationController
     @picture = Picture.new
   end
 
+  def trackback
+    begin
+      unless (@params.has_key?('url') and @params.has_key?('id'))
+        @catched = false
+        @message = 'need url and id '
+      end
+      article = Article.find(@params['id'])
+
+      unless article
+        @catched = false
+        @message = 'need valid id '
+      end
+
+      if @catched != false
+        tb = Trackback.new
+        tb.article_id = article.id
+        tb.category = @params['category'] if @params['category'] 
+        tb.blog_name = @params['blog_name'] if @params['blog_name']
+        tb.title = @params['title'] || @params['url']
+        tb.excerpt = @params['excerpt'] if @params['excerpt']
+        tb.url = @params['url']
+
+        tb.ip = request.remote_ip
+        tb.created_at = Time.now
+        tb.save
+        @catched = true
+        @message = 'success'
+      end
+    rescue
+      @catched = false
+      @message = $!
+    end
+  end
 
   protected
   def authenticate

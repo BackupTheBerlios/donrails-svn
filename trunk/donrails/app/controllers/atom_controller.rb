@@ -40,113 +40,45 @@ class AtomController < ApplicationController
   # atom post
   def post
     if request.method == :post
-      logger.info(request.raw_post)
-
       begin
-        xml = REXML::Document.new(request.raw_post)
-      rescue
-        p $!
-        exit
-      end
-
-      data = {}
-
-      if xml.root.elements['title'].text
-        data['title'] = xml.root.elements['title'].text
-      elsif xml.root.elements['title'].to_s
-        if xml.root.elements['title'].to_s =~ (/^<title>(.+)<\/title>$/)
-          data['title'] = $1
-        end
-      else
-        data['title'] = ''
-      end
-
-      if xml.root.elements['articledate'].text
-        data['article_date'] = xml.root.elements['articledate'].text
-      else
-        data['article_date'] = Time.now
-      end
-
-      if xml.root.elements['content'].attributes["mode"] == "escaped"
-        data['body'] = xml.root.elements['content'].text
-        data['body'].gsub(/&amp;/, "&")
-        data['body'].gsub(/&quot;/, "\"")
-        data['body'].gsub(/&lt;/, "<")
-        data['body'].gsub(/&gt;/, ">")
-      else
-        data['body'] = xml.root.elements['content'].to_s
-      end
-      
-      begin
+        xml, data = atom_input_parse(request.raw_post)
         aris1 = Article.new
         aris1.id = @params['id'] if @params['id']
-        aris1.title = data['title']
-        aris1.body = data['body']
-        aris1.format = "html"
-        aris1.size = aris1.body.size
-        aris1.article_date = data['article_date']
-        aris1.article_mtime = Time.now
-
-        if xml.root.elements['category'].text
-          cat0 = xml.root.elements['category'].text
-          cat1 = cat0.split(' ')
-          cat1.each do |cat|
-            aris3 = Category.find(:first, :conditions => ["name = ?", cat])
-            if aris3
-              aris1.categories.push_with_attributes(aris3)
-            else
-              aris2 = Category.new("name" => cat)
-              aris2.save
-              aris1.categories.push_with_attributes(aris2)
-            end
-          end
-        end
-
+        atom_update_article(aris1, data, xml)
         aris1.save
         @article = aris1
-          render :status => 201 # 201 Created @ Location
-          
+        render :status => 201 # 201 Created @ Location
       rescue
-          p $!
-          render :status => 404
+        p $!
+        render :status => 404
       end
     end
   end
 
   # atom edit
   def edit
-    logger.info(request.method)
     if request.method == :put
-
-      xml = REXML::Document.new(request.raw_post)
-      data = {}
-      data['title'] = xml.root.elements['title'].text
-
-      if xml.root.elements['content'].attributes["mode"] == "escaped"
-        data['body'] = xml.root.elements['content'].text
-        data['body'].gsub(/&amp;/, "&")
-        data['body'].gsub(/&quot;/, "\"")
-        data['body'].gsub(/&lt;/, "<")
-        data['body'].gsub(/&gt;/, ">")
-      else
-        data['body'] = xml.root.elements['content'].text
+      begin
+        xml, data = atom_input_parse(request.raw_post)
+        aris1 = Article.find(@params['id'])
+        atom_update_article(aris1, data, xml)
+        aris1.save
+        @article = aris1
+        render :action => "post", :status => 200
+      rescue
+        p $!
+        render :status => 404
       end
-
-      aris1 = Article.find(@params['id'])
-      aris1.title = data['title']
-      aris1.body = data['body']
-      aris1.format = "plain"
-      aris1.size = aris1.body.size
-      aris1.article_date = Time.now
-      aris1.article_mtime = Time.now
-      aris1.save
-      @article = aris1
-      render :action => "post", :status => 200
     elsif request.method == :delete
-      Article.destroy(@params['id'])
-      render :text => "dslete #{@params['id']}", :status => 204
-    else
-      render :text => "no method #{request.method}", :status => 403
+      begin
+        Article.destroy(@params['id'])
+        render :text => "dslete #{@params['id']}", :status => 204
+      else
+        render :text => "no method #{request.method}", :status => 403
+      end
+    rescue
+      p $!
+      render :status => 404
     end
   end
 

@@ -1,0 +1,47 @@
+<% @heading = "trackback management" %>
+
+<% if @trackbacks %>
+
+<% if @trackbacks_pages %>
+<%= pagination_links @trackbacks_pages %>
+<% end %>
+
+<%= form_tag :action => "delete_trackback" %>
+<div class="kakomi">
+<div id="trackback_ajax">
+[記事]を押すと削除対象コメントと親記事が表示されます
+</div>
+</div>
+<%= submit_tag "チェックしたトラックバックを削除する" %>
+<table  border="1" cellspacing="0">
+  <tr>
+    <td>Delete?</td>
+    <td>blog_name</td>
+    <td>title</td>
+    <td>url</td>
+    <td>ip</td>
+    <td>excerpt</td>
+  </tr>
+
+  <% @trackbacks.each do |co| %>
+  <tr>
+    <td>
+      <%= check_box "deleteid", co.id %>
+      <%= link_to_remote ("[記事]", :update => "trackback_ajax", :url => {:controller => "notes", :action => "pick_article_a", :pickid => co.article.id }) %>
+    </td>
+    <td><%= co.blog_name %></td>
+    <td><%= don_mb_truncate(co.title) %></td>
+    <td><%= co.url %></td>
+    <td><%= co.ip %></td>
+    <td><%= don_mb_truncate(co.exerpt) %></td>
+  </tr>
+  <% end %>
+</table>
+<%= submit_tag "チェックしたトラックバックを削除する" %>
+<%= end_form_tag %>
+<% end %>
+
+<% if @trackbacks_pages %>
+<%= pagination_links @trackbacks_pages %>
+<% end %>
+ 

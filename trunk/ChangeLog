@@ -1,3 +1,32 @@
+2005-12-05  araki yasuhiro  <yasu@debian.or.jp>
+
+	* **** INPORTANT **** NEW tables ****
+	* donrails/tool/tables-sqlite.txt: New tables: blogpings, pings and trackbacks.
+
+	* donrails/app/views/notes/pick_article_a.rhtml: No write article.body_to_html if article.body does not exist.
+
+	* donrails/app/views/notes/trackback.rxml: New file
+
+	* donrails/app/views/login/manage_{trackback, ping, blogping}.rhtml: New file. 
+
+	* donrails/app/views/shared/comment-noadd.rhtml: add to show article.trackbacks.
+
+	* donrails/app/views/layouts/login.rhtml: Add link to manage_{trackback, blogping, ping}.
+
+	* donrails/app/controllers/notes_controller.rb: New method: tackback
+
+	* donrails/app/controllers/login_controller.rb: New methods: manage_trackback, delete_trackback, manage_ping, manage_blogping, delete_blogping, manage_author.
+
+	* donrails/app/models/article.rb: Describe relationship with 'pings' table. New method 'send_ping2'.
+
+	* donrails/app/models/ping.rb: New file. Pings table records ping from donrails to othre ping receivable service.
+
+	* donrails/app/helpers/application_helper.rb: New methods 'atom_input_parse', 'atom_update_article', 'bind_article_category', 'article_url' and 'sendping'.
+
+	* donrails/app/helpers/atom_helper.rb: New file.
+
+	* donrails/app/controllers/atom_controller.rb: Many methods removed to atom_helper.rb.
+
 2005-11-26  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/atom_controller.rb: Change to extract title from <title><blah></blah></title>. Former version can not extract title which is not plain text.

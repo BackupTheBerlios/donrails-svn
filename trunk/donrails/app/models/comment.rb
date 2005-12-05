@@ -23,7 +23,4 @@ class Comment < ActiveRecord::Base
     allow_arr = allow.join('|') << '|\/'
     body.gsub!(/<(\/|\s)*[^(#{allow_arr})][^>]*>/,'')
   end
-
-
-
 end

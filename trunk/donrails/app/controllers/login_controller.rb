@@ -37,10 +37,29 @@ class LoginController < ApplicationController
     redirect_to :action => "login_index"
   end
 
+  ## trackback
+  def manage_trackback
+    @trackbacks_pages, @trackbacks = paginate(:trackback, :per_page => 30,
+                                              :order_by => 'id DESC')
+  end
+
+  def delete_trackback
+    c = @params["deleteid"]
+    c.each do |k, v|
+      if v.to_i == 1
+        b = Trackback.find(k.to_i)
+        b_art = b.articles
+        b.articles.delete(b_art)
+        Trackback.delete(k.to_i)
+      end
+    end
+    redirect_to :action => "manage_trackback"
+  end
+
+  ## comment
   def manage_comment
     @comments_pages, @comments = paginate(:comment, :per_page => 30,
-                                          :order_by => 'id DESC'
-                                          )
+                                          :order_by => 'id DESC')
   end
 
   def delete_comment
@@ -165,7 +184,31 @@ class LoginController < ApplicationController
     redirect_to :action => "manage_blacklist"
   end
 
+  ## ping
+  def manage_ping
+    @pings_pages, @pings = paginate(:ping,:per_page => 30,:order_by => 'id DESC')
+  end
+  
 
+  ## blogping
+  def manage_blogping
+    @blogpings_pages, @blogpings = paginate(:blogping,:per_page => 30,:order_by => 'id DESC')
+    @pings_pages, @pings = paginate(:ping,:per_page => 30,:order_by => 'id DESC')
+  end
+
+  def delete_blogping
+    c = @params["deleteid"].nil? ? [] : @params["deleteid"]
+    c.each do |k, v|
+      if v.to_i == 1
+        b = Blogping.find(k.to_i)
+        b.destroy
+      end
+    end
+    redirect_to :action => "manage_blogping"
+  end
+
+
+  # author
   def manage_author
     @authors_pages, @authors = paginate(:author, :per_page => 30,
                                           :order_by => 'id DESC'
@@ -313,7 +356,5 @@ class LoginController < ApplicationController
       render_action :picture_get
     end
   end
-
-
 
 end

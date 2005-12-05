@@ -73,3 +73,29 @@ description   VARCHAR NOT NULL,
 manifest      VARCHAR NOT NULL,
 activation    BOOLEAN
 );
+
+CREATE TABLE blogpings (
+id     SERIAL PRIMARY KEY,
+server_url    VARCHAR NOT NULL UNIQUE
+);
+
+CREATE TABLE pings (
+id          INTEGER PRIMARY KEY NOT NULL,
+article_id  INTEGER,
+url         VARCHAR DEFAULT NULL,
+created_at  DATETIME DEFAULT NULL
+);
+
+CREATE TABLE trackbacks (
+id          INTEGER PRIMARY KEY,
+article_id  INTEGER,
+category_id INTEGER,
+blog_name   VARCHAR DEFAULT NULL,
+title       VARCHAR DEFAULT NULL,
+excerpt     VARCHAR DEFAULT NULL,
+url         VARCHAR DEFAULT NULL,
+ip          VARCHAR DEFAULT NULL,
+created_at  DATETIME DEFAULT NULL
+);
+
+
