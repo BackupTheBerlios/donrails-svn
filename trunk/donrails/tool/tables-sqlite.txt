@@ -87,7 +87,7 @@ created_at  DATETIME DEFAULT NULL
 );
 
 CREATE TABLE trackbacks (
-id          INTEGER PRIMARY KEY,
+id          INTEGER PRIMARY KEY NOT NULL,
 article_id  INTEGER,
 category_id INTEGER,
 blog_name   VARCHAR DEFAULT NULL,
