@@ -1,5 +1,7 @@
 2005-12-08  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/views/shared/timelink.rhtml: (I lacked to add these file in SVN)
+	* donrails/app/models/{blogping,trackback}.rb: (I lacked to add these file in SVN)
 	* INSTALL.ja: Add library information.
 	* donrails/app/controllers/notes_controller.rb: Change trackback behavior. Trackback accepts HTTP POST only.
 	* donrails/app/views/layouts/login.rhtml: Add link to /login/index.
