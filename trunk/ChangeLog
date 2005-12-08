@@ -1,3 +1,8 @@
+2005-12-08  Akira TAGOH  <at@gclab.org>
+
+	* donrails/tool/tables-postgresql.txt: use timestamp instead of
+	datetime. it was obsolete since 7.3.
+
 2005-12-05  araki yasuhiro  <yasu@debian.or.jp>
 
 	* **** INPORTANT **** NEW tables ****

@@ -83,7 +83,7 @@ CREATE TABLE pings (
 id          SERIAL PRIMARY KEY,
 article_id  INTEGER,
 url         VARCHAR DEFAULT NULL,
-created_at  DATETIME DEFAULT NULL
+created_at  TIMESTAMP DEFAULT NULL
 );
 
 CREATE TABLE trackbacks (
@@ -95,5 +95,5 @@ title       VARCHAR DEFAULT NULL,
 excerpt     VARCHAR DEFAULT NULL,
 url         VARCHAR DEFAULT NULL,
 ip          VARCHAR DEFAULT NULL,
-created_at  DATETIME DEFAULT NULL
+created_at  TIMESTAMP DEFAULT NULL
 );
