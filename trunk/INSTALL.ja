@@ -4,10 +4,29 @@
 http://www.araki.net/wiki/donrails-wiliki.cgi?donrails%3ainstall
 に最新の情報があります。
 
+使用する外部ライブラリ:
+railsを動作させる以外に必要な外部ライブラリは以下の通りです。
 
-使用する外部ライブラリ
 - RD(librd-ruby1.8)
-
+- 'base64'
+- 'cgi'
+- 'date'
+- 'dbi'
+- 'digest/sha1'
+- 'getoptlong'
+- 'htree'
+- 'jcode'
+- 'kconv'
+- 'logger'
+- 'net/http'
+- 'optparse'
+- 'pathname'
+- 'rd/rd2html-lib'
+- 'rd/rdfmt'
+- 'readline'
+- 'rexml/document'
+- 'time'
+- 'uri'
 
 (sqliteを使える形の例)
 1. railsをインストールする。

@@ -1,5 +1,6 @@
  div.antenna { background: #aaaaaa; font-size: 0.8em }
- div.boardlink { margin-right:3px; padding:1px;color: red; font-weight: bold }
+// div.boardlink { margin-right:3px; padding:1px;color: red; font-weight: bold }
+ div.boardlink { margin-right:1em; padding:1px;}
  div.debug { background: gray }
  div.footer { background: #ffffee; font-size: 0.8em }
  div.head { background: white;  width: 75%; float : left}
@@ -24,12 +25,21 @@
  h3.new { margin-left: 1em }
  h4.comment { margin-left: 1em }
  div.uservar { font-weight: bold; }
- div.section { margin-bottom: 8; margin-left: 2em; margin-top: 0; font-size: 0.9em }
+ div.section { margin-bottom: 8; margin-left: 1em; margin-right: 1em; margin-top: 0; font-size: 1em }
  div.sub { margin-left: 1em; margin-top: 0 }
  div.list { margin-left: 1em }
  div.fn { margin-left: 1em; margin-top: 0 }
  div.url { margin-bottom: 0 }
+
  dl.comments, ul.comments { margin-left: 2em }
+ dl.trackbacks, ul.trackbacks { margin-left: 2em }
+ div.tsukkomi dd, div.trackback dd{
+  border-color: #ffeeb0;
+  border-style: outset;
+  border-width: 3px;
+  margin: 5px
+}
+
  pre { 
   white-space:  pre;
   padding:      0.5em;
@@ -38,6 +48,21 @@
   border-width: 3px;
   margin: 5px
  }
+
+ cite { 
+    font-style: normal;
+    background: #ddd;
+ }
+
+/*
+ cite {
+ bgcolor:#f0f8ff;
+  margin: 5px;
+ cellpadding:5;
+ color:black;
+ }
+*/
+
  a.hide:link { color: black; text-decoration: none }
  span.bold-red { color: red; font-weight: bold }
  div.bold-red { color: red; font-weight: bold }

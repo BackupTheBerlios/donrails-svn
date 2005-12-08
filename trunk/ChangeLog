@@ -1,3 +1,12 @@
+2005-12-08  araki yasuhiro  <yasu@debian.or.jp>
+
+	* INSTALL.ja: Add library information.
+	* donrails/app/controllers/notes_controller.rb: Change trackback behavior. Trackback accepts HTTP POST only.
+	* donrails/app/views/layouts/login.rhtml: Add link to /login/index.
+	* donrails/app/views/shared/comment.rhtml: Add to show trackback entities.
+	* donrails/app/views/notes/noteslist.rhtml: Add link to show_category.
+	* donrails/public/stylesheets/araki.css: Add trackback related configuration.
+
 2005-12-08  Akira TAGOH  <at@gclab.org>
 
 	* donrails/tool/tables-postgresql.txt: use timestamp instead of

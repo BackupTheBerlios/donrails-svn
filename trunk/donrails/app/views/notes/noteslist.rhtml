@@ -15,6 +15,7 @@ From <%= @ymd3 %> to <%= @ymd4 %>
 <h3>カテゴリ: <%= @category.name %> の記事
 [<%= link_to "リスト", {:action => "show_category", :category => @category.name} %>]
 </h3>
+
 <% end %>
 
 <% if @articles_pages and @articles_pages.length > 1 %>
