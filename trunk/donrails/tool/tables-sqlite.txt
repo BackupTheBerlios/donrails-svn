@@ -75,7 +75,7 @@ activation    BOOLEAN
 );
 
 CREATE TABLE blogpings (
-id     SERIAL PRIMARY KEY,
+id          INTEGER PRIMARY KEY NOT NULL,
 server_url    VARCHAR NOT NULL UNIQUE
 );
 

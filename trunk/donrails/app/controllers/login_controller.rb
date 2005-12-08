@@ -193,7 +193,6 @@ class LoginController < ApplicationController
   ## blogping
   def manage_blogping
     @blogpings_pages, @blogpings = paginate(:blogping,:per_page => 30,:order_by => 'id DESC')
-    @pings_pages, @pings = paginate(:ping,:per_page => 30,:order_by => 'id DESC')
   end
 
   def delete_blogping
@@ -204,6 +203,13 @@ class LoginController < ApplicationController
         b.destroy
       end
     end
+    redirect_to :action => "manage_blogping"
+  end
+
+  def add_blogping
+    c = @params["blogping"]
+    aris1 = Blogping.new("server_url" => c["server_url"])
+    aris1.save
     redirect_to :action => "manage_blogping"
   end
 

@@ -1,5 +1,7 @@
 2005-12-08  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/tool/tables-sqlite.txt: Fix table schema for blogpings.
+	* donrails/app/controllers/login_controller.rb: New method 'add_blogping'.
 	* donrails/app/views/shared/timelink.rhtml: (I lacked to add these file in SVN)
 	* donrails/app/models/{blogping,trackback}.rb: (I lacked to add these file in SVN)
 	* INSTALL.ja: Add library information.
