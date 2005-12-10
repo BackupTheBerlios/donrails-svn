@@ -1,7 +1,7 @@
 <h1>ping management</h1>
 
 <hr>
-pingの記録
+ping record
 <% if @pings %>
 <% if @pings_pages %>
 <%= pagination_links @pings_pages %>
@@ -17,7 +17,7 @@ pingの記録
   <% @pings.each do |co| %>
   <tr>
     <td><%= co.id %></td>
-    <td><%= co.article %></td>
+    <td><%= co.article_id %></td>
     <td><%= co.url %></td>
   </tr>
   <% end %>

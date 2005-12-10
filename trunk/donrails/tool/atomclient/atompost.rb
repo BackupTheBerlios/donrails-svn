@@ -83,7 +83,7 @@ def addhtml(target_url, user, pass, f)
   atompost(target_url, user, pass, title, body, article_date, nil, 'html', check)
 end
 
-def addhnf(target_url, user, pass, f)
+def addhnf(target_url, user, pass, f, check=true)
   if f =~ /d(\d{4})(\d{2})(\d{2})\.hnf/
     ymd = $1 + '-' + $2 + '-' + $3
   end
@@ -143,6 +143,7 @@ title = nil
 body = nil
 configfile = nil
 format = nil
+check = true
 
 parser = GetoptLong.new
 parser.set_options(['--username', '-a', GetoptLong::REQUIRED_ARGUMENT],
@@ -200,9 +201,9 @@ end
 
 ARGV.each do |f|
   if (format == 'hnf' or (f =~ /d\d{8}.hnf/))
-    addhnf(target_url, user, pass, f)
+    addhnf(target_url, user, pass, f, check)
   elsif (format == 'html' or (f =~ /.html?/i))
-    addhtml(target_url, user, pass, f)
+    addhtml(target_url, user, pass, f, check)
   else
 #    p "unsupported filetype: #{f}"
 #    addguess(target_url, user, pass, f)

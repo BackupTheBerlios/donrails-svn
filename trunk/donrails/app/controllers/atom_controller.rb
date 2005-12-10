@@ -146,6 +146,8 @@ class AtomController < ApplicationController
     end
     blogping = Blogping.find_all
     sendping(article, blogping)
+    article.save
+
   end
 
   def bind_article_category(article, category)

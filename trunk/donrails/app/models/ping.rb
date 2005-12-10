@@ -1,7 +1,6 @@
 require 'uri'
 require 'net/http'
 
-include ApplicationHelper
 class Ping < ActiveRecord::Base
   belongs_to :article
 

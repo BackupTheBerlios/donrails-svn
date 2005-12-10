@@ -5,8 +5,8 @@ include ApplicationHelper
 class Article < ActiveRecord::Base
   has_and_belongs_to_many :categories, :join_table => "categories_articles"
   has_and_belongs_to_many :comments, :join_table => "comments_articles"
-  has_many :pings, :dependent => true, :order => "id ASC"
-  has_many :trackbacks, :dependent => true, :order => "id ASC"
+  has_many :pings, :order => "id ASC"
+  has_many :trackbacks, :order => "id ASC"
 
   # Fulltext searches the body of published articles
   # this function original from "typo" models/article.rb
