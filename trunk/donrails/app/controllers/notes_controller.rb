@@ -6,7 +6,8 @@ class NotesController < ApplicationController
     :rdf_article,
     :rdf_search,
     :rdf_category,
-    :trackback
+    :trackback,
+    :catch_ping
   ]
 
   def index
@@ -361,6 +362,25 @@ class NotesController < ApplicationController
     else
       @catched = false
       @message = 'Please use HTTP POST'
+    end
+  end
+
+
+  def catch_ping
+    if request.method == :post
+      category = @params['category'] if @params['category'] 
+      blog_name = @params['blog_name'] if @params['blog_name']
+      title = @params['title'] || @params['url']
+      excerpt = @params['excerpt'] if @params['excerpt']
+      url = @params['url']
+      
+      ip = request.remote_ip
+      created_at = Time.now
+      @catched = true
+#      render_text 'success'
+    else
+      @catched = false
+#      render_text 'Please use HTTP POST', 404
     end
   end
 

@@ -51,7 +51,10 @@
 
  cite { 
     font-style: normal;
-    background: #ddd;
+    margin-left: 0em;
+    margin-right: 0em;
+    background-color: #ddeeee;
+    border: solid thin #ddeeee;
  }
 
 /*

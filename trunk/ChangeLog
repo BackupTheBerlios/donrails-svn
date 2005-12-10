@@ -1,3 +1,15 @@
+2005-12-09  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/atom_controller.rb:
+	* donrails/app/helpers/application_helper.rb
+	- Fix atompost. After SVN revision 91, atompost was broken. Som atom post related methods are moved from application_helper.rb to atom_controller.rb.
+	* donrails/app/models/ping.rb: Change in send_pings2 method. Set timeout 10 seconds.
+	* donrails/app/models/article.rb: Fix in send_pings2 method.
+	* donrails/app/controllers/notes_controller.rb: New method 'catch_ping'. Mainly use for Ping.send_pings2 test.
+	* donrails/app/views/notes/catch_ping.rxml: New file.
+	* donrails/tool/atomclient/atompost.rb: Add new '--nocheck' argument. It used to skip duplicate Atom POST. (mainly for testing.)
+	* donrails/public/stylesheets/araki.css: Add 'cite' related configuration.
+
 2005-12-08  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/tool/tables-sqlite.txt: Fix table schema for blogpings.

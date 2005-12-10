@@ -25,11 +25,13 @@ class Article < ActiveRecord::Base
         ping = pings.build("url" => url)
         ar2 = don_get_object(self, 'html')
         title = "#{URI.escape(ar2.title_to_html)}"
-        excerpt = "#{URI.escape(strip_tags(article.body_to_html))}"
-          
+        excerpt = "#{URI.escape(ar2.body_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, ''))}" 
+
         ping.send_ping2(url, title, excerpt)
         ping.save
       rescue
+        p "ping.send_ping2 error"
+        p $!
         # in case the remote server doesn't respond or gives an error,
         # we should throw an xmlrpc error here.
       end

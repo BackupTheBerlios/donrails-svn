@@ -15,14 +15,17 @@ require 'time'
 
 require 'atomcheck'
 
-def atompost(target_url, user, pass, title, body, article_date, category, format)
-  as = AtomStatus.new
-  id = as.check(target_url, title, body)
-  if id == 0
-    print "Already posted\n"
-    return false
+def atompost(target_url, user, pass, 
+             title, body, article_date, 
+             category, format, check=true)
+  if check
+    as = AtomStatus.new
+    id = as.check(target_url, title, body)
+    if id == 0
+      print "Already posted\n"
+      return false
+    end
   end
-
   postbody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<entry xmlns=\"http://purl.org/atom/ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n"
   postbody += "<articledate>#{article_date}</articledate>\n" if article_date
   postbody += "<category>#{category.join(" ")}</category>\n" if category
@@ -55,10 +58,10 @@ def atompost(target_url, user, pass, title, body, article_date, category, format
     return res
   when Net::HTTPRedirection
     p "Redirect to res['location']"
-    atompost(res['location'], user, pass, title, body, article_date, category, format)
+    atompost(res['location'], user, pass, title, body, article_date, category, format, check)
   else
     p "Error, #{article_date}"
-#    p postbody
+    p res
     res.error!
     as.update(id, -1)
   end
@@ -77,7 +80,7 @@ def addhtml(target_url, user, pass, f)
   body = xml.root.elements['body'].to_s
   article_date = mtime.iso8601
 
-  atompost(target_url, user, pass, title, body, article_date, nil, 'html')
+  atompost(target_url, user, pass, title, body, article_date, nil, 'html', check)
 end
 
 def addhnf(target_url, user, pass, f)
@@ -106,7 +109,7 @@ def addhnf(target_url, user, pass, f)
   ftmp.each do |x|
     if x =~ /^(CAT|NEW|LNEW)\s+.+/
       if y['title']
-        atompost(target_url, user, pass, y['title'], y['text'], y['ymd'], y['cat'], 'hnf')
+        atompost(target_url, user, pass, y['title'], y['text'], y['ymd'], y['cat'], 'hnf', check)
         y.clear
         y['ymd'] = ymd
         y['mtime'] = mtime
@@ -149,7 +152,8 @@ parser.set_options(['--username', '-a', GetoptLong::REQUIRED_ARGUMENT],
                    ['--config', '-c', GetoptLong::REQUIRED_ARGUMENT],
                    ['--html', GetoptLong::NO_ARGUMENT],
                    ['--hnf', GetoptLong::NO_ARGUMENT],
-                   ['--body', '-u', GetoptLong::REQUIRED_ARGUMENT]
+                   ['--body', '-u', GetoptLong::REQUIRED_ARGUMENT],
+                   ['--nocheck', '-n', GetoptLong::NO_ARGUMENT]
                    )
 parser.each_option do |name, arg|
   case name
@@ -169,6 +173,8 @@ parser.each_option do |name, arg|
     format = 'html'
   when "--hnf"
     format = 'hnf'
+  when "--nocheck"
+    check = false
   end
 end
 
@@ -187,7 +193,9 @@ rescue
 end
 
 if (body and title)
-  atompost(target_url, user, pass, title, body, nil, nil, nil)
+  atompost(target_url, user, pass, 
+           title, body, nil, 
+           nil, nil, check)
 end
 
 ARGV.each do |f|
