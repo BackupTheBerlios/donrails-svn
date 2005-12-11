@@ -15,7 +15,7 @@ From <%= @ymd3 %> to <%= @ymd4 %>
 <p>
 <% if @articles_pages and @articles_pages.length > 1 %>
 <div class="pagelink">
-ページ選択: <%= render ("shared/pagelink", "pages" => @articles_pages) %>
+ページ選択: <%= render("shared/pagelink", "pages" => @articles_pages) %>
 </div>
 <% end %>
 </p>
@@ -42,12 +42,12 @@ day1 = day0
 
 <div class="section">
 <%= auto_link article.body_to_html %>
-<%= render ("shared/comment", "article" => article) %>
+<%= render("shared/comment", "article" => article) %>
 </div> <!-- end section -->
 
 <div class="linktitle">
 <% if (@lastarticle and @nextarticle) %>
-<%= render ("shared/linktitle", "lastarticle" => don_get_object(@lastarticle, 'html'), "nextarticle" => don_get_object(@nextarticle, 'html')) %>
+<%= render("shared/linktitle", "lastarticle" => don_get_object(@lastarticle, 'html'), "nextarticle" => don_get_object(@nextarticle, 'html')) %>
 <% else %>
 (sorry, I can not link previous and next articles)
 <% end %>
@@ -60,7 +60,7 @@ day1 = day0
 
 <% if @articles_pages %>
 <div class="pagelink">
-  <%= render ("shared/pagelink-j", "pages" => @articles_pages) %>
+  <%= render("shared/pagelink-j", "pages" => @articles_pages) %>
 </div> <!-- end pagelink -->
 <% end %>
 

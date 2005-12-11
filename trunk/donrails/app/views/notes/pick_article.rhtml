@@ -30,6 +30,6 @@ article = don_get_object(@articles, 'html')
 
 <div class="section">
 <%= auto_link article.body_to_html %>
-<%= render ("shared/comment", "article" => article) %>
+<%= render("shared/comment", "article" => article) %>
 </div> <!-- end section -->
 

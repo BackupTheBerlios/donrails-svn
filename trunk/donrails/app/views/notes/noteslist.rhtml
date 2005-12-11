@@ -20,7 +20,7 @@ From <%= @ymd3 %> to <%= @ymd4 %>
 
 <% if @articles_pages and @articles_pages.length > 1 %>
 <div class="pagelink">
-ページ選択: <%= render ("shared/pagelink", "pages" => @articles_pages) %>
+ページ選択: <%= render("shared/pagelink", "pages" => @articles_pages) %>
 </div>
 <% end %>
 
@@ -61,7 +61,7 @@ an = 0
 
 <div class="section">
 <%= auto_link article.body_to_html %>
-<%= render ("shared/comment", "article" => article) %>
+<%= render("shared/comment", "article" => article) %>
 </div> <!-- end section -->
 
  <% end %>
@@ -69,12 +69,12 @@ an = 0
 
 <% if @params['action'] =~ /(show_date|show_nnen)/ %>
 <div class="pagelink">
-<%= render ("shared/nextlink2", "articles" => @articles) %>
+<%= render("shared/nextlink2", "articles" => @articles) %>
 </div> <!-- end pagelink -->
 <% end %>
 
 <% if @articles_pages %>
 <div class="pagelink">
-  <%= render ("shared/pagelink-j", "pages" => @articles_pages) %>
+  <%= render("shared/pagelink-j", "pages" => @articles_pages) %>
 </div> <!-- end pagelink -->
 <% end %>

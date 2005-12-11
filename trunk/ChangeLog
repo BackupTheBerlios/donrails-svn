@@ -1,3 +1,8 @@
+2005-12-11  araki yasuhiro  <yasu@debian.or.jp>
+
+	* Fix: Warning message "don't put space before argument parentheses".
+	- notes/{show_category,show_title,noteslist,pick_article,pick_article_a}.rhtml
+
 2005-12-10  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/models/ping.rb: Clean no need include line.
