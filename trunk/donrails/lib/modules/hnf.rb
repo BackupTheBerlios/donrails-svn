@@ -94,10 +94,8 @@ module DonRails
               retval << sprintf("<img src=\"%s.%s\" />", $2, $3)
             end
           end
-          if line =~ (/\A~/) then
-            retval << '<br />'
-            next
-          elsif line =~ (/\A(\/)?(UL|P|OL|DL)/) then
+
+          if line =~ (/\A(\/)?(UL|P|OL|DL)/) then
             retval << sprintf("<%s%s>", $1, $2)
             next
           elsif line =~ (/\A(\/)?(CITE)/) then
@@ -114,6 +112,8 @@ module DonRails
             retval << '</li>'
             next
           end
+        elsif line =~ (/\A~/) then
+          retval << '<br />'
         else
           retval << CGI.escapeHTML(line + "\n")
         end

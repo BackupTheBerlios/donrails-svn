@@ -33,18 +33,22 @@ class AtomStatus
   def initialize
   end
 
-  def check(target_url, title, body)
+  def check(target_url, title, body, check=true)
     aris = Article.find(:first, :conditions => ["target_url = ? AND title = ? AND body = ?", target_url, title, body])
-    return 0 if (aris and aris.status == 201)
+    if (aris and aris.status == 201)
+      return 0 
+    end
     aris2 = Article.new("target_url" => target_url, "title" => title, "body" => body)
     aris2.save
     return aris2.id
   end
 
-  def update(id, status)
-    aris = Article.find(id)
-    aris.status = status
-    aris.save
+  def update(id, status, check=true)
+    if check
+      aris = Article.find(id)
+      aris.status = status
+      aris.save
+    end
   end
 
 end

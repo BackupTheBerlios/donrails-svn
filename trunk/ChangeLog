@@ -1,3 +1,14 @@
+2005-12-12  araki yasuhiro  <yasu@debian.or.jp>
+
+	* Fix: HNF format '~' behavior. 
+	- donrails/lib/modules/hnf.rb
+	- donrails/tool/atomclient/hnfhelper.rb
+	* donrails/tool/atomclient/atomcheck.rb: Fix no check mode. Under more than 2 articles in one HNF file, after 2nd articles are checked.
+	* donrails/tool/atomclient/atompost.rb: 
+	- New method 'usage'. It displays help message.
+	- Fix no check mode. Under more than 2 articles in one HNF file, after 2nd articles are checked. Run 'atompost.rb --help' to access.
+
+
 2005-12-11  araki yasuhiro  <yasu@debian.or.jp>
 
 	* Fix: Warning message "don't put space before argument parentheses".

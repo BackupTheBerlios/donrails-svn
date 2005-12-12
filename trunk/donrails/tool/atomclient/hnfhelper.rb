@@ -19,7 +19,8 @@ class HNFHelper
 
       if pre_tag then
         retval << CGI.escapeHTML(line + "\n")
-      elsif line =~ /\A\/?[A-Z~]+\b/        # hnf command is consited CAPITAL letters and begin at head of line.
+#      elsif line =~ /\A\/?([A-Z]|~)+\b/        # hnf command is consited CAPITAL letters and begin at head of line.
+      elsif line =~ /\A\/?[A-Z]+\b/        # hnf command is consited CAPITAL letters and begin at head of line.
         if line =~ (/\AOK/) then
           next
         elsif line =~ (/\A(TENKI|WEATHER|BASHO|LOCATION|TAIJU|WEIGHT|TAION|TEMPERATURE|SUIMIN|SLEEP|BGM|HOSU|STEP|HON|BOOK|KITAKU|HOMECOMING|WALK|RUN)\s+(.+)/) then
@@ -43,10 +44,8 @@ class HNFHelper
             retval << sprintf("<img src=\"%s.%s\" />", $2, $3)
           end
         end
-        if line =~ (/\A~/) then
-          retval << '<br />'
-          next
-        elsif line =~ (/\A(\/)?(UL|P|OL|DL)/) then
+
+        if line =~ (/\A(\/)?(UL|P|OL|DL)/) then
           retval << sprintf("<%s%s>", $1, $2)
           next
         elsif line =~ (/\A(\/)?(CITE)/) then
@@ -63,6 +62,8 @@ class HNFHelper
           retval << '</li>'
           next
         end
+      elsif line =~ (/\A~/) then
+        retval << '<br />'
       else
         retval << CGI.escapeHTML(line + "\n")
       end

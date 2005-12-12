@@ -15,12 +15,25 @@ require 'time'
 
 require 'atomcheck'
 
+def usage
+  print "#{$0}\n\n"
+  print "--username or -a=username:\n\t Set username for WSSE auth.\n"
+  print "--password or -p=password:\n\t Set password for WSSE auth.\n"
+  print "--target_url=target_url:\n\t Set URL for Atom POST.\n"
+  print "--title or -t=title:\n\t Set TITLE for your post article.\n"
+  print "--config or -c=configfile:\n\t Set YAML format config file.\n"
+  print "--html\n\t Set article format to HTML.\n" 
+  print "--hnf\n\t Set article format to HNF.\n"
+  print "--nocheck\n\t NO CHECK article is already has posted or not. (Default checkd.)\n"
+  print "--help\n\t Show this message\n"
+  exit
+end
 def atompost(target_url, user, pass, 
              title, body, article_date, 
              category, format, check=true)
+  as = AtomStatus.new
+  id = as.check(target_url, title, body, check)
   if check
-    as = AtomStatus.new
-    id = as.check(target_url, title, body)
     if id == 0
       print "Already posted\n"
       return false
@@ -50,11 +63,10 @@ def atompost(target_url, user, pass,
     http.request(req, postbody)
   }
 
-#  p res
   case res
   when Net::HTTPCreated 
     p "Success, #{article_date}"
-    as.update(id, 201)
+    as.update(id, 201,check)
     return res
   when Net::HTTPRedirection
     p "Redirect to res['location']"
@@ -132,7 +144,7 @@ def addhnf(target_url, user, pass, f, check=true)
     y['text'] += x + "\n"
 
   end
-  atompost(target_url, user, pass, y['title'], y['text'], y['ymd'], y['cat'], 'hnf')
+  atompost(target_url, user, pass, y['title'], y['text'], y['ymd'], y['cat'], 'hnf', check)
 end
 
 
@@ -147,14 +159,15 @@ check = true
 
 parser = GetoptLong.new
 parser.set_options(['--username', '-a', GetoptLong::REQUIRED_ARGUMENT],
-                   ['--password', '-d', GetoptLong::REQUIRED_ARGUMENT],
+                   ['--password', '-p', GetoptLong::REQUIRED_ARGUMENT],
                    ['--target_url', GetoptLong::REQUIRED_ARGUMENT],
-                   ['--title', '-h', GetoptLong::REQUIRED_ARGUMENT],
+                   ['--title', '-t', GetoptLong::REQUIRED_ARGUMENT],
                    ['--config', '-c', GetoptLong::REQUIRED_ARGUMENT],
                    ['--html', GetoptLong::NO_ARGUMENT],
                    ['--hnf', GetoptLong::NO_ARGUMENT],
-                   ['--body', '-u', GetoptLong::REQUIRED_ARGUMENT],
-                   ['--nocheck', '-n', GetoptLong::NO_ARGUMENT]
+                   ['--body', '-b', GetoptLong::REQUIRED_ARGUMENT],
+                   ['--nocheck', '-n', GetoptLong::NO_ARGUMENT],
+                   ['--help', '--usage', '-h', GetoptLong::NO_ARGUMENT]
                    )
 parser.each_option do |name, arg|
   case name
@@ -176,6 +189,10 @@ parser.each_option do |name, arg|
     format = 'hnf'
   when "--nocheck"
     check = false
+  when "--help"
+    usage
+  else
+    usage
   end
 end
 
