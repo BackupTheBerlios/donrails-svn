@@ -53,7 +53,7 @@ an = 0
    <%= link_to "\##{an}", {:action => "show_title", :id => article.id} %>
 
    <% article.categories.each do |cat| %>
-     [<%= link_to cat.name, {:action => "show_category", :category => cat.name} %>]
+     [<%= link_to cat.name, {:action => "show_category", :category => cat.name}  if cat.name %>]
    <% end %>
 
    <%= article.title_to_html %>

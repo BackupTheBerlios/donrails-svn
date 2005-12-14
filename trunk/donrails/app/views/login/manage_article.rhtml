@@ -18,6 +18,7 @@
      <td>Delete?</td>
      <td>title</td>
      <td>date</td>
+     <td>format</td>
      <td>category</td>
      <td>body</td>
    </tr>
@@ -31,6 +32,7 @@
      </td>
      <td><%= don_mb_truncate(co.title) if co.title %></td>
      <td><%= co.article_date.to_date.to_s if co.article_date %></td>
+     <td><%= co.format if co.format %></td>
      <td>
        <% co.categories.each do |cat| %>
        <%= link_to cat.name, {:controller => "notes", :action => "show_category", :category => cat.name} %>

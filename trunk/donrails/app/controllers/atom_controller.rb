@@ -133,7 +133,7 @@ class AtomController < ApplicationController
   def atom_update_article(article, data, xml)
     article.title = data['title']
     article.body = data['body']
-    article.format = "plain"
+    article.format = "html"
     article.size = article.body.size
     if data['article_date']
       article.article_date = data['article_date']
@@ -147,7 +147,6 @@ class AtomController < ApplicationController
     blogping = Blogping.find_all
     sendping(article, blogping)
     article.save
-
   end
 
   def bind_article_category(article, category)
