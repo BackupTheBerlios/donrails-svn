@@ -1,3 +1,11 @@
+2005-12-20  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/atom_controller.rb: 
+	- New method atom_update_article2. 
+	- Rmove atom_update_article and atom_input_parse.
+	- Apply for RFC4287.
+	* donrails/tool/atomclient/atompost.rb: Apply for RFC4287(atomCategory).
+
 2005-12-14  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/atom_controller.rb: FIX format of Atom POSTed article.(Change plain to html).

@@ -41,7 +41,10 @@ def atompost(target_url, user, pass,
   end
   postbody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<entry xmlns=\"http://purl.org/atom/ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n"
   postbody += "<articledate>#{article_date}</articledate>\n" if article_date
-  postbody += "<category>#{category.join(" ")}</category>\n" if category
+#  postbody += "<category>#{category.join(" ")}</category>\n" if category
+  category.each do |cate|
+    postbody += "<category term='#{cate}' />\n"
+  end
   if format == 'hnf'
     title = HNFHelper.new.title_to_html(title) if title
     body = HNFHelper.new.body_to_html2(body) if body

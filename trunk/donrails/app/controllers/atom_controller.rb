@@ -1,5 +1,7 @@
 require 'rexml/document'
 
+# rfc4287
+
 class AtomController < ApplicationController
   layout "atom", :only => [
     :preview
@@ -41,10 +43,12 @@ class AtomController < ApplicationController
   def post
     if request.method == :post
       begin
-        xml, data = atom_input_parse(request.raw_post)
-        aris1 = Article.new
-        aris1.id = @params['id'] if @params['id']
-        atom_update_article(aris1, data, xml)
+        if @params['id']
+          aris1 = Article.new("id" => @params['id'])
+        else
+          aris1 = Article.new
+        end
+        atom_update_article2(aris1, request.raw_post)
         aris1.save
         @article = aris1
         render :status => 201 # 201 Created @ Location
@@ -59,9 +63,8 @@ class AtomController < ApplicationController
   def edit
     if request.method == :put
       begin
-        xml, data = atom_input_parse(request.raw_post)
         aris1 = Article.find(@params['id'])
-        atom_update_article(aris1, data, xml)
+        atom_update_article2(aris1, request.raw_post)
         aris1.save
         @article = aris1
         render :action => "post", :status => 200
@@ -97,57 +100,94 @@ class AtomController < ApplicationController
 
   private
 
-  def atom_input_parse(raw_post)
+  # rfc4287 atom:entry
+  #           atomAuthor*
+  #           & atomCategory*
+  #           & atomContent?
+  #           & atomContributor*
+  #           & atomId
+  #           & atomLink*
+  #           & atomPublished?
+  #           & atomRights?
+  #           & atomSource?
+  #           & atomSummary?
+  #           & atomTitle
+  #           & atomUpdated
+  #           & extensionElement
+  def atom_update_article2(article, raw_post)
     xml = REXML::Document.new(raw_post)
-    data = {}
+    databody = String.new
 
-    if xml.root.elements['title'].text
-      data['title'] = xml.root.elements['title'].text
-    elsif xml.root.elements['title'].to_s
-      if xml.root.elements['title'].to_s =~ (/^<title>(.+)<\/title>$/)
-        data['title'] = $1
+    # atomAuthor # XXX
+
+    # atomCategory* 
+    #    atomCategory =
+    #      element atom:category {
+    #        atomCommonAttributes,
+    #        attribute term { text },
+    #        attribute scheme { atomUri }?,
+    #        attribute label { text }?,
+    #        undefinedContent
+    #      }
+    if xml.root.elements['category'].text
+      bind_article_category(article, xml.root.elements['category'].text)
+    elsif xml.root.elements['category'].attributes["term"]
+      cat1 = String.new
+      xml.root.each_element("category") do |elem|
+        cat1 += elem.attributes['term']
+        cat1 += ' '
       end
-    else
-      data['title'] = ''
+      bind_article_category(article, cat1)
     end
 
-    if xml.root.elements['articledate'].text
-      data['article_date'] = xml.root.elements['articledate'].text
-    else
-      data['article_date'] = Time.now
-    end
-
+    # atomContent?
     if xml.root.elements['content'].attributes["mode"] == "escaped"
-      data['body'] = xml.root.elements['content'].text
-      data['body'].gsub(/&amp;/, "&")
-      data['body'].gsub(/&quot;/, "\"")
-      data['body'].gsub(/&lt;/, "<")
-      data['body'].gsub(/&gt;/, ">")
+      databody = xml.root.elements['content'].text
+      databody.gsub(/&amp;/, "&")
+      databody.gsub(/&quot;/, "\"")
+      databody.gsub(/&lt;/, "<")
+      databody.gsub(/&gt;/, ">")
     else
-      data['body'] = xml.root.elements['content'].to_s
+      databody = xml.root.elements['content'].to_s
     end
-
-    return xml, data
-  end
-
-  def atom_update_article(article, data, xml)
-    article.title = data['title']
-    article.body = data['body']
+    article.body = databody
     article.format = "html"
     article.size = article.body.size
-    if data['article_date']
-      article.article_date = data['article_date']
+
+    # atomContributor* # XXX
+    # atomLink* # XXX
+    # atomPublished? # XXX
+    # atomRights? # XXX
+    # atomSource? # XXX atom:entry is copied from one feed into another feed
+    # atomSummary? # XXX
+
+    #  atomTitle
+    if xml.root.elements['title'].text
+      article.title = xml.root.elements['title'].text
+    elsif xml.root.elements['title'].to_s
+      if xml.root.elements['title'].to_s =~ (/^<title>(.+)<\/title>$/)
+        article.title = $1
+      end
+    end
+
+    # atomUpdated
+    if xml.root.elements['updated'] and xml.root.elements['updated'].text
+      article.article_mtime = xml.root.elements['updated'].text
+    else
+      article.article_mtime = Time.now
+    end
+
+    # extensionElement
+    if xml.root.elements['articledate'].text
+      article.article_date = xml.root.elements['articledate'].text
     else
       article.article_date = Time.now
     end
-    article.article_mtime = Time.now
-    if xml.root.elements['category'].text
-      bind_article_category(article, xml.root.elements['category'].text)
-    end
+
     blogping = Blogping.find_all
     sendping(article, blogping)
-    article.save
   end
+
 
   def bind_article_category(article, category)
     cat1 = category.split(' ')
