@@ -1,0 +1,64 @@
+<%
+an = 0
+mi = @bulknum * @page
+i = mi
+ma = mi + @bulknum - 1
+ma = @total if @total < ma + 1
+cattmp = @articles[ma]
+%>
+
+<%= @page %>
+<%= mi %>
+<%= ma %>
+
+<h3>カテゴリ: <%= @categories.name %> のリスト</h3>
+<% if @total > @bulknum %>
+全<%= @total %>件中
+<%= mi + 1 %>〜<%= ma + 1 %>
+
+<% else %>
+全<%= @total %>件
+<% end %>
+
+<%= link_to "はじめ", {:action => "show_category", :category => @params['category'], :page => 0} %>
+
+<dl>
+<% for i in mi..ma
+     art = don_get_object(@articles[i])
+     an += 1 
+     btmp = strip_links art.body_to_html
+     btmp = don_chomp_tags(btmp)
+%>
+  <dt><%= link_to "\##{an}", {:action => "show_title", :id => art.id} %> <%= art.title_to_html %></dt>
+  <dd><%= truncate(btmp, 150) %>
+     (<%= link_to "#{art.article_date.to_date}",
+         {:action => "show_date",
+          :year => art.article_date.year,
+          :month => art.article_date.month,
+          :day => art.article_date.day
+         } %>)
+  </dd>
+<% end %>
+</dl>
+
+<hr>
+
+<dl>
+<%
+@articles.each do |a|
+  art = don_get_object(a, 'html')
+%>
+  <% an += 1 %>
+  <% btmp = strip_links art.body_to_html %>
+  <% btmp = don_chomp_tags(btmp) %>
+  <dt><%= link_to "\##{an}", {:action => "show_title", :id => art.id} %> <%= art.title_to_html %></dt>
+  <dd><%= truncate(btmp, 150) %>
+     (<%= link_to "#{art.article_date.to_date}",
+         {:action => "show_date",
+          :year => art.article_date.year,
+          :month => art.article_date.month,
+          :day => art.article_date.day
+         } %>)
+  </dd>
+<% end %>
+</dl>

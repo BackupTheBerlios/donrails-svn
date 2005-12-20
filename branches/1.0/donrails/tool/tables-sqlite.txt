@@ -1,0 +1,101 @@
+CREATE TABLE pictures 
+(	
+id       INTEGER PRIMARY KEY,
+name     VARCHAR,
+path      VARCHAR,
+size      INTEGER,
+content_type   VARCHAR,
+comment        VARCHAR
+);
+
+CREATE TABLE comments (
+id       INTEGER PRIMARY KEY,
+password    VARCHAR,
+
+date     TIMESTAMP,
+title     VARCHAR,
+author   VARCHAR,
+url      VARCHAR,
+
+ipaddr   VARCHAR,
+body     VARCHAR
+);
+
+CREATE TABLE categories (
+id       INTEGER PRIMARY KEY,
+name         VARCHAR NOT NULL UNIQUE
+);
+
+CREATE TABLE articles (
+id       INTEGER PRIMARY KEY,
+title    VARCHAR,
+body     VARCHAR,
+size     INTEGER,
+article_date     TIMESTAMP,
+article_mtime    TIMESTAMP,
+hnfid    INTEGER,
+format   VARCHAR
+);
+
+CREATE TABLE categories_articles (
+category_id       INTEGER NOT NULL,
+article_id       INTEGER NOT NULL,
+constraint fk_cp_category foreign key (category_id) references categories(id),
+constraint fk_cp_article foreign key (article_id) references articles(id),
+primary key (category_id, article_id)
+);
+
+CREATE TABLE comments_articles (
+comment_id       INTEGER NOT NULL,
+article_id       INTEGER NOT NULL,
+constraint fk_cp_comment foreign key (comment_id) references comments(id),
+constraint fk_cp_article foreign key (article_id) references articles(id),
+primary key (comment_id, article_id)
+);
+
+CREATE TABLE authors (
+id     INTEGER PRIMARY KEY,
+name   VARCHAR,
+pass   VARCHAR,
+writable INTEGER NOT NULL
+);
+
+CREATE TABLE blacklists (
+id     INTEGER PRIMARY KEY,
+format   VARCHAR,
+pattern   VARCHAR
+);
+
+CREATE TABLE plugins (
+id     INTEGER PRIMARY KEY,
+name   	      VARCHAR NOT NULL UNIQUE,
+description   VARCHAR NOT NULL,
+manifest      VARCHAR NOT NULL,
+activation    BOOLEAN
+);
+
+CREATE TABLE blogpings (
+id          INTEGER PRIMARY KEY NOT NULL,
+server_url    VARCHAR NOT NULL UNIQUE
+);
+
+CREATE TABLE pings (
+id          INTEGER PRIMARY KEY NOT NULL,
+article_id  INTEGER,
+url         VARCHAR DEFAULT NULL,
+created_at  DATETIME DEFAULT NULL
+);
+
+CREATE TABLE trackbacks (
+id          INTEGER PRIMARY KEY NOT NULL,
+article_id  INTEGER,
+category_id INTEGER,
+blog_name   VARCHAR DEFAULT NULL,
+title       VARCHAR DEFAULT NULL,
+excerpt     VARCHAR DEFAULT NULL,
+url         VARCHAR DEFAULT NULL,
+ip          VARCHAR DEFAULT NULL,
+created_at  DATETIME DEFAULT NULL
+);
+
+

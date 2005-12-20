@@ -1,0 +1,20 @@
+
+<%
+article = don_get_object(@articles, 'html')
+%>
+
+<div class="nnenhead">
+<p>
+<%= article.article_date %> /
+<% article.categories.each do |cat| %>
+[<%= link_to cat.name, {:action => "show_category", :category => cat.name} %>]
+<% end %>
+<%= article.title_to_html if article.title %> /
+</p>
+</div> <!-- end nnenhead -->
+
+<div class="section">
+<%= auto_link article.body_to_html if article.body %>
+<%= render("shared/comment-noadd", "article" => article) %>
+</div> <!-- end section -->
+

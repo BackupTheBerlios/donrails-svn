@@ -1,0 +1,51 @@
+
+<% if article.comments %>
+<% article.comments.each do |x| %>
+<div class="tsukkomi" >
+<dl class="comments">
+<dt><span class="poster">この記事へのコメント: by <%= x.author %></span></dt>
+<dd><%= x.body %></dd>
+</dl>
+</div>
+<% end %>
+<% end %>
+
+<% if article.trackbacks %>
+<% article.trackbacks.each do |x| %>
+<div class="trackback" >
+<dl class="comments">
+<dt><span class="poster">この記事へのトラックバック: by <%= x.blog_name %><%= auto_link x.url %></span></dt>
+<dd>Title: <%= x.title %><%= x.excerpt %></dd>
+</dl>
+</div>
+<% end %>
+<% end %>
+
+<div class="boardlink">
+<a class="msc-toggle" href="#" onclick="toggleCode('dx_boardlink_<%= article.id %>');return false;">[コメントする]</a>
+[TrackBack URL:
+<%= auto_link @request.protocol + @request.host_with_port + url_for(:action => 'trackback', :id => article.id) %>]
+<div style="display: none;" class="msc" id="dx_boardlink_<%= article.id %>">
+
+<%= form_tag :action => "add_comment2" %>
+おなまえ:
+<%= text_field "comment", "author", "size" => 20, "id" => "dx_addcomment2author_#{article.id}" %>
+URL(あれば):
+<%= text_field "comment", "url", "size" => 20, "id" => "dx_addcomment2url_#{article.id}" %>
+<br />
+パスワード(10文字まで):
+<%= password_field "comment", "password", "maxlength" => 10, "id" => "dx_addcomment2password_#{article.id}" %>
+<br />
+タイトル:
+<%= text_field "comment", "title", "size" => 60, "value" => "Re: #{article.title}", "id" => "dx_addcomment2title_#{article.id}" %>
+<br />
+本文:
+<%= text_area "comment", "body", "rows" => 5, "cols" => 80, "id" => "dx_addcomment2body_#{article.id}" %>
+
+<br />
+<%= hidden_field "comment", "article_id", "value" => article.id, "id" => "dx_addcomment2articleid_#{article.id}" %>
+<input type="submit" value="Save" />
+</form>
+
+</div> <!-- end of msc-toggle as comment form -->
+</div> <!-- end of boadlink -->
