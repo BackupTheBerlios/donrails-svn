@@ -1,4 +1,8 @@
 2005-12-20  araki yasuhiro  <yasu@debian.or.jp>
+	
+	* 0.99.2
+	* donrails/app/controllers/login_controller.rb: Fix delete_trackback. No
+t worked!
 
 	* donrails/app/controllers/atom_controller.rb: 
 	- New method atom_update_article2. 

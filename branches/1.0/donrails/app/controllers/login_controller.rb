@@ -44,14 +44,15 @@ class LoginController < ApplicationController
   end
 
   def delete_trackback
-    c = @params["deleteid"]
-    c.each do |k, v|
-      if v.to_i == 1
-        b = Trackback.find(k.to_i)
-        b_art = b.articles
-        b.articles.delete(b_art)
-        Trackback.delete(k.to_i)
+    begin
+      c = @params["deleteid"]
+      c.each do |k, v|
+        if v.to_i == 1
+          Trackback.delete(k.to_i)
+        end
       end
+    rescue
+      @heading = 'fail delete_trackback'
     end
     redirect_to :action => "manage_trackback"
   end
