@@ -1,3 +1,18 @@
+2005-12-21  araki yasuhiro  <yasu@debian.or.jp>
+
+	* Road to 1.1 start.
+
+	* donrails/app/controllers/notes_controller.rb: 
+	- New methods. recent_category_title_a and category_select_a. 
+	- Change in recent method. Remove @recent_*_articles (* is category name) and @categories. (Use shared/{category_title_list,category_select}.rhtml for alternative)
+	- Add @recent_trackbacks. 
+	- Change recent_category method to private method.
+	* donrails/app/views/shared/search.rhtml: New file.
+	* donrails/app/views/shared/category_title_list.rhtml: New file.
+	* donrails/app/views/shared/category_select.rhtml: New file.
+	* donrails/app/views/notes/category_select_a.rhtml: New file.
+	* donrails/example/notes.rhtml: Change to call these new Ajax method.
+	
 2005-12-21  Akira TAGOH  <at@gclab.org>
 
 	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::body_to_html): 

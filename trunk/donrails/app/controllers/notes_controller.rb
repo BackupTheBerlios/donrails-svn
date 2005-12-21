@@ -2,12 +2,14 @@ require 'kconv'
 class NotesController < ApplicationController
   layout "notes", :except => [
     :pick_article_a,
+    :recent_category_title_a,
     :rdf_recent,
     :rdf_article,
     :rdf_search,
     :rdf_category,
     :trackback,
-    :catch_ping
+    :catch_ping,
+    :category_select_a
   ]
 
   def index
@@ -143,20 +145,38 @@ class NotesController < ApplicationController
 
   def recent
     @recent_articles = Article.find(:all, :order => "id DESC", :limit => 10)
-    @recent_road_articles = recent_category("road")
-    @recent_ruby_articles = recent_category("ruby")
     @recent_comments = Article.find(:all, :order => "articles.article_date DESC", :limit => 30,
                                     :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id)"
                                    )
+    @recent_trackbacks = Article.find(:all, 
+                                      :order => "articles.article_date DESC", 
+                                      :limit => 30,
+                                      :joins => "JOIN trackbacks on (trackbacks.article_id=articles.id)"
+                                      )
+
     @long_articles = Article.find(:all, :order => "size DESC", :limit => 10)
-    @categories = Category.find_all
+#    @categories = Category.find_all
   end
+  private :recent
 
   def recent_category(category)
     categories = Category.find(:first, :conditions => ["name = ?", category])
     return [] if categories.nil?
     articles = categories.articles
     return articles.reverse!
+  end
+  private :recent_category
+
+  def recent_category_title_a
+    @headers["Content-Type"] = "text/html; charset=utf-8"
+    categories = Category.find(:first, :conditions => ["name = ?", @params['category']])
+    return [] if categories.nil?
+    @articles = categories.articles
+  end
+
+  def category_select_a 
+    @headers["Content-Type"] = "text/html; charset=utf-8"
+    @categories = Category.find_all
   end
 
   def show_month
