@@ -1,3 +1,8 @@
+2005-12-21  Akira TAGOH  <at@gclab.org>
+
+	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::body_to_html): 
+	added $$img support.
+
 2005-12-20  araki yasuhiro  <yasu@debian.or.jp>
 
 	* 0.99.2

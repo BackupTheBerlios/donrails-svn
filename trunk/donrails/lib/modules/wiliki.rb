@@ -38,6 +38,7 @@ require '../delegator' if $0 == __FILE__
   #		list - <ol> - only the beginning of line
   :desc:blah	data description - <dd> <dt> - only the beginning of line
   ||blah||	table - <table>
+  $$img url [desc]	inline image
 
 =end
 
@@ -200,6 +201,8 @@ module DonRails
               lprev = line
               next
             end
+          elsif line =~ (/\[\[\$\$img\s+(\S+)(?:\s+(.*))?\]\]/) then
+            line.gsub!(/\[\[\$\$img\s+(\S+)(?:\s+(.*))?\]\]/, '<img src="\1" alt="\2" />')
           end
           if line =~ (/\[\[/) then
             if line =~ (/\[\[[^(?:\[\[)]*\]\]/) then
