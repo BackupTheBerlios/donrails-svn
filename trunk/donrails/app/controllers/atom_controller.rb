@@ -1,4 +1,5 @@
 require 'rexml/document'
+require 'cgi'
 
 # rfc4287
 
@@ -142,15 +143,11 @@ class AtomController < ApplicationController
 
     # atomContent?
     if xml.root.elements['content'].attributes["mode"] == "escaped"
-      databody = xml.root.elements['content'].text
-      databody.gsub(/&amp;/, "&")
-      databody.gsub(/&quot;/, "\"")
-      databody.gsub(/&lt;/, "<")
-      databody.gsub(/&gt;/, ">")
+      databody = '<content>' + CGI.unescapeHTML(xml.root.elements['content'].text) + '</content>'
     else
       databody = xml.root.elements['content'].to_s
     end
-    article.body = databody
+    article.body = parsecontent(databody)
     article.format = "html"
     article.size = article.body.size
 
@@ -188,6 +185,22 @@ class AtomController < ApplicationController
     sendping(article, blogping)
   end
 
+  def parsecontent(databody)
+    if databody =~ (/^<content(.*)<\/content>/im)
+      doc = REXML::Document.new(databody)
+      elems = doc.root.elements
+      elems.each("pre") do |elem|
+        if elem.to_s =~ (/^<pre>(.*)<\/pre>$/m)
+          elem_escape = CGI.escapeHTML(CGI.unescapeHTML($1))
+        end
+        e = REXML::Element.new("pre")
+        e.add_text(elem_escape)
+        elems[elems.index(elem)] = e
+      end
+      databody = doc.to_s
+    end
+    return databody
+  end
 
   def bind_article_category(article, category)
     cat1 = category.split(' ')

@@ -32,8 +32,8 @@ dbdir:
 	chmod a+w rails/db
 
 
-dist: clean
-	cd .. ; tar --exclude .svn --exclude rails --exclude donrails/app/views/notes/index.rhtml --exclude donrails/app/views/layouts/notes.rhtml -zcvf donrails-`cat donrails/VERSION`_`date +%Y%m%d`.tar.gz donrails/
+dist10: clean
+	cd .. ; tar --exclude .svn --exclude rails --exclude donrails-1.0/app/views/notes/index.rhtml --exclude donrails-1.0/app/views/layouts/notes.rhtml -zcvf donrails-`cat donrails-1.0/VERSION`_`date +%Y%m%d`.tar.gz donrails-1.0/
 
 clean:
 	rm -f *~ */*~ */*/*~ */*/*/*~ */*/*/*/*~ *.orig */*.orig */*/*.orig

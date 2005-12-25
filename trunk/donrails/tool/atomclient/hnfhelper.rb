@@ -2,7 +2,7 @@ require 'cgi'
 
 class HNFHelper
 
-  def body_to_html2(body)
+  def body_to_html2(body, cgi_escape=true)
     retval = ""
 
     pre_tag = false
@@ -18,8 +18,11 @@ class HNFHelper
       end
 
       if pre_tag then
-        retval << CGI.escapeHTML(line + "\n")
-#      elsif line =~ /\A\/?([A-Z]|~)+\b/        # hnf command is consited CAPITAL letters and begin at head of line.
+        if cgi_escape
+          retval << CGI.escapeHTML(line + "\n")
+        else
+          retval << line + "\n"
+        end
       elsif line =~ /\A\/?[A-Z]+\b/        # hnf command is consited CAPITAL letters and begin at head of line.
         if line =~ (/\AOK/) then
           next
@@ -65,7 +68,11 @@ class HNFHelper
       elsif line =~ (/\A~/) then
         retval << '<br />'
       else
-        retval << CGI.escapeHTML(line + "\n")
+        if cgi_escape
+          retval << CGI.escapeHTML(line + "\n")
+        else
+          retval << line + "\n"
+        end
       end
     end
 

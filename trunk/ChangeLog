@@ -1,3 +1,15 @@
+2005-12-25  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/login/manage_{comment,article,trackback}.rhtml: Chage to remove useless space.
+
+	* Patch apply from branche/1.0 (109)
+	- donrails/app/controllers/atom_controller.rb: New private method: parsecontent.
+	- donrails/tool/atomclient/{atompost,hnfhelper}.rb:
+	-- New '--preescape' option. atompost.rb does not HTML escape in <pre></pre> text.
+	-- Some change to apply http://www.ietf.org/internet-drafts/draft-ietf-atompub-protocol-06.txt.
+	- README_1.0: New file.
+	- Makefile: Change for dist release 1.0.
+
 2005-12-21  araki yasuhiro  <yasu@debian.or.jp>
 
 	* Road to 1.1 start.

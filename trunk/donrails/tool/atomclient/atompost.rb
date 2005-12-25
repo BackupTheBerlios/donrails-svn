@@ -25,12 +25,13 @@ def usage
   print "--html\n\t Set article format to HTML.\n" 
   print "--hnf\n\t Set article format to HNF.\n"
   print "--nocheck\n\t NO CHECK article is already has posted or not. (Default checkd.)\n"
+  print "--preescape\n\t html escape in <pre></pre> text. (Default no preescaped.)\n\t(Some text caused internal server error without this option.)"
   print "--help\n\t Show this message\n"
   exit
 end
 def atompost(target_url, user, pass, 
              title, body, article_date, 
-             category, format, check=true)
+             category, format, check=true, preescape=true)
   as = AtomStatus.new
   id = as.check(target_url, title, body, check)
   if check
@@ -39,19 +40,21 @@ def atompost(target_url, user, pass,
       return false
     end
   end
-  postbody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<entry xmlns=\"http://purl.org/atom/ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n"
+
+  postbody = "<entry xmlns='http://www.w3.org/2005/Atom'>\n"
   postbody += "<articledate>#{article_date}</articledate>\n" if article_date
-#  postbody += "<category>#{category.join(" ")}</category>\n" if category
   category.each do |cate|
-    postbody += "<category term='#{cate}' />\n"
+    postbody += "<category term='#{cate}'/>\n"
   end
   if format == 'hnf'
     title = HNFHelper.new.title_to_html(title) if title
-    body = HNFHelper.new.body_to_html2(body) if body
+    body = HNFHelper.new.body_to_html2(body, preescape) if body
   end
+
   postbody += "<title>#{title}</title>\n" if title
-  postbody += "<content>#{body}</content>\n" if body
-  postbody += "</entry>\n"
+  postbody += "<content type='text/html'>#{body}</content>" if body
+##  postbody += "<content type='xhtml'><div xmlns='http://www.w3.org/1999/xhtml'>#{body}</div></content>" if body
+  postbody += "</entry>"
 
   xml = HTree.parse(postbody).to_rexml
   postbody = xml.root.to_s
@@ -73,7 +76,7 @@ def atompost(target_url, user, pass,
     return res
   when Net::HTTPRedirection
     p "Redirect to res['location']"
-    atompost(res['location'], user, pass, title, body, article_date, category, format, check)
+    atompost(res['location'], user, pass, title, body, article_date, category, format, check, preescape)
   else
     p "Error, #{article_date}"
     p res
@@ -95,10 +98,10 @@ def addhtml(target_url, user, pass, f)
   body = xml.root.elements['body'].to_s
   article_date = mtime.iso8601
 
-  atompost(target_url, user, pass, title, body, article_date, nil, 'html', check)
+  atompost(target_url, user, pass, title, body, article_date, nil, 'html', check, preescape)
 end
 
-def addhnf(target_url, user, pass, f, check=true)
+def addhnf(target_url, user, pass, f, check=true, preescape=true)
   if f =~ /d(\d{4})(\d{2})(\d{2})\.hnf/
     ymd = $1 + '-' + $2 + '-' + $3
   end
@@ -124,7 +127,7 @@ def addhnf(target_url, user, pass, f, check=true)
   ftmp.each do |x|
     if x =~ /^(CAT|NEW|LNEW)\s+.+/
       if y['title']
-        atompost(target_url, user, pass, y['title'], y['text'], y['ymd'], y['cat'], 'hnf', check)
+        atompost(target_url, user, pass, y['title'], y['text'], y['ymd'], y['cat'], 'hnf', check, preescape)
         y.clear
         y['ymd'] = ymd
         y['mtime'] = mtime
@@ -147,7 +150,7 @@ def addhnf(target_url, user, pass, f, check=true)
     y['text'] += x + "\n"
 
   end
-  atompost(target_url, user, pass, y['title'], y['text'], y['ymd'], y['cat'], 'hnf', check)
+  atompost(target_url, user, pass, y['title'], y['text'], y['ymd'], y['cat'], 'hnf', check, preescape)
 end
 
 
@@ -159,6 +162,7 @@ body = nil
 configfile = nil
 format = nil
 check = true
+preescape = false
 
 parser = GetoptLong.new
 parser.set_options(['--username', '-a', GetoptLong::REQUIRED_ARGUMENT],
@@ -169,7 +173,8 @@ parser.set_options(['--username', '-a', GetoptLong::REQUIRED_ARGUMENT],
                    ['--html', GetoptLong::NO_ARGUMENT],
                    ['--hnf', GetoptLong::NO_ARGUMENT],
                    ['--body', '-b', GetoptLong::REQUIRED_ARGUMENT],
-                   ['--nocheck', '-n', GetoptLong::NO_ARGUMENT],
+                   ['--nocheck', '--nc', '-n', GetoptLong::NO_ARGUMENT],
+                   ['--preescape', '--pe', GetoptLong::NO_ARGUMENT],
                    ['--help', '--usage', '-h', GetoptLong::NO_ARGUMENT]
                    )
 parser.each_option do |name, arg|
@@ -192,6 +197,8 @@ parser.each_option do |name, arg|
     format = 'hnf'
   when "--nocheck"
     check = false
+  when "--preescape"
+    preescape = true
   when "--help"
     usage
   else
@@ -216,14 +223,14 @@ end
 if (body and title)
   atompost(target_url, user, pass, 
            title, body, nil, 
-           nil, nil, check)
+           nil, nil, check, preescape)
 end
 
 ARGV.each do |f|
   if (format == 'hnf' or (f =~ /d\d{8}.hnf/))
-    addhnf(target_url, user, pass, f, check)
+    addhnf(target_url, user, pass, f, check, preescape)
   elsif (format == 'html' or (f =~ /.html?/i))
-    addhtml(target_url, user, pass, f, check)
+    addhtml(target_url, user, pass, f, check, preescape)
   else
 #    p "unsupported filetype: #{f}"
 #    addguess(target_url, user, pass, f)
