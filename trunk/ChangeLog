@@ -1,3 +1,9 @@
+2005-12-26  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/notes/recent_category_a.rhtml: New file.
+	* donrails/app/views/notes/recent_category_title_a.rhtml: New file.
+	* donrails/tool/atomclient/atompost.rb: atompost.rb add to send escaped <content>blah,blah,blah</content>.
+
 2005-12-25  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/login/manage_{comment,article,trackback}.rhtml: Chage to remove useless space.
