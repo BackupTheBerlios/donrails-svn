@@ -2,7 +2,9 @@ require 'kconv'
 class NotesController < ApplicationController
   layout "notes", :except => [
     :pick_article_a,
+    :pick_article_a2,
     :recent_category_title_a,
+    :recent_trigger_title_a,
     :rdf_recent,
     :rdf_article,
     :rdf_search,
@@ -14,7 +16,7 @@ class NotesController < ApplicationController
 
   def index
     dateparse
-    recent
+#    recent
     @heading = "index"
   end
 
@@ -23,14 +25,25 @@ class NotesController < ApplicationController
     @heading = @params["q"]
     @noindex = true
   end
-  
+
+  def show_search_noteslist
+    search
+    @rdf_category = @params['q']
+    @heading = "検索結果:#{@params['q']}"
+    render_action 'noteslist'
+  end
+
   def pick_article
     @articles = Article.find(@params['pickid'].to_i)
     @heading = @articles.title
-    recent
   end
 
   def pick_article_a
+    @headers["Content-Type"] = "text/html; charset=utf-8"
+    @articles = Article.find(@params['pickid'].to_i)
+  end
+
+  def pick_article_a2
     @headers["Content-Type"] = "text/html; charset=utf-8"
     @articles = Article.find(@params['pickid'].to_i)
   end
@@ -39,7 +52,6 @@ class NotesController < ApplicationController
     @articles_pages, @articles = paginate(:article, :per_page => 10,
                                           :order_by => 'size DESC, id DESC'
                                           )
-    recent
     @heading = "記事サイズ順の表示"
     @noindex = true
     render_action 'noteslist'
@@ -83,7 +95,6 @@ class NotesController < ApplicationController
       @heading = "#{@articles.first.title} at #{@articles.first.article_date.to_date}"
     end
     @notice = @params['notice'] unless @notice
-    recent
   end
 
   def parse_nums
@@ -130,7 +141,6 @@ class NotesController < ApplicationController
   def rdf_category
     @category = Category.find(:first, :conditions => ["name = ?", @params['category']])
     if @category == nil
-      p @params["category"]
       @params["q"] = @params["category"]
       redirect_to :action => 'rdf_search', :q => @params["category"]
     else
@@ -155,7 +165,6 @@ class NotesController < ApplicationController
                                       )
 
     @long_articles = Article.find(:all, :order => "size DESC", :limit => 10)
-#    @categories = Category.find_all
   end
   private :recent
 
@@ -167,11 +176,26 @@ class NotesController < ApplicationController
   end
   private :recent_category
 
+  def recent_trigger_title_a
+    @headers["Content-Type"] = "text/html; charset=utf-8"
+    if @params['trigger'] == 'recents'
+      @articles = Article.find(:all, :order => "id DESC", :limit => 10)
+    elsif @params['trigger'] == 'trackbacks'
+      @articles = Article.find(:all, :order => "articles.article_date DESC", :limit => 30, :joins => "JOIN trackbacks on (trackbacks.article_id=articles.id)")
+    elsif @params['trigger'] == 'comments'
+      @articles = Article.find(:all, :order => "articles.article_date DESC", :limit => 30, :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id)")
+    elsif @params['trigger'] == 'long'
+      @articles = Article.find(:all, :order => "size DESC", :limit => 10)
+    end
+  end
+
   def recent_category_title_a
     @headers["Content-Type"] = "text/html; charset=utf-8"
-    categories = Category.find(:first, :conditions => ["name = ?", @params['category']])
-    return [] if categories.nil?
-    @articles = categories.articles
+    if @params['category']
+      categories = Category.find(:first, :conditions => ["name = ?", @params['category']])
+      return [] if categories.nil?
+      @articles = categories.articles.reverse
+    end
   end
 
   def category_select_a 
@@ -213,7 +237,6 @@ class NotesController < ApplicationController
 
   def show_date
     get_ymd
-    recent
     if @ymd
       @articles_pages, @articles =  paginate(:article, :per_page => 30,
                                              :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd1a]
@@ -253,7 +276,6 @@ class NotesController < ApplicationController
         @nextarticle = Article.find(:first, :conditions => ["id > ?", cid])
       rescue
       end
-      recent
     end
   end
 
@@ -266,7 +288,6 @@ class NotesController < ApplicationController
                :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
                )
     @heading = "カテゴリ:#{@params['category']}"
-    recent
   end
 
   def show_category_noteslist
@@ -278,7 +299,6 @@ class NotesController < ApplicationController
 
   def afterday
     @noindex = true
-    recent
     @debug_oneday = @request.request_uri
     get_ymd
     if @ymd
@@ -300,7 +320,6 @@ class NotesController < ApplicationController
   def tendays
     @debug_oneday = @request.request_uri
     get_ymd
-    recent
     @noindex = true
     @articles = Article.find(:all,
                              :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd10a]

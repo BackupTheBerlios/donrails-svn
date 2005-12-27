@@ -13,6 +13,9 @@
  div.arakiintro {   border-style: outset; margin:3px; padding:1px; background: #eeeeee; font-weight: bold }
 
  div.sidebar { width : 25%; float : right; z-index: 1 }
+ div.sidebar div.ctl { height : 25em; z-index: 1 }
+ div.sidebar div.show_direct { height : 4em; z-index: 1 }
+ div.sidebar div.category_select { height : 4em; z-index: 1 }
 
  div.linktitle { margin-top: 5pt; }
  div.rubytitle { margin-top: 5pt; color: red; font-weight: bold }

@@ -1,3 +1,20 @@
+2005-12-27  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/notes_controller.rb: 
+	- New method 'pick_article_a2'.
+	- New method 'show_search_noteslist'.	
+	- New method 'recent_trigger_title_a'.		
+	- Remove useless 'recent' in many methods.
+	* donrails/app/views/shared/category_title_list.rhtml: Add div.ctl.
+	* donrails/app/views/shared/show_direct.rhtml: New file.
+	* donrails/app/views/shared/category_select.rhtml: New div.category_select.
+	* donrails/app/views/notes/show_category2.rhtml: Remove file.
+	* donrails/app/views/notes/recent_trigger_title_a.rhtml: Some fix.
+	* donrails/app/views/notes/search.rhtml: Change to escape for displaying @params['h']
+	* donrails/app/views/notes/pick_article_a2.rhtml: New file.
+	* donrails/app/views/notes/show_category.rhtml: Some change.
+	* donrails/public/stylesheets/araki.css: Add div.sidebar div.{ctl,show_direct,category_select}
+
 2005-12-26  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/notes/recent_category_a.rhtml: New file.

@@ -18,14 +18,19 @@
   <% an += 1 %>
   <% btmp = strip_links art.body_to_html %>
   <% btmp = don_chomp_tags(btmp) %>
-  <dt><%= link_to "\##{an}", {:action => "show_title", :id => art.id} %> <%= art.title_to_html %></dt>
-  <dd><%= don_mb_truncate(btmp, 150) %>
+  <dt><%= link_to "\##{an}", {:action => "show_title", :id => art.id} %> <%= art.title_to_html %>
      (<%= link_to "#{art.article_date.to_date}",
          {:action => "show_date",
           :year => art.article_date.year,
           :month => art.article_date.month,
           :day => art.article_date.day
          } %>)
+  </dt>
+  <dd>
+    <div id="sc_ai_<%= art.id %>">
+    <%= don_mb_truncate(btmp, 150) %>
+    <%= link_to_remote("続き", :update => "sc_ai_#{art.id}", :url => {:action => "pick_article_a2", :pickid => art.id}) %>
+    </div>
   </dd>
 <% end %>
 </dl>
