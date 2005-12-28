@@ -1,3 +1,12 @@
+2005-12-28  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/shared/comment-form.rhtml: New file.
+	* donrails/app/views/shared/comment.rhtml: Move lines to comment-form.rhtml.
+	* donrails/app/views/shared/comment2.rhtml: New file (now writting.)
+	* donrails/app/views/notes/pick_article_a2.rhtml: Change to call from comment-noadd to comment2.
+	* donrails/app/views/notes/pick_article_a.rhtml: Remove unused lines.
+	* donrails/public/stylesheets/araki.css: add some entry.
+
 2005-12-27  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/notes_controller.rb: 

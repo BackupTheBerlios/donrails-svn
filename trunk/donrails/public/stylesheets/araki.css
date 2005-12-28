@@ -6,7 +6,12 @@
  div.head { background: white;  width: 75%; float : left}
  div.headline { background: #cccccc}
  div.lefttitle { margin-left: 0em; margin-right: 0.5em; font-size: 0.8em }
+
  div.mainarticle { width : 75%;  float : left; z-index: 2 }
+ div.mainarticle dt { margin-top: 0.5em }
+ div.mainarticle dd { margin-left: 1em; margin-right: 0 }
+ div.mainarticle div.section { margin-bottom: 0.5em; margin-left: 1em; margin-right: 0; margin-top: 0 }
+
  div.notice { color: red; font-weight: bold }
  div.pagelink { margin:3px; padding:1px;color: red; font-weight: bold }
 
