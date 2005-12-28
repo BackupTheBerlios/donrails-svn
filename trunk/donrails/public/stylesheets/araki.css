@@ -7,6 +7,8 @@
  div.headline { background: #cccccc}
  div.lefttitle { margin-left: 0em; margin-right: 0.5em; font-size: 0.8em }
 
+ div.comment_form_a { }
+
  div.mainarticle { width : 75%;  float : left; z-index: 2 }
  div.mainarticle dt { margin-top: 0.5em }
  div.mainarticle dd { margin-left: 1em; margin-right: 0 }
@@ -18,7 +20,7 @@
  div.arakiintro {   border-style: outset; margin:3px; padding:1px; background: #eeeeee; font-weight: bold }
 
  div.sidebar { width : 25%; float : right; z-index: 1 }
- div.sidebar div.ctl { height : 25em; z-index: 1 }
+ div.sidebar div.ctl { height : 25em; z-index: 2 }
  div.sidebar div.show_direct { height : 4em; z-index: 1 }
  div.sidebar div.category_select { height : 4em; z-index: 1 }
 
@@ -65,15 +67,6 @@
     background-color: #ddeeee;
     border: solid thin #ddeeee;
  }
-
-/*
- cite {
- bgcolor:#f0f8ff;
-  margin: 5px;
- cellpadding:5;
- color:black;
- }
-*/
 
  a.hide:link { color: black; text-decoration: none }
  span.bold-red { color: red; font-weight: bold }

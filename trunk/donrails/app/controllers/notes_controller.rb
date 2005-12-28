@@ -11,7 +11,8 @@ class NotesController < ApplicationController
     :rdf_category,
     :trackback,
     :catch_ping,
-    :category_select_a
+    :category_select_a,
+    :comment_form_a
   ]
 
   def index
@@ -46,6 +47,11 @@ class NotesController < ApplicationController
   def pick_article_a2
     @headers["Content-Type"] = "text/html; charset=utf-8"
     @articles = Article.find(@params['pickid'].to_i)
+  end
+
+  def comment_form_a
+    @headers["Content-Type"] = "text/html; charset=utf-8"
+    @article = Article.find(@params['id'].to_i)
   end
 
   def articles_long

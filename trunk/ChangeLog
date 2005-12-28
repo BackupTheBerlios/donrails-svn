@@ -1,3 +1,10 @@
+2005-12-29  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/notes_controller.rb: New method 'comment_form_a'.
+	* donrails/app/views/shared/comment2.rhtml: Change to call /notes/comment_form_a/id.
+	* donrails/app/views/notes/noteslist.rhtml: Change to use from shared/comment to shared/comment2.
+	* donrails/public/stylesheets/araki.css: Some change.
+
 2005-12-28  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/shared/comment-form.rhtml: New file.
