@@ -1,5 +1,5 @@
 <div id="catea_<%= category %>" class="ctl">
-reading..
+Please wait reading.. or <%= link_to("link", :controller => "notes", :action => "show_category_noteslist", :category => category) %>
 </div>
 <!-- BUG?? need to add  script type... and CDATA lines by hand -->
 <script type="text/javascript">

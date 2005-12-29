@@ -17,7 +17,7 @@ class NotesController < ApplicationController
 
   def index
     dateparse
-#    recent
+    recent
     @heading = "index"
   end
 
@@ -169,7 +169,6 @@ class NotesController < ApplicationController
                                       :limit => 30,
                                       :joins => "JOIN trackbacks on (trackbacks.article_id=articles.id)"
                                       )
-
     @long_articles = Article.find(:all, :order => "size DESC", :limit => 10)
   end
   private :recent

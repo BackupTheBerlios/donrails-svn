@@ -1,5 +1,8 @@
 2005-12-29  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/controllers/notes_controller.rb: Method 'index' was changed to call 'recent' method.
+	* donrails/app/views/shared/category_title_list.rhtml: Add to show 'Please wait reading.. or link' for non JavaScript enabled browser.
+
 	* donrails/app/controllers/notes_controller.rb: New method 'comment_form_a'.
 	* donrails/app/views/shared/comment2.rhtml: Change to call /notes/comment_form_a/id.
 	* donrails/app/views/notes/noteslist.rhtml: Change to use from shared/comment to shared/comment2.
