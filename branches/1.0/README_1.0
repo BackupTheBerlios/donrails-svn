@@ -1,5 +1,94 @@
+README_1.0
 
-* Required packages:
+donrails 1.0へようこそ。
+donrailsは日記や、blogの作成をするためのrubyプログラムです。
+記事の作成には、webからの入力のほか、AtomAPIを使用することができます。
+
+* 特徴
+
+- AtomAPIに対応(WSSE認証に対応しています)
+- 検索機能。また検索結果をRDFとして出力
+- 複数の入力形式(hnf, rd, plain text, wiki, html)に対応
+- コメントおよびトラックバック機能。およびそれらへのSPAMへの対応
+- 柔軟なカスタマイズが可能
+-- レイアウトを作成(nostes.rhtmlと、その中で指定するcss)することにより、見た目を自由に記述可能です。
+- 管理画面での記述やコメントの変更
+
+* ライセンスと著作権および連絡先
+
+ライセンスはGPL2です。
+
+作者および寄贈者の著作権表示は次の通りです。
+
+Copyright (C) 2005 ARAKI Yasuhiro <yasu@debian.or.jp>
+Copyright (C) 2005 Akira TAGOH <at@gclab.org>
+
+連絡先は donrails-users@lists.berlios.de です。
+メーリングリストは
+http://lists.berlios.de/mailman/listinfo/donrails-users
+からはいることができます。
+
+* インストール
+
+注意:
+http://www.araki.net/wiki/donrails-wiliki.cgi?donrails%3ainstall
+に最新の情報があります。
+
+* 動作条件
+
 - rails 0.13 and later.
 - sqlite or SQL server
+-- sqlite, sqlite3, postgresqlで使うテーブルを作成するためのsql fileが本アーカイブに含まれています。
+
+* 使用する外部ライブラリ
+
+railsを動作させる以外に必要な外部ライブラリは以下の通りです。
+
+- RD(librd-ruby1.8)
+- 'base64'
+- 'cgi'
+- 'date'
+- 'dbi'
+- 'digest/sha1'
+- 'getoptlong'
+- 'htree'
+- 'jcode'
+- 'kconv'
+- 'logger'
+- 'net/http'
+- 'optparse'
+- 'pathname'
+- 'rd/rd2html-lib'
+- 'rd/rdfmt'
+- 'readline'
+- 'rexml/document'
+- 'time'
+- 'uri'
+
+* sqliteを使う場合のインストール例
+
+1. railsをインストールする。
+2. gemsをインストールする。
+3. $ sudo gem install sqlite-ruby 
+	sqliteのライブラリがないときlibsqlite0-devをいれる
+4. $ make 
+	すると、railsのファイルと必要なツリーが構築される
+5. donrails/tool/donrails-setup.rb を実行する。
+	設定ファイルが作成される。
+	問題なければ、これで終了。
+6. 設定ファイルの編集
+	rails/config/database.yml
+	rails/config/donrails_env.rb
+7. ユーザが自分のやりたいようにいじるファイル(必須)
+	rails/app/views/notes/index.rhtml
+		("donrails/example/index.rhtml"にサンプルがあります)
+	rails/app/views/layouts/notes.rhtml
+		("donrails/example/notes.rhtml"にサンプルがあります)
+	rails/public/
+	以下はスタティックなファイルを置くために自由においてかまいません。
+	directoryだけでアクセスすると、rails/public/index.html が参照されるので、必要ない場合は消してください。railsの動作確認用のfileです。
+
+	画像のuploadを行うには、
+	rails/public/images/dump
+	のディレクトリを動作ユーザから書きこめるようにしておく必要があります。
 
