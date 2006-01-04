@@ -1,3 +1,7 @@
+2006-01-04  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/notes_controller.rb: Fix @recent_comments in 'recent' method.
+
 2005-12-29  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/notes_controller.rb: Method 'index' was changed to call 'recent' method.

@@ -164,11 +164,17 @@ class NotesController < ApplicationController
     @recent_comments = Article.find(:all, :order => "articles.article_date DESC", :limit => 30,
                                     :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id)"
                                    )
-    @recent_trackbacks = Article.find(:all, 
-                                      :order => "articles.article_date DESC", 
-                                      :limit => 30,
-                                      :joins => "JOIN trackbacks on (trackbacks.article_id=articles.id)"
-                                      )
+
+    @rt = Article.find(:all, 
+                       :order => "articles.article_date DESC", 
+                       :limit => 30,
+                       :joins => "JOIN trackbacks on (trackbacks.article_id=articles.id)"
+                       )
+    aid = Array.new
+    @rt.each do |rt|
+      aid.push rt.article_id
+    end
+    @recent_trackbacks = Article.find(aid)
     @long_articles = Article.find(:all, :order => "size DESC", :limit => 10)
   end
   private :recent
