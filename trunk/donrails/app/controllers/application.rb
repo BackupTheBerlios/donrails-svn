@@ -4,9 +4,29 @@
 require 'time'
 require 'digest/sha1'
 require 'base64'
+require 'stringio'
+require 'zlib' 
 
 class ApplicationController < ActionController::Base
 #  before_filter :set_charset
+  after_filter :compress
+
+  # http://blog.craz8.com/articles/2005/12/07/rails-output-compression
+  def compress
+    if self.request.env['HTTP_ACCEPT_ENCODING'].match(/gzip/)
+      if self.response.headers["Content-Transfer-Encoding"] != 'binary'
+        begin 
+          ostream = StringIO.new
+          gz = Zlib::GzipWriter.new(ostream)
+          gz.write(self.response.body)
+          self.response.body = ostream.string
+          self.response.headers['Content-Encoding'] = 'gzip'
+        ensure
+          gz.close
+        end
+      end
+    end
+  end
 
   def set_charset
     @headers["Content-Type"] = "text/html; charset=utf-8"
