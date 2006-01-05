@@ -67,6 +67,7 @@ class NotesController < ApplicationController
                                           )
     @heading = "記事サイズ順の表示"
     @noindex = true
+    @lm = @articles.first.article_mtime.gmtime
     render_action 'noteslist'
   end
 
@@ -178,8 +179,8 @@ class NotesController < ApplicationController
   end
 
   def recent
-    @lm = @recent_articles.first.article_mtime.gmtime
     @recent_articles = Article.find(:all, :order => "id DESC", :limit => 10)
+    @lm = @recent_articles.first.article_mtime.gmtime
     @recent_comments = Article.find(:all, :order => "articles.article_date DESC", :limit => 30,
                                     :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id)"
                                    )
@@ -244,6 +245,7 @@ class NotesController < ApplicationController
     end
     @heading = "#{@articles.first.article_date.to_date} - #{@articles.last.article_date.to_date}"
     @noindex = true
+    @lm = @articles.first.article_mtime.gmtime
     render_action 'noteslist'
   end
 
@@ -264,6 +266,7 @@ class NotesController < ApplicationController
     end
     @notice = "#{t2.month}月 #{t2.day}日の記事(#{@articles.first.article_date.year}年から#{@articles.last.article_date.year}年まで)"
     @noindex = true
+    @lm = @articles.first.article_mtime.gmtime
     render_action 'noteslist'
   end
 
@@ -280,6 +283,7 @@ class NotesController < ApplicationController
 
     begin
       @heading = "#{@articles.first.title} at #{@articles.first.article_date.to_date}"
+      @lm = @articles.first.article_mtime.gmtime
       render_action 'noteslist'
     rescue
       @notice = "指定された記事はありません。代わりに最近の記事から表示します。"
@@ -341,6 +345,7 @@ class NotesController < ApplicationController
       if @articles.first
         @heading = "#{@articles.first.title}"
         @notice = "#{@articles.first.article_date.to_date} 以降 30件の記事を表示します。"
+        @lm = @articles.first.article_mtime.gmtime
         render_action 'noteslist'
       else
         @notice = "#{@ymd}以降に該当する記事はありません"
@@ -470,7 +475,7 @@ class NotesController < ApplicationController
     if @lm
       @headers['Last-Modified'] = @lm.rfc2822.to_s
     end
-    if @noindex
+    if @noindex and Time.now - @lm < 86400
       @headers['Cache-Control'] = 'max-age=86400'
     else
       @headers['Cache-Control'] = 'public'

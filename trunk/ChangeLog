@@ -1,5 +1,7 @@
 2006-01-05  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/controllers/notes_controller.rb: Fix: @lm was located before Article.find in 'recent'.
+
 	* New Feature: Add cache control headers.(rfc2616 14.9) 
 	- 'Last-Modified: ' time was generated from Article.article_mtime.
 	- Add 'Cache-Control: public'. 
