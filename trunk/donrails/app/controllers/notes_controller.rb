@@ -1,5 +1,7 @@
 require 'kconv'
 class NotesController < ApplicationController
+  after_filter :add_cache_control
+
   layout "notes", :except => [
     :pick_article_a,
     :pick_article_a2,
@@ -25,6 +27,7 @@ class NotesController < ApplicationController
     @articles = Article.search(@params["q"])
     @heading = @params["q"]
     @noindex = true
+    @lm = Time.now.gmtime
   end
 
   def show_search_noteslist
@@ -37,21 +40,25 @@ class NotesController < ApplicationController
   def pick_article
     @articles = Article.find(@params['pickid'].to_i)
     @heading = @articles.title
+    @lm = @articles.article_mtime.gmtime
   end
 
   def pick_article_a
     @headers["Content-Type"] = "text/html; charset=utf-8"
     @articles = Article.find(@params['pickid'].to_i)
+    @lm = @articles.article_mtime.gmtime
   end
 
   def pick_article_a2
     @headers["Content-Type"] = "text/html; charset=utf-8"
     @articles = Article.find(@params['pickid'].to_i)
+    @lm = @articles.article_mtime.gmtime
   end
 
   def comment_form_a
     @headers["Content-Type"] = "text/html; charset=utf-8"
     @article = Article.find(@params['id'].to_i)
+    @lm = @article.article_mtime.gmtime
   end
 
   def articles_long
@@ -90,17 +97,23 @@ class NotesController < ApplicationController
   protected :dateparse
 
   def noteslist
-    @articles_pages, 
-    @articles = paginate(:article, :per_page => 30,
-                         :order_by => 'article_date DESC, id DESC'
-                         )
-
-    if @articles.empty? then
-      @heading = ""
+    @lm = Article.find(:first, :order => 'article_mtime DESC').article_mtime.gmtime
+    minTime = Time.rfc2822(@request.env["HTTP_IF_MODIFIED_SINCE"]) rescue nil
+    if minTime and @lm <= minTime
+      # use cached version
+      render_text '', '304 Not Modified'
     else
-      @heading = "#{@articles.first.title} at #{@articles.first.article_date.to_date}"
+      @articles_pages, 
+      @articles = paginate(:article, :per_page => 30,
+                           :order_by => 'article_date DESC, id DESC'
+                           )
+      if @articles.empty? then
+        @heading = ""
+      else
+        @heading = "#{@articles.first.title} at #{@articles.first.article_date.to_date}"
+      end
+      @notice = @params['notice'] unless @notice
     end
-    @notice = @params['notice'] unless @notice
   end
 
   def parse_nums
@@ -125,18 +138,22 @@ class NotesController < ApplicationController
 
   def rdf_recent
     @recent_articles = Article.find(:all, :order => "id DESC", :limit => 20)
+    @lm = @recent_articles.first.article_mtime.gmtime
   end
 
   def rdf_recent2
     @recent_articles = Article.find(:all, :order => "id DESC", :limit => 20)
+    @lm = @recent_articles.first.article_mtime.gmtime
   end
 
   def rdf_article
     @article = Article.find(@params['id'])
     @rdf_article = @article.id
+    @lm = @article.article_mtime.gmtime
   end
 
   def rdf_search
+    @lm = Time.now.gmtime
     @recent_articles = Article.search(@params["q"])
     @rdf_search = @params["q"]
     if @recent_articles == nil
@@ -156,10 +173,12 @@ class NotesController < ApplicationController
                                   :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
                                   )
       @rdf_category = @category.name
+      @lm = @recent_articles.first.article_mtime.gmtime
     end
   end
 
   def recent
+    @lm = @recent_articles.first.article_mtime.gmtime
     @recent_articles = Article.find(:all, :order => "id DESC", :limit => 10)
     @recent_comments = Article.find(:all, :order => "articles.article_date DESC", :limit => 30,
                                     :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id)"
@@ -198,6 +217,7 @@ class NotesController < ApplicationController
     elsif @params['trigger'] == 'long'
       @articles = Article.find(:all, :order => "size DESC", :limit => 10)
     end
+    @lm = @articles.first.article_mtime.gmtime
   end
 
   def recent_category_title_a
@@ -206,6 +226,7 @@ class NotesController < ApplicationController
       categories = Category.find(:first, :conditions => ["name = ?", @params['category']])
       return [] if categories.nil?
       @articles = categories.articles.reverse
+      @lm = @articles.first.article_mtime.gmtime
     end
   end
 
@@ -274,6 +295,7 @@ class NotesController < ApplicationController
     elsif @params['title'].size > 0
       @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["title = ?", @params['title']]) 
     end
+    @lm = @articles.first.article_mtime.gmtime
 
     if @articles.size >= 1
       @heading = "#{@articles.first.title}"
@@ -299,6 +321,7 @@ class NotesController < ApplicationController
                :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
                )
     @heading = "カテゴリ:#{@params['category']}"
+    @lm = @articles.first.article_mtime.gmtime
   end
 
   def show_category_noteslist
@@ -336,6 +359,7 @@ class NotesController < ApplicationController
                              :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd10a]
                                            )
     if @articles.size > 0
+      @lm = @articles.first.article_mtime.gmtime
       @heading = "#{@articles.first.title}"
     
       @notice = "#{@articles.first.article_date.to_date} 以降の10日間の記事を表示します。"
@@ -442,5 +466,15 @@ class NotesController < ApplicationController
     end
   end
 
+  def add_cache_control
+    if @lm
+      @headers['Last-Modified'] = @lm.rfc2822.to_s
+    end
+    if @noindex
+      @headers['Cache-Control'] = 'max-age=86400'
+    else
+      @headers['Cache-Control'] = 'public'
+    end
+  end
 
 end
