@@ -27,7 +27,7 @@ def usage
   print "--hnf\n\t Set article format to HNF.\n"
   print "--nocheck\n\t NO CHECK article is already has posted or not. (Default checkd.)\n"
   print "--preescape\n\t html escape in <pre></pre> text. (Default no preescaped.)\n\t(Some text caused internal server error without this option.)\n"
-  print "--content-mode\n\t <content></content> encode mode. (Default no encoded.)\n\t\t'escaped'"
+  print "--content-mode=(escaped)\n\t <content></content> encode mode. (Default no encoded.)\n\t\t'escaped' is the only supported encode mode."
   print "--help\n\t Show this message\n"
   exit
 end
@@ -61,7 +61,6 @@ def atompost(target_url, user, pass,
       postbody += "<content type='text/html' mode='escaped'>" + CGI.escapeHTML(CGI.unescapeHTML(body)) + '</content>'
     else
       postbody += "<content type='text/html'>#{body}</content>" 
-      ##  postbody += "<content type='xhtml'><div xmlns='http://www.w3.org/1999/xhtml'>#{body}</div></content>" if body
     end
   end
   postbody += "</entry>"

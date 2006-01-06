@@ -8,9 +8,11 @@ server_url:
 <%= text_field "blogping", "server_url" %>
 <%= submit_tag "pingする先を追加する" %>
 <%= end_form_tag %>
+<p>
+(cf: http://feeds.feedburner.com/yourblogname)
 
 <hr>
-pingする先の管理
+pingする先の管理(active=1の先は有効)
 <% if @blogpings %>
 <% if @blogpings_pages %>
 <%= pagination_links @blogpings_pages %>
@@ -22,6 +24,8 @@ pingする先の管理
     <td>pingする先を消去</td>
     <td>id</td>
     <td>server_url</td>
+    <td>active</td>
+    <td>activeの変更</td>
   </tr>
 
   <% @blogpings.each do |co| %>
@@ -29,6 +33,8 @@ pingする先の管理
     <td><%= check_box "deleteid", co.id %></td>
     <td><%= co.id %></td>
     <td><%= co.server_url %></td>
+    <td><%= co.active %></td>
+    <td><%= check_box "acid", co.id %></td>
   </tr>
   <% end %>
 </table>

@@ -8,6 +8,7 @@ class AtomController < ApplicationController
     :preview
   ]
   before_filter :wsse_auth, :except => :feed
+  after_filter :compress, :only => :feed
 
   def wsse_auth
     if request.env["HTTP_X_WSSE"]
@@ -181,7 +182,7 @@ class AtomController < ApplicationController
       article.article_date = Time.now
     end
 
-    blogping = Blogping.find_all
+    blogping = Blogping.find(:all, :conditions => ["active = 1"])
     sendping(article, blogping)
   end
 

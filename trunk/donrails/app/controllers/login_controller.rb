@@ -197,6 +197,20 @@ class LoginController < ApplicationController
   end
 
   def delete_blogping
+    c = @params["acid"].nil? ? [] : @params["acid"]
+    c.each do |k, v|
+      if v.to_i == 1
+        b = Blogping.find(k.to_i)
+        if b.active == 1
+          b.active = 0
+          b.save
+        else
+          b.active = 1
+          b.save
+        end
+      end
+    end
+
     c = @params["deleteid"].nil? ? [] : @params["deleteid"]
     c.each do |k, v|
       if v.to_i == 1
@@ -210,6 +224,7 @@ class LoginController < ApplicationController
   def add_blogping
     c = @params["blogping"]
     aris1 = Blogping.new("server_url" => c["server_url"])
+    aris1.active = 1
     aris1.save
     redirect_to :action => "manage_blogping"
   end
