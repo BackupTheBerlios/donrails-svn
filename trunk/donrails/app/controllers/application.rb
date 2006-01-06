@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   # http://blog.craz8.com/articles/2005/12/07/rails-output-compression
   def compress
-    if self.request.env['HTTP_ACCEPT_ENCODING'].match(/gzip/)
+    if self.request.env['HTTP_ACCEPT_ENCODING'] and self.request.env['HTTP_ACCEPT_ENCODING'].match(/gzip/)
       if self.response.headers["Content-Transfer-Encoding"] != 'binary'
         begin 
           ostream = StringIO.new

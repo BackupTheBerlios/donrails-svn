@@ -1,5 +1,7 @@
 2006-01-06  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/controllers/application.rb: Fix for client which does not send Accept-Encoding header.
+
 	* blogpings TABLE added new column 'active'.
 	- UPGRADE_1.1: New file. This file is upgrade guide from 1.0 to 1.1.
 	- donrails/app/controllers/login_controller.rb: add active/deactive method.(delete_blogping)
@@ -7,7 +9,7 @@
 
 	* donrails/tool/atomclient/atompost.rb: Add some notice in --help.
 	* donrails/app/controllers/atom_controller.rb: Change: Do not use compress for atom controller action exclude 'feed'.
-
+	
 2006-01-05  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/application.rb: New Feature: Output gzip compression. It derived from http://blog.craz8.com/articles/2005/12/07/rails-output-compression.
