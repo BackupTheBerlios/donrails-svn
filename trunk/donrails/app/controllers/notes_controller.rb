@@ -39,7 +39,8 @@ class NotesController < ApplicationController
 
   def pick_article
     @articles = Article.find(@params['pickid'].to_i)
-    @heading = @articles.title
+    a = don_get_object(@articles, 'html')
+    @heading = don_chomp_tags(a.title_to_html)
     @lm = @articles.article_mtime.gmtime
   end
 
@@ -111,7 +112,8 @@ class NotesController < ApplicationController
       if @articles.empty? then
         @heading = ""
       else
-        @heading = "#{@articles.first.title} at #{@articles.first.article_date.to_date}"
+        a = don_get_object(@articles.first, 'html')
+        @heading = "#{don_chomp_tags(a.title_to_html)} at #{@articles.first.article_date.to_date}"
       end
       @notice = @params['notice'] unless @notice
     end
@@ -282,7 +284,8 @@ class NotesController < ApplicationController
     end
 
     begin
-      @heading = "#{@articles.first.title} at #{@articles.first.article_date.to_date}"
+      a = don_get_object(@articles.first, 'html')
+      @heading = "#{don_chomp_tags(a.title_to_html)} at #{@articles.first.article_date.to_date}"
       @lm = @articles.first.article_mtime.gmtime
       render_action 'noteslist'
     rescue
@@ -302,7 +305,8 @@ class NotesController < ApplicationController
     @lm = @articles.first.article_mtime.gmtime
 
     if @articles.size >= 1
-      @heading = "#{@articles.first.title}"
+      a = don_get_object(@articles.first, 'html')
+      @heading = don_chomp_tags(a.title_to_html)
       cid = @articles.first.id
       @rdf_article = @articles.first.id
       begin
@@ -343,7 +347,8 @@ class NotesController < ApplicationController
       @articles =  Article.find(:all, :limit => 30,
                                 :conditions => ["article_date >= ?", @ymd])
       if @articles.first
-        @heading = "#{@articles.first.title}"
+        a = don_get_object(@articles.first, 'html')
+        @heading = don_chomp_tags(a.title_to_html)
         @notice = "#{@articles.first.article_date.to_date} 以降 30件の記事を表示します。"
         @lm = @articles.first.article_mtime.gmtime
         render_action 'noteslist'
@@ -365,7 +370,8 @@ class NotesController < ApplicationController
                                            )
     if @articles.size > 0
       @lm = @articles.first.article_mtime.gmtime
-      @heading = "#{@articles.first.title}"
+      a = don_get_object(@articles.first, 'html')
+      @heading = don_chomp_tags(a.title_to_html)
     
       @notice = "#{@articles.first.article_date.to_date} 以降の10日間の記事を表示します。"
       render_action 'noteslist'

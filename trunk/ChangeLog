@@ -1,3 +1,13 @@
+2006-01-10  Akira TAGOH  <at@gclab.org>
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::pick_article):
+	parse the title and strip the html tags down then.
+	(NotesController::noteslist): likewise.
+	(NotesController::show_date): likewise.
+	(NotesController::show_title): likewise.
+	(NotesController::afterday): likewise.
+	(NotesController::tendays): likewise.
+
 2006-01-06  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/application.rb: Fix for client which does not send Accept-Encoding header.
