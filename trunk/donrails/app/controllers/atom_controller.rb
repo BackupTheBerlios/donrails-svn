@@ -8,7 +8,7 @@ class AtomController < ApplicationController
     :preview
   ]
   before_filter :wsse_auth, :except => :feed
-  after_filter :compress, :only => :feed
+#  after_filter :compress, :only => :feed
 
   def wsse_auth
     if request.env["HTTP_X_WSSE"]
@@ -43,6 +43,7 @@ class AtomController < ApplicationController
 
   # atom post
   def post
+    p "L46"
     if request.method == :post
       begin
         if @params['id']
@@ -131,15 +132,32 @@ class AtomController < ApplicationController
     #        attribute label { text }?,
     #        undefinedContent
     #      }
-    if xml.root.elements['category'].text
-      bind_article_category(article, xml.root.elements['category'].text)
-    elsif xml.root.elements['category'].attributes["term"]
-      cat1 = String.new
-      xml.root.each_element("category") do |elem|
-        cat1 += elem.attributes['term']
-        cat1 += ' '
+
+    if xml.root.elements['category']
+      if xml.root.elements['category'].text
+        bind_article_category(article, xml.root.elements['category'].text)
+      elsif xml.root.elements['category'].attributes["term"]
+        cat1 = String.new
+        xml.root.each_element("category") do |elem|
+          cat1 += elem.attributes['term']
+          cat1 += ' '
+        end
+        bind_article_category(article, cat1)
       end
-      bind_article_category(article, cat1)
+    end
+
+    if xml.root.elements['content'].attributes["type"] == "text/html"
+      article.format = "html"
+    elsif xml.root.elements['content'].attributes["type"] == "text/plain"
+      article.format = "plain"
+    elsif xml.root.elements['content'].attributes["type"] == "text/x-hnf"
+      article.format = "hnf"
+    elsif xml.root.elements['content'].attributes["type"] == "text/x-rd"
+      article.format = "rd"
+    elsif xml.root.elements['content'].attributes["type"] == "text/x-wiliki"
+      article.format = "wiliki"
+    else
+      article.format = "html" # default
     end
 
     # atomContent?
@@ -149,7 +167,6 @@ class AtomController < ApplicationController
       databody = xml.root.elements['content'].to_s
     end
     article.body = parsecontent(databody)
-    article.format = "html"
     article.size = article.body.size
 
     # atomContributor* # XXX
@@ -176,14 +193,16 @@ class AtomController < ApplicationController
     end
 
     # extensionElement
-    if xml.root.elements['articledate'].text
+    if xml.root.elements['articledate'] and xml.root.elements['articledate'].text
       article.article_date = xml.root.elements['articledate'].text
     else
       article.article_date = Time.now
     end
 
     blogping = Blogping.find(:all, :conditions => ["active = 1"])
-    sendping(article, blogping)
+    if blogping and blogping.size > 0
+      sendping(article, blogping)
+    end
   end
 
   def parsecontent(databody)

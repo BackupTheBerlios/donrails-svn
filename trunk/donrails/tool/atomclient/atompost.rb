@@ -1,20 +1,8 @@
 #!/usr/bin/env ruby
 
 require 'yaml'
-require 'net/http'
-require 'wsse'
 require 'getoptlong'
-$KCODE = "UTF8"
-require 'kconv'
-require 'getoptlong'
-require 'hnfhelper'
-
-require 'rexml/document'
-require 'htree'
-require 'time'
-
 require 'atomcheck'
-require 'cgi'
 
 def usage
   print "#{$0}\n\n"
@@ -31,137 +19,6 @@ def usage
   print "--help\n\t Show this message\n"
   exit
 end
-def atompost(target_url, user, pass, 
-             title, body, article_date, 
-             category, format, check=true, preescape=true, content_mode=nil)
-  as = AtomStatus.new
-  id = as.check(target_url, title, body, check)
-  if check
-    if id == 0
-      print "Already posted\n"
-      return false
-    end
-  end
-
-  postbody = "<entry xmlns='http://www.w3.org/2005/Atom'>\n"
-  postbody += "<articledate>#{article_date}</articledate>\n" if article_date
-  category.each do |cate|
-    postbody += "<category term='#{cate}'/>\n"
-  end
-  if format == 'hnf'
-    title = HNFHelper.new.title_to_html(title) if title
-    body = HNFHelper.new.body_to_html2(body, preescape) if body
-  end
-
-
-
-  postbody += "<title>#{title}</title>\n" if title
-  if body
-    if content_mode == 'escaped'
-      postbody += "<content type='text/html' mode='escaped'>" + CGI.escapeHTML(CGI.unescapeHTML(body)) + '</content>'
-    else
-      postbody += "<content type='text/html'>#{body}</content>" 
-    end
-  end
-  postbody += "</entry>"
-
-  xml = HTree.parse(postbody).to_rexml
-  postbody = xml.root.to_s
-
-  url = URI.parse(target_url)
-  req = Net::HTTP::Post.new(url.path)
-
-  req['X-WSSE'] = WSSE.new.generate(user, pass)
-  req['host'] = url.host
-  req['Content-Type']= 'application/atom+xml'
-  res = Net::HTTP.new(url.host, url.port).start {|http|
-    http.request(req, postbody)
-  }
-
-  case res
-  when Net::HTTPCreated 
-    p "Success, #{article_date}"
-    as.update(id, 201,check)
-    return res
-  when Net::HTTPRedirection
-    p "Redirect to res['location']"
-    atompost(res['location'], user, pass, title, body, article_date, category, format, check, preescape, content_mode)
-  else
-    p "Error, #{article_date}"
-    p res
-    res.error!
-    as.update(id, -1)
-  end
-end
-
-def addhtml(target_url, user, pass, f)
-  fftmp = open(f, "r")
-  mtime = fftmp.mtime
-  ftmpread = fftmp.read
-  ftmp = Kconv.toutf8(ftmpread)
-  title = ''
-  body = ''
-
-  xml = HTree.parse(ftmp).to_rexml
-  title = xml.root.elements['head/title'].to_s 
-  body = xml.root.elements['body'].to_s
-  article_date = mtime.iso8601
-
-  atompost(target_url, user, pass, title, body, article_date, nil, 'html', check, preescape, content_mode)
-end
-
-def addhnf(target_url, user, pass, f, check=true, preescape=true, content_mode=nil)
-  if f =~ /d(\d{4})(\d{2})(\d{2})\.hnf/
-    ymd = $1 + '-' + $2 + '-' + $3
-  end
-  hnfdate = $1 + $2 + $3
-
-  fftmp = open(f, "r")
-  mtime = fftmp.mtime
-  ftmpread = fftmp.read
-  ftmp = Kconv.toutf8(ftmpread).split(/\n/)
-  fftmp.close
-  ftmp.shift
-
-  y = Hash.new
-  if ymd
-    y['ymd'] = ymd
-  else
-    y['ymd'] = mtime
-  end
-  y['mtime'] = mtime
-  y['text'] = ''
-  daynum = 0
-
-  ftmp.each do |x|
-    if x =~ /^(CAT|NEW|LNEW)\s+.+/
-      if y['title']
-        atompost(target_url, user, pass, y['title'], y['text'], y['ymd'], y['cat'], 'hnf', check, preescape, content_mode)
-        y.clear
-        y['ymd'] = ymd
-        y['mtime'] = mtime
-        y['text'] = ''
-      end
-    end
-
-    if x =~ /^CAT\s+(.+)/
-      y['cat'] = $1.split(/\W+/)
-      next
-    end
-
-    if x =~ /^(NEW|LNEW)\s+(.+)/
-      y['title'] = $2
-      daynum += 1
-      y['hnfid'] = "#{hnfdate}#{daynum}"
-      next
-    end
-
-    y['text'] += x + "\n"
-
-  end
-  atompost(target_url, user, pass, y['title'], y['text'], y['ymd'], y['cat'], 'hnf', check, preescape, content_mode)
-end
-
 
 user = nil
 pass = nil
@@ -233,19 +90,18 @@ rescue
   p $!
 end
 
+ap = AtomPost.new
+
 if (body and title)
-  atompost(target_url, user, pass, 
-           title, body, nil, 
-           nil, nil, check, preescape, content_mode)
+  ap.atompost(target_url, user, pass, title, body, nil, nil, nil, check, preescape, content_mode)
 end
 
 ARGV.each do |f|
   if (format == 'hnf' or (f =~ /d\d{8}.hnf/))
-    addhnf(target_url, user, pass, f, check, preescape, content_mode)
+    ap.addhnf(target_url, user, pass, f, check, preescape, content_mode, nil)
   elsif (format == 'html' or (f =~ /.html?/i))
-    addhtml(target_url, user, pass, f, check, preescape, content_mode)
+    ap.addhtml(target_url, user, pass, f, check, preescape, content_mode, nil)
   else
-#    p "unsupported filetype: #{f}"
-#    addguess(target_url, user, pass, f)
+    ap.addguess(target_url, user, pass, f, check, preescape, content_mode, nil)
   end
 end

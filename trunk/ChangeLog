@@ -1,3 +1,19 @@
+2006-01-10  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/atom_controller.rb: 
+	- Change: (Rechange:) Use compress for atom controller.
+	- (AtomController::atom_update_article2): Can accept no <category> and <articledate> in input. 
+	- (AtomController::atom_update_article2): Can accept many article format. (Before change, html only).
+	* New: to use 'Blogping.active'. If blogping server is 'active'(= 1), send ping. 
+	- (AtomController::atom_update_article2): 
+
+	* donrails/tool/atomclient/test_atomcheck.rb: New file.
+	* donrails/tool/atomclient/test_atompost.rb: New file.
+	* donrails/tool/atomclient/atomcheck.rb: Fix for receive reaction: except status = 201.
+	* donrails/tool/atomclient/atomcheck.rb: New class: AtomPost.
+	- donrails/tool/atomclient/atompost.rb: likewise.
+	* donrails/tool/atomclient/atommail.rb: New file. Early BETA: It is used for e-mail gateway to AtomAPI (post). It is invoked in '~/.forward', and send AtomPOST to some AtomPOST uri.
+
 2006-01-10  Akira TAGOH  <at@gclab.org>
 
 	* donrails/app/views/login/manage_comment.rhtml: fixed a typo.
