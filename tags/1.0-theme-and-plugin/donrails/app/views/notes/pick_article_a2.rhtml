@@ -1,0 +1,5 @@
+<% article = don_get_object(@articles, 'html') %>
+<div class="section">
+<%= auto_link article.body_to_html if article.body %>
+<%= render("shared/comment2", "article" => article) %>
+</div>
