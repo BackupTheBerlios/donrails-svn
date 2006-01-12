@@ -68,7 +68,9 @@ class NotesController < ApplicationController
                                           )
     @heading = "記事サイズ順の表示"
     @noindex = true
-    @lm = @articles.first.article_mtime.gmtime
+    unless @articles.empty? then
+      @lm = @articles.first.article_mtime.gmtime
+    end
     render_action 'noteslist'
   end
 
@@ -99,8 +101,13 @@ class NotesController < ApplicationController
   protected :dateparse
 
   def noteslist
-    @lm = Article.find(:first, :order => 'article_mtime DESC').article_mtime.gmtime
+    a = Article.find(:first, :order => 'article_mtime DESC')
     minTime = Time.rfc2822(@request.env["HTTP_IF_MODIFIED_SINCE"]) rescue nil
+    if a.nil? then
+      @lm = minTime + 1 if minTime
+    else
+      @lm = a.article_mtime.gmtime
+    end
     if minTime and @lm <= minTime
       # use cached version
       render_text '', '304 Not Modified'
@@ -141,12 +148,16 @@ class NotesController < ApplicationController
 
   def rdf_recent
     @recent_articles = Article.find(:all, :order => "id DESC", :limit => 20)
-    @lm = @recent_articles.first.article_mtime.gmtime
+    unless @recent_articles.empty? then
+      @lm = @recent_articles.first.article_mtime.gmtime
+    end
   end
 
   def rdf_recent2
     @recent_articles = Article.find(:all, :order => "id DESC", :limit => 20)
-    @lm = @recent_articles.first.article_mtime.gmtime
+    unless @recent_articles.empty? then
+      @lm = @recent_articles.first.article_mtime.gmtime
+    end
   end
 
   def rdf_article
@@ -176,13 +187,17 @@ class NotesController < ApplicationController
                                   :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
                                   )
       @rdf_category = @category.name
-      @lm = @recent_articles.first.article_mtime.gmtime
+      unless @recent_articles.empty? then
+        @lm = @recent_articles.first.article_mtime.gmtime
+      end
     end
   end
 
   def recent
     @recent_articles = Article.find(:all, :order => "id DESC", :limit => 10)
-    @lm = @recent_articles.first.article_mtime.gmtime
+    unless @recent_articles.empty? then
+      @lm = @recent_articles.first.article_mtime.gmtime
+    end
     @recent_comments = Article.find(:all, :order => "articles.article_date DESC", :limit => 30,
                                     :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id)"
                                    )
@@ -220,7 +235,9 @@ class NotesController < ApplicationController
     elsif @params['trigger'] == 'long'
       @articles = Article.find(:all, :order => "size DESC", :limit => 10)
     end
-    @lm = @articles.first.article_mtime.gmtime
+    unless @articles.empty? then
+      @lm = @articles.first.article_mtime.gmtime
+    end
   end
 
   def recent_category_title_a
@@ -229,7 +246,9 @@ class NotesController < ApplicationController
       categories = Category.find(:first, :conditions => ["name = ?", @params['category']])
       return [] if categories.nil?
       @articles = categories.articles.reverse
-      @lm = @articles.first.article_mtime.gmtime
+      unless @articles.empty? then
+        @lm = @articles.first.article_mtime.gmtime
+      end
     end
   end
 
@@ -245,9 +264,13 @@ class NotesController < ApplicationController
                                              :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd31a]
                                              )
     end
-    @heading = "#{@articles.first.article_date.to_date} - #{@articles.last.article_date.to_date}"
+    if @articles.empty? then
+      @heading = ""
+    else
+      @heading = "#{@articles.first.article_date.to_date} - #{@articles.last.article_date.to_date}"
+      @lm = @articles.first.article_mtime.gmtime
+    end
     @noindex = true
-    @lm = @articles.first.article_mtime.gmtime
     render_action 'noteslist'
   end
 
@@ -266,9 +289,11 @@ class NotesController < ApplicationController
       i += 1
       @articles += Article.find(:all, :order => "id DESC", :conditions => ["article_date >= ? AND article_date < ?", t2, t2.tomorrow])
     end
-    @notice = "#{t2.month}月 #{t2.day}日の記事(#{@articles.first.article_date.year}年から#{@articles.last.article_date.year}年まで)"
+    unless @articles.empty? then
+      @notice = "#{t2.month}月 #{t2.day}日の記事(#{@articles.first.article_date.year}年から#{@articles.last.article_date.year}年まで)"
+      @lm = @articles.first.article_mtime.gmtime
+    end
     @noindex = true
-    @lm = @articles.first.article_mtime.gmtime
     render_action 'noteslist'
   end
 
@@ -302,9 +327,9 @@ class NotesController < ApplicationController
     elsif @params['title'].size > 0
       @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["title = ?", @params['title']]) 
     end
-    @lm = @articles.first.article_mtime.gmtime
 
     if @articles.size >= 1
+      @lm = @articles.first.article_mtime.gmtime
       a = don_get_object(@articles.first, 'html')
       @heading = don_chomp_tags(a.title_to_html)
       cid = @articles.first.id
@@ -329,7 +354,9 @@ class NotesController < ApplicationController
                :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
                )
     @heading = "カテゴリ:#{@params['category']}"
-    @lm = @articles.first.article_mtime.gmtime
+    unless @articles.empty? then
+      @lm = @articles.first.article_mtime.gmtime
+    end
   end
 
   def show_category_noteslist

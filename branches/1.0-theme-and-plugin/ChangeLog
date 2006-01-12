@@ -1,3 +1,8 @@
+2006-01-13  Akira TAGOH  <at@gclab.org>
+
+	* donrails/app/controllers/notes_controller.rb: check nil or empty
+	Array for the instance from Article.find say.
+
 2006-01-12  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/helpers/application_helper.rb: New method: ApplicationHelper::parsecontent and ApplicationHelper::bind_article_category, ApplicationHelper::atom_update_article2. These are moved from atom_controller.rb.
