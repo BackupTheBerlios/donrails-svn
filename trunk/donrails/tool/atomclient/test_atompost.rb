@@ -10,8 +10,8 @@ class TC_AtomPost < Test::Unit::TestCase
     @uri = conf['target_url']
     @pass = conf['pass']
 
-    @tt = 'test title'
-    @tb = 'test body'
+    @tt = 'char'
+    @tb = '01234567' * 8
     article = Article.find(:first, :conditions => ['title = ? AND body = ? AND target_url = ?', @tt, @tb, @uri])
     article.destroy if article
   end
@@ -23,14 +23,19 @@ class TC_AtomPost < Test::Unit::TestCase
 
   def test_atompost
     res = @obj.atompost(@uri, @user, @pass,
-                        @tt, @tb, Time.now, 'misc', 'html')
+                        @tt, @tb, Time.now, 'misc', 'html', false)
     assert_instance_of(Net::HTTPCreated, res)
   end
 
   def test_atompost__plain
-    res = @obj.atompost(@uri, @user, @pass,
-                        @tt, @tb, Time.now, 'misc', 'plain')
-    assert_instance_of(Net::HTTPCreated, res)
+    for i in 1..10
+      @tb = @tb * 8
+      @tt = @tb.size.to_s
+      puts @tb.size
+      res = @obj.atompost(@uri, @user, @pass,
+                          @tt, @tb, Time.now, 'misc', 'plain', false)
+      assert_instance_of(Net::HTTPCreated, res)
+    end
   end
 
 end

@@ -83,7 +83,9 @@ class AtomPost
     end
 
     postbody = "<entry xmlns='http://www.w3.org/2005/Atom'>\n"
-    postbody += "<articledate>#{article_date}</articledate>\n" if article_date
+    article_date = Time.now.iso8601 unless article_date
+    postbody += "<articledate>#{article_date}</articledate>\n"
+
     if category
       category.each do |cate|
         postbody += "<category term='#{cate}'/>\n"
@@ -95,6 +97,20 @@ class AtomPost
     end
 
     postbody += "<title>#{title}</title>\n" if title
+
+    # XXX
+    if body =~/<html.+<\/html>/m
+      bx = HTree.parse(body).to_rexml
+      if bx.root.elements['body'].to_s =~ /<body>(.*)<\/body>/m
+        body = $1
+      else 
+        body = bx.root.elements['body'].to_s.sub(/^<body \w+='.+'/, "<body")
+        if body =~ /<body>(.*)<\/body>/m
+          body = $1
+        end
+#        content_mode = 'escaped'
+      end
+    end
 
     if body
       if content_mode == 'escaped'

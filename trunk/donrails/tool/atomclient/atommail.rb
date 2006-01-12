@@ -113,9 +113,9 @@ end
 
 puts NKF.nkf('-e', title)
 #puts NKF.nkf('-e', body)
-puts NKF.nkf('-e', bodyhtml)
-p body.length
-p bodyhtml.length
+#puts NKF.nkf('-e', bodyhtml)
+#p body.length
+#p bodyhtml.length
 
 ap = AtomPost.new
 p target_url

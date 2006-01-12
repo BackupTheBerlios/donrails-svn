@@ -1,3 +1,16 @@
+2006-01-12  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/helpers/application_helper.rb: New method: ApplicationHelper::parsecontent and ApplicationHelper::bind_article_category, ApplicationHelper::atom_update_article2. These are moved from atom_controller.rb.
+	* donrails/app/controllers/atom_controller.rb: likewise.
+
+	* donrails/app/controllers/atom_controller.rb: (AtomController::post) Change 502 return if some troubles.
+
+	* donrails/tool/atomclient/atomcheck.rb: 
+	- Add article_date by Time.now.iso8601 unless have article_date. 
+	- Use HTree to make up valid HTML.
+	* donrails/tool/atomclient/atommail.rb: Code clean.
+	* donrails/tool/atomclient/test_atompost.rb: Add stress test in test_atompost__plain.
+
 2006-01-10  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/atom_controller.rb: 
