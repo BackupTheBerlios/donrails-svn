@@ -110,6 +110,10 @@ module ApplicationHelper
       end
       databody = doc.to_s
     end
+    cdb = databody.sub(/^<content \w+='.+'/, "<content")
+    if cdb =~ /^<content>(.*)<\/content>/m
+      databody = $1
+    end
     return databody
   end
 
