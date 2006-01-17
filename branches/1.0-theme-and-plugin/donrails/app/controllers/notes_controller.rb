@@ -41,25 +41,25 @@ class NotesController < ApplicationController
     @articles = Article.find(@params['pickid'].to_i)
     a = don_get_object(@articles, 'html')
     @heading = don_chomp_tags(a.title_to_html)
-    @lm = @articles.article_mtime.gmtime
+    @lm = @articles.article_mtime.gmtime if @articles
   end
 
   def pick_article_a
     @headers["Content-Type"] = "text/html; charset=utf-8"
     @articles = Article.find(@params['pickid'].to_i)
-    @lm = @articles.article_mtime.gmtime
+    @lm = @articles.article_mtime.gmtime if @articles
   end
 
   def pick_article_a2
     @headers["Content-Type"] = "text/html; charset=utf-8"
     @articles = Article.find(@params['pickid'].to_i)
-    @lm = @articles.article_mtime.gmtime
+    @lm = @articles.article_mtime.gmtime if @articles
   end
 
   def comment_form_a
     @headers["Content-Type"] = "text/html; charset=utf-8"
     @article = Article.find(@params['id'].to_i)
-    @lm = @article.article_mtime.gmtime
+    @lm = @article.article_mtime.gmtime if @article
   end
 
   def articles_long
@@ -98,24 +98,18 @@ class NotesController < ApplicationController
       end
     end
   end
-  protected :dateparse
 
   def noteslist
-    a = Article.find(:first, :order => 'article_mtime DESC')
     minTime = Time.rfc2822(@request.env["HTTP_IF_MODIFIED_SINCE"]) rescue nil
-    if a.nil? then
-      @lm = minTime + 1 if minTime
-    else
-      @lm = a.article_mtime.gmtime
-    end
+    @articles_pages, 
+    @articles = paginate(:article, :per_page => 30,
+                         :order_by => 'article_date DESC, id DESC'
+                         )
+    @lm = @articles.first.article_mtime.gmtime if @articles
     if minTime and @lm <= minTime
       # use cached version
       render_text '', '304 Not Modified'
     else
-      @articles_pages, 
-      @articles = paginate(:article, :per_page => 30,
-                           :order_by => 'article_date DESC, id DESC'
-                           )
       if @articles.empty? then
         @heading = ""
       else
@@ -125,6 +119,7 @@ class NotesController < ApplicationController
       @notice = @params['notice'] unless @notice
     end
   end
+
 
   def parse_nums
     nums = @params['nums'] if @params['nums'] 
@@ -163,7 +158,7 @@ class NotesController < ApplicationController
   def rdf_article
     @article = Article.find(@params['id'])
     @rdf_article = @article.id
-    @lm = @article.article_mtime.gmtime
+    @lm = @article.article_mtime.gmtime if @article
   end
 
   def rdf_search
@@ -271,6 +266,7 @@ class NotesController < ApplicationController
       @lm = @articles.first.article_mtime.gmtime
     end
     @noindex = true
+    @lm = @articles.first.article_mtime.gmtime if @articles
     render_action 'noteslist'
   end
 
@@ -294,6 +290,7 @@ class NotesController < ApplicationController
       @lm = @articles.first.article_mtime.gmtime
     end
     @noindex = true
+    @lm = @articles.first.article_mtime.gmtime if @articles
     render_action 'noteslist'
   end
 
@@ -311,7 +308,7 @@ class NotesController < ApplicationController
     begin
       a = don_get_object(@articles.first, 'html')
       @heading = "#{don_chomp_tags(a.title_to_html)} at #{@articles.first.article_date.to_date}"
-      @lm = @articles.first.article_mtime.gmtime
+      @lm = @articles.first.article_mtime.gmtime if @articles
       render_action 'noteslist'
     rescue
       @notice = "指定された記事はありません。代わりに最近の記事から表示します。"
@@ -327,6 +324,7 @@ class NotesController < ApplicationController
     elsif @params['title'].size > 0
       @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["title = ?", @params['title']]) 
     end
+    @lm = @articles.first.article_mtime.gmtime if @articles
 
     if @articles.size >= 1
       @lm = @articles.first.article_mtime.gmtime
@@ -377,7 +375,7 @@ class NotesController < ApplicationController
         a = don_get_object(@articles.first, 'html')
         @heading = don_chomp_tags(a.title_to_html)
         @notice = "#{@articles.first.article_date.to_date} 以降 30件の記事を表示します。"
-        @lm = @articles.first.article_mtime.gmtime
+        @lm = @articles.first.article_mtime.gmtime if @articles
         render_action 'noteslist'
       else
         @notice = "#{@ymd}以降に該当する記事はありません"
@@ -396,7 +394,7 @@ class NotesController < ApplicationController
                              :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd10a]
                                            )
     if @articles.size > 0
-      @lm = @articles.first.article_mtime.gmtime
+      @lm = @articles.first.article_mtime.gmtime if @articles
       a = don_get_object(@articles.first, 'html')
       @heading = don_chomp_tags(a.title_to_html)
     
@@ -508,8 +506,14 @@ class NotesController < ApplicationController
     if @lm
       @headers['Last-Modified'] = @lm.rfc2822.to_s
     end
-    if @noindex and Time.now - @lm < 86400
+    if @maxage and @maxage == 0
+      @headers['Cache-Control'] = 'no-cache'
+    elsif @maxage
+      @headers['Cache-Control'] = 'max-age=#{@maxage.to_s}'
+    elsif @noindex and Time.now - @lm < 86400 * 7
       @headers['Cache-Control'] = 'max-age=86400'
+    elsif Time.now - @lm < 86400 * 7
+      @headers['Cache-Control'] = 'no-cache'
     else
       @headers['Cache-Control'] = 'public'
     end

@@ -1,3 +1,10 @@
+2006-01-13  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/helpers/application_helper.rb: Change (ApplicationHelper::parsecontent) extract databody from <content>databody</conten>.
+	* donrails/app/controllers/notes_controller.rb: check nil or empty
+	Array for the instance from Article.find say.
+	* donrails/app/controllers/notes_controller.rb: Change (NotesController::add_cache_control). Add @maxage parameter. Cache-Control behavior is controlled by @maxage and @lm. 
+	
 2006-01-13  Akira TAGOH  <at@gclab.org>
 
 	* donrails/app/controllers/notes_controller.rb: check nil or empty

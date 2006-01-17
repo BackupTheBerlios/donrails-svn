@@ -11,7 +11,7 @@ class TC_AtomPost < Test::Unit::TestCase
     @pass = conf['pass']
 
     @tt = 'char'
-    @tb = '01234567' * 8
+    @tb = '0123456 ' * 8
     article = Article.find(:first, :conditions => ['title = ? AND body = ? AND target_url = ?', @tt, @tb, @uri])
     article.destroy if article
   end
@@ -28,7 +28,7 @@ class TC_AtomPost < Test::Unit::TestCase
   end
 
   def test_atompost__plain
-    for i in 1..10
+    for i in 1..3
       @tb = @tb * 8
       @tt = @tb.size.to_s
       puts @tb.size
