@@ -2,6 +2,10 @@ require 'kconv'
 
 class LoginController < ApplicationController
   before_filter :authorize, :except => [:login_index, :authenticate]
+  after_filter :compress
+
+  cache_sweeper :article_sweeper, :only => [ :delete_article ]
+#  caches_sweeper :login_sweeper, :only => [ :delete_article ]
 
   def login_index
     render_action "index"

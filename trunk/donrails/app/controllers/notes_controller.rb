@@ -1,6 +1,9 @@
 require 'kconv'
 class NotesController < ApplicationController
+  caches_page :index, :rdf_recent, :rdf_article, :rdf_category, :show_month, :show_nnen, :show_date, :show_title, :show_title2, :show_category, :show_category_noteslist, :afterday, :tendays, :pick_article, :articles_long, :noteslist
+  caches_action :recent_category_title_a, :recent_trigger_title_a, :category_select_a, :pick_article_a, :pick_article_a2
   after_filter :add_cache_control
+  after_filter :compress
 
   layout "notes", :except => [
     :pick_article_a,
@@ -148,13 +151,6 @@ class NotesController < ApplicationController
     end
   end
 
-  def rdf_recent2
-    @recent_articles = Article.find(:all, :order => "id DESC", :limit => 20)
-    unless @recent_articles.empty? then
-      @lm = @recent_articles.first.article_mtime.gmtime
-    end
-  end
-
   def rdf_article
     @article = Article.find(@params['id'])
     @rdf_article = @article.id
@@ -235,8 +231,10 @@ class NotesController < ApplicationController
     end
   end
 
+  # if @request.post? is true, cache_page does not work.
   def recent_category_title_a
     @headers["Content-Type"] = "text/html; charset=utf-8"
+
     if @params['category']
       categories = Category.find(:first, :conditions => ["name = ?", @params['category']])
       return [] if categories.nil?
@@ -245,6 +243,7 @@ class NotesController < ApplicationController
         @lm = @articles.first.article_mtime.gmtime
       end
     end
+    
   end
 
   def category_select_a 
@@ -318,11 +317,35 @@ class NotesController < ApplicationController
   end
   alias :oneday :show_date 
   
+  def show_title2
+    if @params['title'].size > 0
+      @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["title = ?", @params['title']]) 
+    end
+    @lm = @articles.first.article_mtime.gmtime if @articles
+
+    if @articles.size >= 1
+      @lm = @articles.first.article_mtime.gmtime
+      a = don_get_object(@articles.first, 'html')
+      @heading = don_chomp_tags(a.title_to_html)
+      cid = @articles.first.id
+      @rdf_article = @articles.first.id
+      begin
+        @lastarticle = Article.find(cid - 1)
+      rescue
+      end
+      begin
+        @nextarticle = Article.find(:first, :conditions => ["id > ?", cid])
+      rescue
+      end
+    end
+    render_action 'show_title'
+  end
+
   def show_title
     if @params['id']
       @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["id = ?", @params['id']]) 
     elsif @params['title'].size > 0
-      @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["title = ?", @params['title']]) 
+      redirect_to :action => "show_title2", :title => @params['title']
     end
     @lm = @articles.first.article_mtime.gmtime if @articles
 
@@ -510,9 +533,9 @@ class NotesController < ApplicationController
       @headers['Cache-Control'] = 'no-cache'
     elsif @maxage
       @headers['Cache-Control'] = 'max-age=#{@maxage.to_s}'
-    elsif @noindex and Time.now - @lm < 86400 * 7
+    elsif @lm and @noindex and Time.now - @lm < 86400 * 7
       @headers['Cache-Control'] = 'max-age=86400'
-    elsif Time.now - @lm < 86400 * 7
+    elsif @lm and Time.now - @lm < 86400 * 7
       @headers['Cache-Control'] = 'no-cache'
     else
       @headers['Cache-Control'] = 'public'
