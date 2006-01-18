@@ -103,7 +103,8 @@ class NotesController < ApplicationController
   end
 
   def noteslist
-    minTime = Time.rfc2822(@request.env["HTTP_IF_MODIFIED_SINCE"]) rescue nil
+#    minTime = Time.rfc2822(@request.env["HTTP_IF_MODIFIED_SINCE"]) rescue nil
+    minTime = nil
     @articles_pages, 
     @articles = paginate(:article, :per_page => 30,
                          :order_by => 'article_date DESC, id DESC'
