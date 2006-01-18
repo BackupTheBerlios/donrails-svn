@@ -15,16 +15,16 @@ xml.tag!("rdf:RDF",
     xml.description RDF_DESCRIPTION
     xml.items do    
       xml.tag!("rdf:Seq") do
-        xml.rdf(:li, "rdf:resource"=> "#{@request.protocol}#{@request.host_with_port}#{url_for(:action => "pick_article", :pickid => @article.id)}")
+        xml.rdf(:li, "rdf:resource"=> "#{@request.protocol}#{@request.host_with_port}#{url_for(:action => "show_title", :pickid => @article.id)}")
       end
     end
   end
 
   item = don_get_object(@article, 'xml')
-  xml.item("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id)) do
+  xml.item("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => "show_title", :pickid => item.id)) do
 
     xml.title(item.title_to_xml)
-    xml.link(@request.protocol + @request.host_with_port + url_for(:action => "pick_article", :pickid => item.id))
+    xml.link(@request.protocol + @request.host_with_port + url_for(:action => "show_title", :pickid => item.id))
     begin
       ce = item.body_to_xml
       if ce =~ (/<content>(.*)<\/content>/m)

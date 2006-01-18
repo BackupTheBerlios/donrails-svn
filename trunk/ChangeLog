@@ -1,5 +1,8 @@
 2006-01-18  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/views/notes/rdf_*.rxml: Change link action from 'pick_article' to 'show_title'.
+
+	* donrails/app/controllers/notes_controller.rb: Fixed Last-Modified: header time format from rfc2822 to rfc2161.
 	* donrails/app/controllers/notes_controller.rb: Fixed handling for empty articles. It is important for start-up user.
 
 	* donrails/app/models/article_sweeper.rb: (ArticleSweeper::expire_for) Change in expire_action.
