@@ -528,7 +528,7 @@ class NotesController < ApplicationController
 
   def add_cache_control
     if @lm
-      @headers['Last-Modified'] = @lm.rfc2822.to_s
+      @headers['Last-Modified'] = @lm.httpdate.to_s
     end
     if @maxage and @maxage == 0
       @headers['Cache-Control'] = 'no-cache'
