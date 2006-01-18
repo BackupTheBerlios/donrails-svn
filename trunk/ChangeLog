@@ -1,5 +1,9 @@
 2006-01-18  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/models/article_sweeper.rb: (ArticleSweeper::expire_for) Change in expire_action.
+
+	* routes.rd: Add di.cgi to rdf_recent/feed.xml. Because lighttpd can not parse di.cgi as XML file.
+
 	* donrails/app/controllers/notes_controller.rb: (NotesController::noteslist) disable 304 return. Because 304 feature cause side effect for cache page feature under running webrick. (Under lighttpd, no side effect.) TODO: I hope to integrate these two feature in near future.
 
 	* donrails/app/controllers/application.rb: (ApplicationController) remove after_filter :compress.

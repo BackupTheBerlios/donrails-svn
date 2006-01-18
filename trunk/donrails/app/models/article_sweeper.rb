@@ -12,9 +12,11 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   def expire_for(record)
     case record
     when Article
-      expire_action(:controller => 'notes', :action => "all")
+      expire_action(:controller => 'notes', :action => %w(recent_category_title_a recent_trigger_title_a category_select_a pick_article_a pick_article_a2))
+
       expire_page(:controller => 'notes', :action => %w(index rdf_recent articles_long))
       expire_page(:controller => 'notes', :action => 'noteslist')
+
       ppdir = RAILS_ROOT + "/public/notes/d/page"
       ppdir2 = Dir.entries(ppdir)
       ppdir2.each do |x|
@@ -22,6 +24,7 @@ class ArticleSweeper < ActionController::Caching::Sweeper
           expire_page(:controller => 'notes', :action => 'noteslist', :page => $1)
         end
       end
+
       expire_page(:controller => 'notes', :action => %w(rdf_article show_title), :id => record.id)
       expire_page(:controller => 'notes', :action => %w(pick_article), :pickid => record.id)
       expire_page(:controller => 'notes', :action => %w(rdf_article show_title2), :title => record.title)
