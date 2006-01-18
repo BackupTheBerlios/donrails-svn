@@ -53,6 +53,7 @@ ActionController::Routing::Routes.draw do |map|
     :title => /\S+/
   }
 
+  # for backward compatibility
   map.connect "notes/pick_article/:id", :controller => "notes", 
   :action => "show_title",
   :requirements => { 

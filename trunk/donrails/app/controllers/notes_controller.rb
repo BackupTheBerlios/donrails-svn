@@ -345,6 +345,8 @@ class NotesController < ApplicationController
   def show_title
     if @params['id']
       @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["id = ?", @params['id']]) 
+    elsif @params['pickid']
+      @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["id = ?", @params['pickid']]) 
     elsif @params['title'].size > 0
       redirect_to :action => "show_title2", :title => @params['title']
     end

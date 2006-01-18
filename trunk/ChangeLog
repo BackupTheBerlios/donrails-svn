@@ -1,4 +1,8 @@
 2006-01-18  araki yasuhiro  <yasu@debian.or.jp>
+	
+	* donrails/app/controllers/notes_controller.rb:
+	NotesController::show_title can use @prams["pickid"] for backword
+	compatibility. (We plan to remove NotesController::pick_article)
 
 	* donrails/app/views/notes/rdf_*.rxml: Change link action from 'pick_article' to 'show_title'.
 
