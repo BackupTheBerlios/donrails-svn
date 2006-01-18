@@ -8,6 +8,7 @@ class AtomController < ApplicationController
     :preview
   ]
   before_filter :wsse_auth, :except => :feed
+  after_filter :compress
 
   def wsse_auth
     if request.env["HTTP_X_WSSE"]

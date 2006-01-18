@@ -6,6 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "notes/", :controller => "notes", :action => "index"
 
   map.connect "notes/d/", :controller => "notes", :action => "noteslist"
+  map.connect "notes/d/page/:page", :controller => "notes", :action => "noteslist", :page => /\d+/
 
   map.connect "notes/d/:category", :controller => "notes", 
   :action => "show_category_noteslist",
@@ -39,6 +40,12 @@ ActionController::Routing::Routes.draw do |map|
     :day => /[0-3]?\d/
   }
 
+  map.connect "notes/pick_article/:pickid", :controller => "notes", 
+  :action => "pick_article",
+  :requirements => { 
+    :pickid => /\d+/
+  }
+
   map.connect "notes/id/:id", :controller => "notes", 
   :action => "show_title",
   :requirements => { 
@@ -46,14 +53,16 @@ ActionController::Routing::Routes.draw do |map|
   }
 
   map.connect "notes/t/:title", :controller => "notes", 
-  :action => "show_title",
+  :action => "show_title2",
   :requirements => { 
     :title => /\S+/
   }
 
 
-#   map.connect "notes/afterday/", :controller => "notes", 
-#   :action => "afterday"
+  map.connect "notes/afterday/:ymd2", :controller => "notes", 
+  :action => "afterday", :ymd2 => /\d\d\d\d-\d\d-\d\d/
+  map.connect "notes/tendays/:ymd2", :controller => "notes", 
+  :action => "tendays", :ymd2 => /\d\d\d\d-\d\d-\d\d/
 
   map.connect "notes/category/:category", :controller => "notes", 
   :action => "show_category"
@@ -89,19 +98,22 @@ ActionController::Routing::Routes.draw do |map|
 	:q => /\w+/
   }
 
+  map.xml 'notes/rdf_recent/feed.xml', :controller => 'notes', :action => "rdf_recent"
   map.connect "notes/di.cgi", :controller => "notes", :action => "rdf_recent"
 
-  map.connect "notes/rdf_category/:category", :controller => "notes", 
-  :action => "rdf_category",
-  :requirements => { 
-	:category => /\w+/
-  }
+  map.xml 'notes/rdf_article/:id/feed.xml', :controller => 'notes', :action => "rdf_article"
+
+  map.xml 'notes/rdf_category/:category/feed.xml', :controller => 'notes', :action => "rdf_category", :category => /\w+/
 
   map.connect "notes/rdf_search/:q", :controller => "notes", 
   :action => "rdf_search",
   :requirements => { 
 	:q => /\w+/
   }
+
+  map.connect 'notes/recent_category_title_a/:category', :controller => 'notes', :action => "recent_category_title_a", :category => /\w+/
+  map.connect 'notes/recent_trigger_title_a/:trigger', :controller => 'notes', :action => "recent_trigger_title_a", :trigger => /\w+/
+
 
   # Here's a sample route:
   # map.connect 'products/:id', :controller => 'catalog', :action => 'view'
