@@ -1,5 +1,7 @@
 2006-01-18  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/controllers/notes_controller.rb: Fixed handling for empty articles. It is important for start-up user.
+
 	* donrails/app/models/article_sweeper.rb: (ArticleSweeper::expire_for) Change in expire_action.
 
 	* routes.rd: Add di.cgi to rdf_recent/feed.xml. Because lighttpd can not parse di.cgi as XML file.

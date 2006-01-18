@@ -44,19 +44,19 @@ class NotesController < ApplicationController
     @articles = Article.find(@params['pickid'].to_i)
     a = don_get_object(@articles, 'html')
     @heading = don_chomp_tags(a.title_to_html)
-    @lm = @articles.article_mtime.gmtime if @articles
+    @lm = @articles.article_mtime.gmtime unless @articles.empty?
   end
 
   def pick_article_a
     @headers["Content-Type"] = "text/html; charset=utf-8"
     @articles = Article.find(@params['pickid'].to_i)
-    @lm = @articles.article_mtime.gmtime if @articles
+    @lm = @articles.article_mtime.gmtime unless @articles.empty?
   end
 
   def pick_article_a2
     @headers["Content-Type"] = "text/html; charset=utf-8"
     @articles = Article.find(@params['pickid'].to_i)
-    @lm = @articles.article_mtime.gmtime if @articles
+    @lm = @articles.article_mtime.gmtime unless @articles.empty?
   end
 
   def comment_form_a
@@ -109,12 +109,12 @@ class NotesController < ApplicationController
     @articles = paginate(:article, :per_page => 30,
                          :order_by => 'article_date DESC, id DESC'
                          )
-    @lm = @articles.first.article_mtime.gmtime if @articles
+    @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
     if minTime and @lm <= minTime
       # use cached version
       render_text '', '304 Not Modified'
     else
-      if @articles.empty? then
+      unless @articles.empty? then
         @heading = ""
       else
         a = don_get_object(@articles.first, 'html')
@@ -266,7 +266,7 @@ class NotesController < ApplicationController
       @lm = @articles.first.article_mtime.gmtime
     end
     @noindex = true
-    @lm = @articles.first.article_mtime.gmtime if @articles
+    @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
     render_action 'noteslist'
   end
 
@@ -290,7 +290,7 @@ class NotesController < ApplicationController
       @lm = @articles.first.article_mtime.gmtime
     end
     @noindex = true
-    @lm = @articles.first.article_mtime.gmtime if @articles
+    @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
     render_action 'noteslist'
   end
 
@@ -308,7 +308,7 @@ class NotesController < ApplicationController
     begin
       a = don_get_object(@articles.first, 'html')
       @heading = "#{don_chomp_tags(a.title_to_html)} at #{@articles.first.article_date.to_date}"
-      @lm = @articles.first.article_mtime.gmtime if @articles
+      @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
       render_action 'noteslist'
     rescue
       @notice = "指定された記事はありません。代わりに最近の記事から表示します。"
@@ -322,7 +322,7 @@ class NotesController < ApplicationController
     if @params['title'].size > 0
       @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["title = ?", @params['title']]) 
     end
-    @lm = @articles.first.article_mtime.gmtime if @articles
+    @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
 
     if @articles.size >= 1
       @lm = @articles.first.article_mtime.gmtime
@@ -348,7 +348,7 @@ class NotesController < ApplicationController
     elsif @params['title'].size > 0
       redirect_to :action => "show_title2", :title => @params['title']
     end
-    @lm = @articles.first.article_mtime.gmtime if @articles
+    @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
 
     if @articles.size >= 1
       @lm = @articles.first.article_mtime.gmtime
@@ -399,7 +399,7 @@ class NotesController < ApplicationController
         a = don_get_object(@articles.first, 'html')
         @heading = don_chomp_tags(a.title_to_html)
         @notice = "#{@articles.first.article_date.to_date} 以降 30件の記事を表示します。"
-        @lm = @articles.first.article_mtime.gmtime if @articles
+        @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
         render_action 'noteslist'
       else
         @notice = "#{@ymd}以降に該当する記事はありません"
@@ -418,7 +418,7 @@ class NotesController < ApplicationController
                              :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd10a]
                                            )
     if @articles.size > 0
-      @lm = @articles.first.article_mtime.gmtime if @articles
+      @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
       a = don_get_object(@articles.first, 'html')
       @heading = don_chomp_tags(a.title_to_html)
     
