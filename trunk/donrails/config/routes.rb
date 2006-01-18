@@ -98,6 +98,7 @@ ActionController::Routing::Routes.draw do |map|
 	:q => /\w+/
   }
 
+  map.xml 'notes/rdf_recent/feed.xml', :controller => 'notes', :action => "rdf_recent"
   map.connect "notes/di.cgi", :controller => "notes", :action => "rdf_recent"
 
   map.xml 'notes/rdf_article/:id/feed.xml', :controller => 'notes', :action => "rdf_article"
