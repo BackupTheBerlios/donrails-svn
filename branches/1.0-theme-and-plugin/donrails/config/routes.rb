@@ -5,13 +5,13 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect "notes/", :controller => "notes", :action => "index"
 
-  map.connect "notes/d/", :controller => "notes", :action => "noteslist"
+  map.connect "notes/d", :controller => "notes", :action => "noteslist"
   map.connect "notes/d/page/:page", :controller => "notes", :action => "noteslist", :page => /\d+/
 
   map.connect "notes/d/:category", :controller => "notes", 
   :action => "show_category_noteslist",
   :requirements => { 
-	:category => /\w+/,
+    :category => /\w+/,
   }
   
 
@@ -29,7 +29,7 @@ ActionController::Routing::Routes.draw do |map|
   :action => "show_month",
   :requirements => { 
     :year => /(19|20)\d\d/,
-    :month => /[01]?\d/,
+    :month => /[01]?\d/
   }
 
   map.connect "notes/hnf/:year/:month/:day", :controller => "notes", 
@@ -40,11 +40,6 @@ ActionController::Routing::Routes.draw do |map|
     :day => /[0-3]?\d/
   }
 
-  map.connect "notes/pick_article/:pickid", :controller => "notes", 
-  :action => "pick_article",
-  :requirements => { 
-    :pickid => /\d+/
-  }
 
   map.connect "notes/id/:id", :controller => "notes", 
   :action => "show_title",
@@ -53,11 +48,17 @@ ActionController::Routing::Routes.draw do |map|
   }
 
   map.connect "notes/t/:title", :controller => "notes", 
-  :action => "show_title2",
+  :action => "show_title",
   :requirements => { 
     :title => /\S+/
   }
 
+  # for backward compatibility
+  map.connect "notes/pick_article/:id", :controller => "notes", 
+  :action => "show_title",
+  :requirements => { 
+    :id => /\d+/
+  }
 
   map.connect "notes/afterday/:ymd2", :controller => "notes", 
   :action => "afterday", :ymd2 => /\d\d\d\d-\d\d-\d\d/
@@ -66,6 +67,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect "notes/category/:category", :controller => "notes", 
   :action => "show_category"
+  map.connect "notes/category/:category/page/:page", :controller => "notes", 
+  :action => "show_category", :page => /\d+/
 
   map.connect "notes/:nums", :controller => "notes", 
   :action => "parse_nums",
@@ -104,6 +107,7 @@ ActionController::Routing::Routes.draw do |map|
   map.xml 'notes/rdf_article/:id/feed.xml', :controller => 'notes', :action => "rdf_article"
 
   map.xml 'notes/rdf_category/:category/feed.xml', :controller => 'notes', :action => "rdf_category", :category => /\w+/
+  map.xml 'notes/rdf_category/:category/page/:page/feed.xml', :controller => 'notes', :action => "rdf_category", :category => /\w+/, :page => /\d+/
 
   map.connect "notes/rdf_search/:q", :controller => "notes", 
   :action => "rdf_search",
@@ -113,6 +117,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect 'notes/recent_category_title_a/:category', :controller => 'notes', :action => "recent_category_title_a", :category => /\w+/
   map.connect 'notes/recent_trigger_title_a/:trigger', :controller => 'notes', :action => "recent_trigger_title_a", :trigger => /\w+/
+
+  map.connect "notes/articles_long/page/:page", :controller => "notes", :action => "articles_long", :page => /\d+/
 
 
   # Here's a sample route:

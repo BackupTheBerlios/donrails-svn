@@ -1,4 +1,4 @@
-<%= form_tag :action => 'oneday' %>
+<%= form_tag :action => 'show_date' %>
 <%= date_select(:ymd2, :created_on, :start_year => 1997, :end_year => Date.today.year, :order => [:year, :month, :day]) %>
 <%= submit_tag "select one day" %>
 <%= end_form_tag %>

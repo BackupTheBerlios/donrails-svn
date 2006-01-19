@@ -7,6 +7,7 @@ class Article < ActiveRecord::Base
   has_and_belongs_to_many :comments, :join_table => "comments_articles"
   has_many :pings, :order => "id ASC"
   has_many :trackbacks, :order => "id ASC"
+#  after_save :sendping
 
   # Fulltext searches the body of published articles
   # this function original from "typo" models/article.rb
@@ -18,6 +19,20 @@ class Article < ActiveRecord::Base
       []
     end
   end
+
+=begin
+  def sendping
+    blogping = Blogping.find(:all, :conditions => ["active = 1"])
+    articleurl = article_url(self, false)
+    urllist = Array.new
+    blogping.each do |ba|
+      urllist.push(ba.server_url)
+    end
+    if urllist.size > 0
+      article.send_pings2(articleurl, urllist)
+    end
+  end
+=end
 
   def send_pings2(articleurl, urllist)
     urllist.each do |url|

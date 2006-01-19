@@ -17,7 +17,6 @@
   <dt>#<%= an %> <%= art.title_to_html %></dt>
   <dd>
     <%= btmp %>
-    <!--%= link_to "[全文]", {:action => "pick_article", :pickid => art.id} %-->
     <%= link_to_remote("[全文]", :update => "search_ai_#{art.id}", :url => {:action => "pick_article_a2", :pickid => art.id}) %>
      (<%= link_to "#{art.article_date.to_date}",
          {:action => "show_date",

@@ -1,4 +1,40 @@
+2006-01-19  araki yasuhiro  <yasu@debian.or.jp>
+
+	* ADD test files under donrails/test/.
+	* donrails/app/models/article_sweeper.rb: Improve expire_page methods which use @paramas['page'].
+	* donrails/config/routes.rb: likewise.
+	* donrails/app/controllers/application.rb: Change (ApplicationController::set_charset) does not use under existing Content-Type header priviously.
+	* donrails/app/controllers/notes_controller.rb: 
+	** Cleaup and merge unuse methods. 
+	- (NotesController::show_title2) delete.
+	- (NotesController::pick_article) delete.
+	-- donrails/app/views/notes/pick_article.rhtml: delte.
+	- (NotesController::show_date) remove (NotesController::oneday) alias.
+	-- donrails/app/views/layouts/application.rhtml
+	-- donrails/app/views/shared/dayselect.rhtml
+	** no use paginate
+	- (NotesController::show_month)
+	- (NotesController::show_date)
+	- (NotesController::show_title)
+	** add Content-Type: application/xml; charset=utf-8 header
+	- (NotesController::rdf_*)
+	* donrails/app/views/shared/comment2.rhtml: Cleanup.
+	* donrails/app/views/notes/search.rhtml: Cleanup.
+
 2006-01-18  araki yasuhiro  <yasu@debian.or.jp>
+	
+	* donrails/app/controllers/notes_controller.rb:
+	NotesController::show_title can use @prams["pickid"] for backword
+	compatibility. (We plan to remove NotesController::pick_article)
+
+	* donrails/app/views/notes/rdf_*.rxml: Change link action from 'pick_article' to 'show_title'.
+
+	* donrails/app/controllers/notes_controller.rb: Fixed Last-Modified: header time format from rfc2822 to rfc2161.
+	* donrails/app/controllers/notes_controller.rb: Fixed handling for empty articles. It is important for start-up user.
+
+	* donrails/app/models/article_sweeper.rb: (ArticleSweeper::expire_for) Change in expire_action.
+
+	* routes.rd: Add di.cgi to rdf_recent/feed.xml. Because lighttpd can not parse di.cgi as XML file.
 
 	* donrails/app/controllers/notes_controller.rb: (NotesController::noteslist) disable 304 return. Because 304 feature cause side effect for cache page feature under running webrick. (Under lighttpd, no side effect.) TODO: I hope to integrate these two feature in near future.
 
