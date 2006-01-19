@@ -1,3 +1,16 @@
+2006-01-20  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/notes_controller.rb: 
+	- (NotesController::pick_article_a): Change @articles to @article.
+	- (NotesController::pick_article_a2): Change @articles to @article.
+	- (NotesController::indexabc): More restrict input.
+	- (NotesController::dateparse): More restrict input.	
+	- (NotesController::parse_nums): More restrict input.		
+	* donrails/app/views/notes/catch_ping.rxml: Fix typo.
+	* donrails/app/views/notes/pick_article_a2.rhtml: Change @articles to @article.
+	* donrails/app/views/notes/pick_article_a.rhtml: Change @articles to @article.	
+	* donrails/app/views/notes/comment_form_a.rhtml: Improve case of @article.
+
 2006-01-19  araki yasuhiro  <yasu@debian.or.jp>
 
 	* UNUSE cache for NotesController::{afterday,tendays}

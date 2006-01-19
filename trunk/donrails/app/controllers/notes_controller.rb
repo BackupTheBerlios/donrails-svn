@@ -41,23 +41,16 @@ class NotesController < ApplicationController
     render_action 'noteslist'
   end
 
-#   def pick_article
-#     @articles = Article.find(@params['pickid'].to_i)
-#     a = don_get_object(@articles, 'html')
-#     @heading = don_chomp_tags(a.title_to_html)
-#     @lm = @articles.article_mtime.gmtime unless @articles.empty?
-#   end
-  ## 
   def pick_article_a
     @headers["Content-Type"] = "text/html; charset=utf-8"
-    @articles = Article.find(@params['pickid'].to_i)
-    @lm = @articles.article_mtime.gmtime unless @articles.empty?
+    @article = Article.find(@params['pickid'].to_i)
+    @lm = @article.article_mtime.gmtime if @article
   end
 
   def pick_article_a2
     @headers["Content-Type"] = "text/html; charset=utf-8"
-    @articles = Article.find(@params['pickid'].to_i)
-    @lm = @articles.article_mtime.gmtime unless @articles.empty?
+    @article = Article.find(@params['pickid'].to_i)
+    @lm = @article.article_mtime.gmtime if @article
   end
 
   def comment_form_a
@@ -80,12 +73,14 @@ class NotesController < ApplicationController
 
   def indexabc
     k = @params['nums']
-    if k =~ /(\d\d\d\d)(\d\d)a/
-        redirect_to :action => "tendays", :year => $1, :month => $2, :day => "01"
-    elsif k =~ /(\d\d\d\d)(\d\d)b/
-        redirect_to :action => "tendays", :year => $1, :month => $2, :day => "11"
-    elsif k =~ /(\d\d\d\d)(\d\d)c/
-        redirect_to :action => "tendays", :year => $1, :month => $2, :day => "21"
+    if k =~ /^(\d\d\d\d)(\d\d)a$/
+      redirect_to :action => "tendays", :year => $1, :month => $2, :day => "01"
+    elsif k =~ /^(\d\d\d\d)(\d\d)b$/
+      redirect_to :action => "tendays", :year => $1, :month => $2, :day => "11"
+    elsif k =~ /^(\d\d\d\d)(\d\d)c$/
+      redirect_to :action => "tendays", :year => $1, :month => $2, :day => "21"
+    else
+      render :text => 'no entry', :status => 404
     end
   end
 
@@ -130,20 +125,16 @@ class NotesController < ApplicationController
     nums = @params['nums'] if @params['nums'] 
 
     @notice = nums
-    if nums =~ /(\d\d\d\d)(\d\d)(\d\d)/
+    if nums =~ /^(\d\d\d\d)(\d\d)(\d\d)$/
       redirect_to :action => "show_date", :year => $1, :month => $2, :day => $3
-    end
-
-    if nums =~ /(\d+)-(\d+)-(\d+)/
+    elsif nums =~ /^(\d+)-(\d+)-(\d+)$/
       redirect_to :action => "show_date", :year => $1, :month => $2, :day => $3
-    end
-
-    if nums =~  /(\d\d\d\d)-?(\d\d)-?(\d\d)\.html/
+    elsif nums =~  /^(\d\d\d\d)-?(\d\d)-?(\d\d)\.html?$/
       redirect_to :action => "show_date", :year => $1, :month => $2, :day => $3
+    else
+      @notice = "正しく日付を指定してください" unless @notice
+      redirect_to :action => 'noteslist', :notice => @notice
     end
-
-    @notice = "正しく日付を指定してください" unless @notice
-    redirect_to :action => 'noteslist', :notice => @notice
   end
 
   def rdf_recent
@@ -249,7 +240,6 @@ class NotesController < ApplicationController
         @lm = @articles.first.article_mtime.gmtime
       end
     end
-    
   end
 
   def category_select_a 

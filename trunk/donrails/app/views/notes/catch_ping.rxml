@@ -1,6 +1,6 @@
 xml.instruct! :xml, :version=>"1.0", :encoding => "utf-8"
 
-if @catched = true
+if @catched == true
   xml.response do
     xml.error "0"
     xml.message "Ping saved successfully."
