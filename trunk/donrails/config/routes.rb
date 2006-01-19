@@ -22,8 +22,6 @@ ActionController::Routing::Routes.draw do |map|
     :month => /[01]?\d/,
     :day => /[0-3]?\d/
   }
-#  :day => nil,
-#  :month => nil
 
   map.connect "notes/:year/:month", :controller => "notes", 
   :action => "show_month",
@@ -39,7 +37,6 @@ ActionController::Routing::Routes.draw do |map|
     :month => /[01]?\d/,
     :day => /[0-3]?\d/
   }
-
 
   map.connect "notes/id/:id", :controller => "notes", 
   :action => "show_title",
