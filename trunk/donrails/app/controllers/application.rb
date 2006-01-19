@@ -29,7 +29,9 @@ class ApplicationController < ActionController::Base
   end
 
   def set_charset
-    @headers["Content-Type"] = "text/html; charset=utf-8"
+    unless @headers["Content-Type"]
+      @headers["Content-Type"] = "text/html; charset=utf-8"
+    end
   end
 
   def get_ymd

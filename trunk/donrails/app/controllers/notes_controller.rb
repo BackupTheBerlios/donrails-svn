@@ -1,6 +1,7 @@
 require 'kconv'
 class NotesController < ApplicationController
-  caches_page :index, :rdf_recent, :rdf_article, :rdf_category, :show_month, :show_nnen, :show_date, :show_title, :show_title2, :show_category, :show_category_noteslist, :afterday, :tendays, :pick_article, :articles_long, :noteslist
+  before_filter :set_charset
+  caches_page :index, :rdf_recent, :rdf_article, :rdf_category, :show_month, :show_nnen, :show_date, :show_title, :show_category, :show_category_noteslist, :afterday, :tendays, :articles_long, :noteslist
   caches_action :recent_category_title_a, :recent_trigger_title_a, :category_select_a, :pick_article_a, :pick_article_a2
   after_filter :add_cache_control
   after_filter :compress
@@ -40,13 +41,13 @@ class NotesController < ApplicationController
     render_action 'noteslist'
   end
 
-  def pick_article
-    @articles = Article.find(@params['pickid'].to_i)
-    a = don_get_object(@articles, 'html')
-    @heading = don_chomp_tags(a.title_to_html)
-    @lm = @articles.article_mtime.gmtime unless @articles.empty?
-  end
-
+#   def pick_article
+#     @articles = Article.find(@params['pickid'].to_i)
+#     a = don_get_object(@articles, 'html')
+#     @heading = don_chomp_tags(a.title_to_html)
+#     @lm = @articles.article_mtime.gmtime unless @articles.empty?
+#   end
+  ## 
   def pick_article_a
     @headers["Content-Type"] = "text/html; charset=utf-8"
     @articles = Article.find(@params['pickid'].to_i)
@@ -146,6 +147,7 @@ class NotesController < ApplicationController
   end
 
   def rdf_recent
+    @headers["Content-Type"] = "application/xml; charset=utf-8"
     @recent_articles = Article.find(:all, :order => "id DESC", :limit => 20)
     unless @recent_articles.empty? then
       @lm = @recent_articles.first.article_mtime.gmtime
@@ -153,12 +155,14 @@ class NotesController < ApplicationController
   end
 
   def rdf_article
+    @headers["Content-Type"] = "application/xml; charset=utf-8"
     @article = Article.find(@params['id'])
     @rdf_article = @article.id
     @lm = @article.article_mtime.gmtime if @article
   end
 
   def rdf_search
+    @headers["Content-Type"] = "application/xml; charset=utf-8"
     @lm = Time.now.gmtime
     @recent_articles = Article.search(@params["q"])
     @rdf_search = @params["q"]
@@ -168,6 +172,7 @@ class NotesController < ApplicationController
   end
 
   def rdf_category
+    @headers["Content-Type"] = "application/xml; charset=utf-8"
     @category = Category.find(:first, :conditions => ["name = ?", @params['category']])
     if @category == nil
       @params["q"] = @params["category"]
@@ -255,9 +260,7 @@ class NotesController < ApplicationController
   def show_month
     get_ymd
     if @ymd
-      @articles_pages, @articles =  paginate(:article, :per_page => 30,
-                                             :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd31a]
-                                             )
+      @articles =  Article.find(:all, :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd31a])
     end
     if @articles.empty? then
       @heading = ""
@@ -297,12 +300,10 @@ class NotesController < ApplicationController
   def show_date
     get_ymd
     if @ymd
-      @articles_pages, @articles =  paginate(:article, :per_page => 30,
-                                             :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd1a]
-                                             )
+      @articles = Article.find(:all, :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd1a])
     else
-      @noindex = true
-      render_text = "正しく日付を指定してください"
+      @notice = "正しく日付を指定してください" unless @notice
+      redirect_to :action => 'noteslist', :notice => @notice
     end
 
     begin
@@ -311,44 +312,18 @@ class NotesController < ApplicationController
       @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
       render_action 'noteslist'
     rescue
-      @notice = "指定された記事はありません。代わりに最近の記事から表示します。"
-      @noindex = true
+      @notice = "正しく日付を指定してください" unless @notice
       redirect_to :action => 'noteslist', :notice => @notice
     end
-  end
-  alias :oneday :show_date 
-  
-  def show_title2
-    if @params['title'].size > 0
-      @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["title = ?", @params['title']]) 
-    end
-    @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
-
-    if @articles.size >= 1
-      @lm = @articles.first.article_mtime.gmtime
-      a = don_get_object(@articles.first, 'html')
-      @heading = don_chomp_tags(a.title_to_html)
-      cid = @articles.first.id
-      @rdf_article = @articles.first.id
-      begin
-        @lastarticle = Article.find(cid - 1)
-      rescue
-      end
-      begin
-        @nextarticle = Article.find(:first, :conditions => ["id > ?", cid])
-      rescue
-      end
-    end
-    render_action 'show_title'
   end
 
   def show_title
     if @params['id']
-      @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["id = ?", @params['id']]) 
+      @articles =  Article.find(:all, :conditions => ["id = ?", @params['id']]) 
     elsif @params['pickid']
-      @articles_pages, @articles =  paginate(:article, :per_page => 30, :conditions => ["id = ?", @params['pickid']]) 
+      @articles =  Article.find(:all, :conditions => ["id = ?", @params['pickid']]) 
     elsif @params['title'].size > 0
-      redirect_to :action => "show_title2", :title => @params['title']
+      @articles =  Article.find(:all, :conditions => ["title = ?", @params['title']]) 
     end
     @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
 
@@ -452,7 +427,7 @@ class NotesController < ApplicationController
     a = Article.find(article_id)
     aris1.articles.push_with_attributes(a)
     if aris1.save
-      redirect_to :action => "pick_article", :pickid => article_id
+      redirect_to :action => "show_title", :id => article_id
     else
       redirect_to :action => "noteslist"
     end
@@ -513,10 +488,8 @@ class NotesController < ApplicationController
       ip = request.remote_ip
       created_at = Time.now
       @catched = true
-#      render_text 'success'
     else
       @catched = false
-#      render_text 'Please use HTTP POST', 404
     end
   end
 

@@ -1,3 +1,26 @@
+2006-01-19  araki yasuhiro  <yasu@debian.or.jp>
+
+	* ADD test files under donrails/test/.
+	* donrails/app/models/article_sweeper.rb: Improve expire_page methods which use @paramas['page'].
+	* donrails/config/routes.rb: likewise.
+	* donrails/app/controllers/application.rb: Change (ApplicationController::set_charset) does not use under existing Content-Type header priviously.
+	* donrails/app/controllers/notes_controller.rb: 
+	** Cleaup and merge unuse methods. 
+	- (NotesController::show_title2) delete.
+	- (NotesController::pick_article) delete.
+	-- donrails/app/views/notes/pick_article.rhtml: delte.
+	- (NotesController::show_date) remove (NotesController::oneday) alias.
+	-- donrails/app/views/layouts/application.rhtml
+	-- donrails/app/views/shared/dayselect.rhtml
+	** no use paginate
+	- (NotesController::show_month)
+	- (NotesController::show_date)
+	- (NotesController::show_title)
+	** add Content-Type: application/xml; charset=utf-8 header
+	- (NotesController::rdf_*)
+	* donrails/app/views/shared/comment2.rhtml: Cleanup.
+	* donrails/app/views/notes/search.rhtml: Cleanup.
+
 2006-01-18  araki yasuhiro  <yasu@debian.or.jp>
 	
 	* donrails/app/controllers/notes_controller.rb:
