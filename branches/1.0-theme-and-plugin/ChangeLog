@@ -1,5 +1,14 @@
 2006-01-19  araki yasuhiro  <yasu@debian.or.jp>
 
+	* UNUSE cache for NotesController::{afterday,tendays}
+	- donrails/app/models/article_sweeper.rb: likewise.
+	- donrails/app/controllers/notes_controller.rb: likewise.
+	* donrails/app/controllers/notes_controller.rb: Fixed deal with @articles.empty?
+	* donrails/app/controllers/notes_controller.rb: (NotesController::show_title) redirect myself under title or pickid query.
+	* donrails/app/views/atom/post.rxml: Fix: no use to link to pick_article.
+	* donrails/app/views/notes/rdf_*.rxml: Fix: no use to link to show_title with pickid.
+	* donrails/config/routes.rb: Cleanup.
+
 	* ADD test files under donrails/test/.
 	* donrails/app/models/article_sweeper.rb: Improve expire_page methods which use @paramas['page'].
 	* donrails/config/routes.rb: likewise.

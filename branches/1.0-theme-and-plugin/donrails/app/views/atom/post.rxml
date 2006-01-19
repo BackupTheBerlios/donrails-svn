@@ -4,7 +4,7 @@ xml.entry("xmlns" => "http://purl.org/atom/ns\#") do
   xml.title @article.title
   xml.link("rel" => "alternate",
            "type" => "text/html",
-	   "href" => @request.protocol + @request.host_with_port + url_for(:controller => 'notes', :action => "pick_article", :pickid => @article.id))
+	   "href" => @request.protocol + @request.host_with_port + url_for(:controller => 'notes', :action => "show_title", :id => @article.id))
   xml.link("rel" => "service.edit",
            "type" => "application/atom+xml",
 	   "href" => @request.protocol + @request.host_with_port + url_for(:action => "edit", :id => @article.id),

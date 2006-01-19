@@ -1,7 +1,7 @@
 require 'kconv'
 class NotesController < ApplicationController
   before_filter :set_charset
-  caches_page :index, :rdf_recent, :rdf_article, :rdf_category, :show_month, :show_nnen, :show_date, :show_title, :show_category, :show_category_noteslist, :afterday, :tendays, :articles_long, :noteslist
+  caches_page :index, :rdf_recent, :rdf_article, :rdf_category, :show_month, :show_nnen, :show_date, :show_title, :show_category, :show_category_noteslist, :articles_long, :noteslist
   caches_action :recent_category_title_a, :recent_trigger_title_a, :category_select_a, :pick_article_a, :pick_article_a2
   after_filter :add_cache_control
   after_filter :compress
@@ -115,7 +115,7 @@ class NotesController < ApplicationController
       # use cached version
       render_text '', '304 Not Modified'
     else
-      unless @articles.empty? then
+      if @articles.empty? then
         @heading = ""
       else
         a = don_get_object(@articles.first, 'html')
@@ -322,8 +322,10 @@ class NotesController < ApplicationController
       @articles =  Article.find(:all, :conditions => ["id = ?", @params['id']]) 
     elsif @params['pickid']
       @articles =  Article.find(:all, :conditions => ["id = ?", @params['pickid']]) 
+      redirect_to :action => 'show_title', :id => @articles.first.id if @articles
     elsif @params['title'].size > 0
       @articles =  Article.find(:all, :conditions => ["title = ?", @params['title']]) 
+      redirect_to :action => 'show_title', :id => @articles.first.id if @articles
     end
     @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
 
@@ -391,9 +393,7 @@ class NotesController < ApplicationController
     @debug_oneday = @request.request_uri
     get_ymd
     @noindex = true
-    @articles = Article.find(:all,
-                             :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd10a]
-                                           )
+    @articles = Article.find(:all, :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd10a])
     if @articles.size > 0
       @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
       a = don_get_object(@articles.first, 'html')
@@ -402,8 +402,8 @@ class NotesController < ApplicationController
       @notice = "#{@articles.first.article_date.to_date} 以降の10日間の記事を表示します。"
       render_action 'noteslist'
     else
-      @notice = "該当する記事はありません"
-      render_action 'noteslist', 404
+      @notice = "正しく日付を指定してください" unless @notice
+      redirect_to :action => 'noteslist', :notice => @notice
     end
   end
 

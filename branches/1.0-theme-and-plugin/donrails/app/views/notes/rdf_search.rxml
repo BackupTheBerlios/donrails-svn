@@ -15,7 +15,7 @@ xml.tag!("rdf:RDF",
     xml.items do    
       xml.tag!("rdf:Seq") do
         for item in @recent_articles
-          xml.rdf(:li, "rdf:resource"=> "#{@request.protocol}#{@request.host_with_port}#{url_for(:action => "show_title", :pickid => item.id)}")
+          xml.rdf(:li, "rdf:resource"=> "#{@request.protocol}#{@request.host_with_port}#{url_for(:action => "show_title", :id => item.id)}")
 
         end
       end
@@ -24,10 +24,10 @@ xml.tag!("rdf:RDF",
 
   for i in @recent_articles
     item = don_get_object(i, 'xml')
-    xml.item("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => "show_title", :pickid => item.id)) do
+    xml.item("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => "show_title", :id => item.id)) do
 
       xml.title(item.title_to_xml)
-      xml.link(@request.protocol + @request.host_with_port + url_for(:action => "show_title", :pickid => item.id))
+      xml.link(@request.protocol + @request.host_with_port + url_for(:action => "show_title", :id => item.id))
 
       begin
         ce = item.body_to_xml
