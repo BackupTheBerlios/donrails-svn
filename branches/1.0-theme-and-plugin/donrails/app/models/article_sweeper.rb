@@ -17,20 +17,31 @@ class ArticleSweeper < ActionController::Caching::Sweeper
       expire_page(:controller => 'notes', :action => %w(index rdf_recent articles_long))
 
       expire_page(:controller => 'notes', :action => 'noteslist')
-      ppdir = RAILS_ROOT + "/public/notes/d/page"
-      ppdir2 = Dir.entries(ppdir)
-      ppdir2.each do |x|
-        if x =~ /(\d+).html/
-          expire_page(:controller => 'notes', :action => 'noteslist', :page => $1)
+      begin
+        ppdir = RAILS_ROOT + "/public/notes/d/page"
+        ppdir2 = Dir.entries(ppdir)
+        ppdir2.each do |x|
+          if x =~ /(\d+).html/
+            expire_page(:controller => 'notes', :action => 'noteslist', :page => $1)
+          end
         end
+      rescue Errno::ENOENT
+      rescue
+        p $!
       end
+
       expire_page(:controller => 'notes', :action => 'articles_long')
-      ppdir = RAILS_ROOT + "/public/notes/articles_long/d/page"
-      ppdir2 = Dir.entries(ppdir)
-      ppdir2.each do |x|
-        if x =~ /(\d+).html/
-          expire_page(:controller => 'notes', :action => 'articles_long', :page => $1)
+      begin
+        ppdir = RAILS_ROOT + "/public/notes/articles_long/d/page"
+        ppdir2 = Dir.entries(ppdir)
+        ppdir2.each do |x|
+          if x =~ /(\d+).html/
+            expire_page(:controller => 'notes', :action => 'articles_long', :page => $1)
+          end
         end
+      rescue Errno::ENOENT
+      rescue
+        p $!
       end
 
       expire_page(:controller => 'notes', :action => %w(rdf_article show_title), :id => record.id)
@@ -41,19 +52,29 @@ class ArticleSweeper < ActionController::Caching::Sweeper
       clall.each do |rc|
         expire_page(:controller => 'notes', :action => %w(rdf_category show_category show_category_noteslist) , :category => rc.name)
 
-        ppdir = RAILS_ROOT + "/public/notes/rdf_category/#{rc.name}/page"
-        ppdir2 = Dir.entries(ppdir)
-        ppdir2.each do |x|
-          if x =~ /(\d+)/
-            expire_page(:controller => 'notes', :action => 'rdf_category', :page => $1, :category => rc.name)
+        begin
+          ppdir = RAILS_ROOT + "/public/notes/rdf_category/#{rc.name}/page"
+          ppdir2 = Dir.entries(ppdir)
+          ppdir2.each do |x|
+            if x =~ /(\d+)/
+              expire_page(:controller => 'notes', :action => 'rdf_category', :page => $1, :category => rc.name)
+            end
           end
+        rescue Errno::ENOENT
+        rescue
+          p $!
         end
-        ppdir = RAILS_ROOT + "/public/notes/category/#{rc.name}/page"
-        ppdir2 = Dir.entries(ppdir)
-        ppdir2.each do |x|
-          if x =~ /(\d+)/
-            expire_page(:controller => 'notes', :action => 'category', :page => $1, :category => rc.name)
+        begin
+          ppdir = RAILS_ROOT + "/public/notes/category/#{rc.name}/page"
+          ppdir2 = Dir.entries(ppdir)
+          ppdir2.each do |x|
+            if x =~ /(\d+)/
+              expire_page(:controller => 'notes', :action => 'category', :page => $1, :category => rc.name)
+            end
           end
+        rescue Errno::ENOENT
+        rescue 
+          p $!
         end
       end
 

@@ -1,3 +1,35 @@
+2006-01-20  araki yasuhiro  <yasu@debian.or.jp>
+
+	* rails/app/views/shared/comment2.rhtml: Fixed typo.
+
+	* rails/test/functional/notes_controller_test.rb
+	(NotesControllerTest::test_show_date): New method.
+	(NotesControllerTest::test_show_date__2): New method for NotesController::show_date.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::show_nnen): If invalid time parameter, return 404.
+
+	* rails/test/functional/notes_controller_test.rb (NotesControllerTest::test_show_nnen): New method.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::show_month): If no article, return 404. If invalid time parameter, return 404.
+
+	* rails/test/functional/notes_controller_test.rb 
+	(NotesControllerTest::test_noteslist): New method.
+	(NotesControllerTest::test_show_month): New method.
+	(NotesControllerTest::test_show_month__{2,3}): New method. (For NotesController::show_month.)
+
+	* donrails/app/models/article_sweeper.rb (ArticleSweeper::expire_for): Fixed: If cache store directories do not exist, cause Errono::ENOENT exception.
+
+	* donrails/app/controllers/notes_controller.rb: 
+	- (NotesController::pick_article_a): Change @articles to @article.
+	- (NotesController::pick_article_a2): Change @articles to @article.
+	- (NotesController::indexabc): More restrict input.
+	- (NotesController::dateparse): More restrict input.	
+	- (NotesController::parse_nums): More restrict input.		
+	* donrails/app/views/notes/catch_ping.rxml: Fix typo.
+	* donrails/app/views/notes/pick_article_a2.rhtml: Change @articles to @article.
+	* donrails/app/views/notes/pick_article_a.rhtml: Change @articles to @article.	
+	* donrails/app/views/notes/comment_form_a.rhtml: Improve case of @article.
+
 2006-01-19  araki yasuhiro  <yasu@debian.or.jp>
 
 	* UNUSE cache for NotesController::{afterday,tendays}
