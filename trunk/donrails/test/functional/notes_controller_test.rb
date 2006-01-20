@@ -162,7 +162,47 @@ class NotesControllerTest < Test::Unit::TestCase
     assert_response :success
   end
 
+  def test_show_month 
+    get :show_month ,:year => 1989, :month => 01
+#    p @response.headers
+    assert_response 404
+  end
+  def test_show_month__2
+    get :show_month ,:year => 2004, :month => 01
+    p @response.headers
+    assert_response 200
+  end
+  def test_show_month__3
+    get :show_month ,:day => 31, :month => 01
+#    p @response.headers
+    assert_response 404
+    get :show_month , :month => 01
+#    p @response.headers
+    assert_response 404
+  end
 
+  def test_show_nnen
+    get :show_nnen ,:day => 31, :month => 01
+#    p @response.headers
+    assert_response 200
+  end
+
+  def test_show_date
+    get :show_date ,:day => 31, :month => 01, :year => 2002
+    p @response.headers
+    assert_response 200
+  end
+  def test_show_date__2
+    get :show_date ,:day => 31, :month => 01, :year => 2009
+    p @response.headers
+    assert_response 302
+  end
+
+  ###
+  def test_noteslist
+    get :noteslist
+    assert_response :success
+  end
 
   def test_catch_ping
     post :catch_ping, :category => 'misc', :blog_name => 'test blog',
