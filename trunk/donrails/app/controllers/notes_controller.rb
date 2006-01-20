@@ -248,26 +248,34 @@ class NotesController < ApplicationController
   end
 
   def show_month
-    get_ymd
-    if @ymd
-      @articles =  Article.find(:all, :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd31a])
+    begin
+      get_ymd
+      if @ymd and @ymd31a
+        @articles =  Article.find(:all, :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd31a])
+      else
+        render_text "no article", 404
+      end
+      if @articles and @articles.empty? then
+        render_text "no article", 404
+      else
+        @heading = "#{@articles.first.article_date.to_date} - #{@articles.last.article_date.to_date}"
+        @lm = @articles.first.article_mtime.gmtime
+        
+        @noindex = true
+        @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
+        render_action 'noteslist'
+      end
+    rescue
+      render_text "no article", 404
     end
-    if @articles.empty? then
-      @heading = ""
-    else
-      @heading = "#{@articles.first.article_date.to_date} - #{@articles.last.article_date.to_date}"
-      @lm = @articles.first.article_mtime.gmtime
-    end
-    @noindex = true
-    @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
-    render_action 'noteslist'
   end
 
   def show_nnen
     if (@params["day"] and @params["month"])
       ymdnow = convert_ymd("#{Time.now.year}-#{@params["month"]}-#{@params["day"]}")
+    else
+      render_text "no article", 404
     end
-    
     if ymdnow =~ /(\d\d\d\d)-(\d\d)-(\d\d)/
       t2 = Time.local($1,$2,$3)
     end
@@ -283,8 +291,12 @@ class NotesController < ApplicationController
       @lm = @articles.first.article_mtime.gmtime
     end
     @noindex = true
-    @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
-    render_action 'noteslist'
+    if @articles.empty?
+      render_text "no article", 404
+    else
+      @lm = @articles.first.article_mtime.gmtime
+      render_action 'noteslist'
+    end
   end
 
   def show_date

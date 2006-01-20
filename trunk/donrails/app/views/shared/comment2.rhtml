@@ -21,7 +21,7 @@
 <% end %>
 
 <div class="boardlink">
-<%= link_to_remote("[コメントする]", :update => "c2_#{article.id}", :url => {:action => "comment_form_a", :id => article.id}) %>
+<%= link_to_remote('[コメントする]', :update => "c2_#{article.id}", :url => {:action => "comment_form_a", :id => article.id}) %>
 [TrackBack URL:<%= auto_link @request.protocol + @request.host_with_port + url_for(:action => 'trackback', :id => article.id) %>]
 <div class="comment_form_a" id="c2_<%= article.id %>">
 </div> <!-- end of msc-toggle as comment form -->
