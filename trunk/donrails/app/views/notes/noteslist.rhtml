@@ -50,6 +50,7 @@ From <%= @ymd3 %> to <%= @ymd4 %>
 
 <div class="section">
 <%= auto_link article.body_to_html %>
+<%= render("shared/authorhead", "article" => article) %>
 <%= render("shared/comment2", "article" => article) %>
 </div> <!-- end section -->
 

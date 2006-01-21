@@ -19,12 +19,13 @@
 <%= link_to "日記", {:action => "noteslist", :controller => "notes"} %>/ 
 <%= link_to "ログアウト", {:action => "logout"} %>
 <br>
-<%= link_to "管理トップ", {:action => "index"} %>/
+<%= link_to "ログイン", {:action => "index"} %>/
+<%= link_to "記事追加", {:action => "new_article"} %>/
 <%= link_to "記事管理", {:action => "manage_article"} %>/
 <%= link_to "コメント管理", {:action => "manage_comment"} %>/
 <%= link_to "トラックバック管理", {:action => "manage_trackback"} %>/
 <%= link_to "ブラックリスト管理", {:action => "manage_blacklist"} %>/
-<%= link_to "AtomAPI投稿者管理", {:action => "manage_author"} %>/
+<%= link_to "投稿者管理", {:action => "manage_author"} %>/
 <%= link_to "Ping先管理", {:action => "manage_blogping"} %>/
 <%= link_to "Ping履歴", {:action => "manage_ping"} %>/
 

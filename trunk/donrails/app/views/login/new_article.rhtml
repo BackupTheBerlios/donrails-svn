@@ -1,4 +1,4 @@
-<% @heading = "login authenticated" %>
+<% @heading = "記事追加" %>
 
 <hr>
 ファイルのアップロード
@@ -31,14 +31,9 @@
 <% end %>
 </select>
 <br>
-タイトル:
-<br>
-<%= text_field "article", "title", "size" => 80 %>
-<br>
-本文:
-<br>
-<%= text_area "article", "body", "rows" => 40, "cols" => 80 %>
-<br>
+著者名:<br><%= text_field "article", "author", "size" => 20 %><br>
+タイトル:<br><%= text_field "article", "title", "size" => 80 %><br>
+本文:<br><%= text_area "article", "body", "rows" => 40, "cols" => 80 %><br>
 <%= submit_tag "save" %>
 <%= end_form_tag %>
 

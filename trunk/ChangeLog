@@ -1,4 +1,36 @@
+2006-01-21  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/atom_controller.rb (AtomController): Fix un-sweep cached content.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::delete_unwrite_author): Fixed to change Author.writable = 0 or 1.
+
+	* donrails/app/models/trackback.rb (Trackback): Cleanup.
+
+	**** PLEASE CHECK YOUR authors TABLE on your Database. ****
+	* ADD NEW column in authors and articles table.(authors.nickname, articles.author_id). ADD restriction to authors.name is unique. 
+	* donrails/app/models/article.rb (Article): add relation to author.
+	* donrails/tool/tables-sqlite.txt: add author_id column in articles table.(alter table articles add column author_id INTEGER;)
+	* donrails/tool/tables-postgresql.txt: likewise.
+	* donrails/app/controllers/login_controller.rb (LoginController::add_article): likewise.
+	* donrails/app/views/login/new_article.rhtml: likewise.
+	* donrails/app/views/login/manage_article.rhtml: likewise.
+	* donrails/app/controllers/atom_controller.rb (AtomController::post): likewise.
+	* donrails/app/controllers/atom_controller.rb (AtomController::edit): likewise	
+	* donrails/app/controllers/login_controller.rb (LoginController::add_author): likewise
+	* donrails/app/views/login/manage_author.rhtml: likewise.
+	* donrails/public/stylesheets/araki.css: likewise. Add div.mainarticle div.section.
+	* donrails/app/views/shared/authorhead.rhtml: New file. likewise.
+	* donrails/app/views/notes/noteslist.rhtm: likewise.
+	* donrails/app/views/notes/show_title.rhtml : likewise.
+
+	* UPGRADE_1.1: Add upgrade method for 'blogpings' table
+
 2006-01-20  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/login/index.rhtml: Fixed typo. Fix: Routing probleem which is reported by Tagoh.
+	* donrails/app/views/layouts/login.rhtml: Add link to new_article.
+	* donrails/app/controllers/login_controller.rb (LoginController::new_article): New method. Spin off from LoginController::authenticate.
+	* donrails/app/views/login/new_article.rhtml: New file.
 
 	* rails/app/views/shared/comment2.rhtml: Fixed typo.
 
