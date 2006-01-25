@@ -1,3 +1,24 @@
+2006-01-25  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/lib/antispam.rb (AntiSpam::scan_uri_format): New method. If uri is ended without path (cf, http://araki.net/), reject this posts as comment and trackback.
+
+2006-01-24  araki yasuhiro  <yasu@debian.or.jp>
+
+	* rails/app/controllers/notes_controller.rb (NotesController::tendays): Change to return 404, if no article to show.
+
+	* rails/test/functional/notes_controller_test.rb (NotesControllerTest::test_tendays): likewise
+
+2006-01-23  araki yasuhiro  <yasu@debian.or.jp>
+
+	* rails/app/controllers/notes_controller.rb 
+	(NotesController::show_title): Change to return 404, if no article to show.
+	(NotesController::show_category): likewise.
+	(NotesController::show_category_noteslist): Clean up.
+
+	* rails/test/functional/notes_controller_test.rb
+	(NotesControllerTest::test_show_title__[2-6]) and (NotesControllerTest::test_show_title): New test methods.
+	(NotesControllerTest::test_show_category__2) and (NotesControllerTest::test_show_category): 
+
 2006-01-21  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/atom_controller.rb (AtomController): Fix un-sweep cached content.

@@ -21,6 +21,7 @@ class AntiSpam
 
     reason = catch(:hit) do
       if name == :url
+        self.scan_uri_format(string)
         self.scan_uri(URI.parse(string).host)
       elsif name == :ipaddr
         self.scan_ipaddr(string)
@@ -44,7 +45,6 @@ class AntiSpam
       logger.info("[SP] Scanning blacklist ipaddr #{bp}")
       throw :hit, "IPaddress #{bp.pattern} matched" if ip_address.match(/#{bp.pattern}/)
     end
-
     
     @IP_RBL.each do |rbl|
       begin
@@ -57,6 +57,16 @@ class AntiSpam
     return false
   end
   protected :scan_ipaddr
+
+  def scan_uri_format(string)
+    string_uri = string.scan(/(http:\/\/[^\s"]+)/m).flatten.to_s
+    if string_uri
+      linkuri = URI.parse(string_uri)
+      if linkuri.path and linkuri.path.length <= 1
+        throw :hit, "#{string} does not include valid path"
+      end
+    end
+  end
 
   def scan_uri(host)
     logger.info(host)
