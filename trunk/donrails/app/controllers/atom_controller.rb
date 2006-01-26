@@ -32,12 +32,12 @@ class AtomController < ApplicationController
   # atom feed
   def feed
     if @params['id'] == nil
-      @articles = Article.find(:all, :order => 'id DESC', :limit => 20)
+      @articles_pages, @articles = paginate(:article, :per_page => 20, :order_by => 'id DESC')
     else
       begin
         @article = Article.find(@params['id'])
       rescue
-        render :text => "no this id", :status => 400
+        render :text => "no this id", :status => 404
       end
     end
   end

@@ -1,4 +1,15 @@
+2006-01-26  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/atom_controller.rb (AtomController::feed): Apply for paginate.
+
+	* donrails/app/views/atom/feed.rxml: 
+	- Apply for AtomAPI(feed) response. (Refrence: so-net blog API response)
+	- Apply for paginate.
+	
+
 2006-01-25  araki yasuhiro  <yasu@debian.or.jp>
+
+	* rails/app/views/shared/comment-form.rhtml: remove input form for url. Because nobody use this.
 
 	* donrails/lib/antispam.rb (AntiSpam::scan_uri_format): New method. If uri is ended without path (cf, http://araki.net/), reject this posts as comment and trackback.
 

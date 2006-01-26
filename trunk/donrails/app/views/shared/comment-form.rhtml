@@ -1,8 +1,6 @@
 <%= form_tag :action => "add_comment2" %>
 おなまえ:
 <%= text_field "comment", "author", "size" => 20, "id" => "dx_addcomment2author_#{article.id}" %>
-URL(あれば):
-<%= text_field "comment", "url", "size" => 20, "id" => "dx_addcomment2url_#{article.id}" %>
 <br />
 パスワード(10文字まで):
 <%= password_field "comment", "password", "maxlength" => 10, "id" => "dx_addcomment2password_#{article.id}" %>
