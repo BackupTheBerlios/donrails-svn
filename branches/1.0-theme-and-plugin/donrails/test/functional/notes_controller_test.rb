@@ -169,7 +169,6 @@ class NotesControllerTest < Test::Unit::TestCase
   end
   def test_show_month__2
     get :show_month ,:year => 2004, :month => 01
-    p @response.headers
     assert_response 200
   end
   def test_show_month__3
@@ -189,13 +188,107 @@ class NotesControllerTest < Test::Unit::TestCase
 
   def test_show_date
     get :show_date ,:day => 31, :month => 01, :year => 2002
-    p @response.headers
+#    p @response.headers
     assert_response 200
   end
   def test_show_date__2
     get :show_date ,:day => 31, :month => 01, :year => 2009
-    p @response.headers
+#    p @response.headers
     assert_response 302
+  end
+
+
+  def test_show_title
+    get :show_title, :id => 1
+    assert_response 200
+  end 
+  def test_show_title__2
+    get :show_title, :pickid => 2
+    assert_response 302
+  end 
+  def test_show_title__3
+    get :show_title, :title => 'MS spam'
+    assert_response 302
+  end 
+  def test_show_title__4
+    get :show_title, :id =>10000
+    assert_response 404
+  end
+  def test_show_title__5
+    get :show_title
+    assert_response 404
+  end
+  def test_show_title__6
+    get :show_title, :inchiki => nil
+    assert_response 404
+  end
+
+
+  def test_show_category
+    get :show_category, :category => 'misc'
+    assert_response 200
+  end
+  def test_show_category__2
+    get :show_category, :category => 'miscmisc'
+    assert_response 404
+  end
+  def test_show_category__3
+    get :show_category, :cat => 'nil'
+    assert_response 404
+  end
+  def test_show_category_noteslist
+    get :show_category_noteslist, :category => 'misc'
+    assert_response 200
+  end
+  def test_show_category_noteslist__2
+    get :show_category_noteslist, :category => 'miscmisc'
+    assert_response 404
+  end
+  def test_show_category_noteslist__3
+    get :show_category_noteslist, :catgory => 'miscmisc'
+    assert_response 404
+  end
+
+  def test_afterday
+    get :afterday, :ymd2 => '2005-12-05'
+    assert_response 200
+  end
+  def test_afterday__2
+    get :afterday, :ymd2 => '2006-12-05'
+    assert_response 404
+  end
+
+  def test_tendays
+    get :tendays, :ymd2 => '2005-12-05'
+    assert_response 200
+  end
+  def test_tendays__2
+    get :tendays, :ymd2 => '2007-12-05'
+    assert_response 404
+  end
+
+  def test_add_comment2
+    c = {"author" => "testauthor", "password" => "hoge", 
+      "url" => "http://localhost/test.html", 
+      "title" => "testtitle", 
+      "body" => "testbody", "article_id" => 1}
+
+    get :add_comment2, :comment => c
+    assert_equal('http://test.host/notes/id/1', @response.headers['location'])
+    assert_response 302
+  end
+  def test_add_comment2__2
+    c = {"author" => "testauthor", "password" => "hoge", 
+      "url" => "http://localhost/", 
+      "title" => "testtitle", 
+      "body" => "testbody", "article_id" => 11}
+
+    get :add_comment2, :comment => c
+    assert_equal('http://test.host/notes/d', @response.headers['location'])
+    assert_response 302
+  end
+
+  def test_trackback
   end
 
   ###

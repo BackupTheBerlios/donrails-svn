@@ -1,13 +1,13 @@
+<% @heading = "投稿者管理" %>
 <h1>author management</h1>
 
 <hr>
 新規著者の追加
 <p>
 <%= form_tag :action => "add_author" %>
-name:
-<%= text_field "author", "name" %>
-password:
-<%= password_field "author", "pass" %>
+name:<%= text_field "author", "name" %><br>
+nickname:<%= text_field "author", "nickname" %><br>
+password:<%= password_field "author", "pass" %><br>
 <%= submit_tag "著者を追加する" %>
 <%= end_form_tag %>
 
@@ -24,8 +24,9 @@ password:
     <td>著者を消去</td>
     <td>id</td>
     <td>name</td>
+    <td>nickname</td>
     <td>writable</td>
-    <td>書きこみ禁止</td>
+    <td>書きこみ権限変更</td>
   </tr>
 
   <% @authors.each do |co| %>
@@ -33,6 +34,7 @@ password:
     <td><%= check_box "deleteid", co.id %></td>
     <td><%= co.id %></td>
     <td><%= co.name %></td>
+    <td><%= co.nickname %></td>
     <td><%= co.writable %></td>
     <td><%= check_box "unwriteid", co.id %></td>
   </tr>

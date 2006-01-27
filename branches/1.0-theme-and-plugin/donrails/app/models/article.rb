@@ -7,6 +7,7 @@ class Article < ActiveRecord::Base
   has_and_belongs_to_many :comments, :join_table => "comments_articles"
   has_many :pings, :order => "id ASC"
   has_many :trackbacks, :order => "id ASC"
+  belongs_to :author
 #  after_save :sendping
 
   # Fulltext searches the body of published articles

@@ -12,7 +12,13 @@
  div.mainarticle { width : 75%;  float : left; z-index: 2 }
  div.mainarticle dt { margin-top: 0.5em }
  div.mainarticle dd { margin-left: 1em; margin-right: 0 }
- div.mainarticle div.section { margin-bottom: 0.5em; margin-left: 1em; margin-right: 0; margin-top: 0 }
+ div.mainarticle div.section { margin-bottom: 0.5em; margin-left: 1em; margin-right: 1em; margin-top: 0 }
+ div.mainarticle div.section div.authorhead { 
+ color: red; 
+ font-style: normal;
+ text-align: right;
+ right: 3em;
+ }
 
  div.notice { color: red; font-weight: bold }
  div.pagelink { margin:3px; padding:1px;color: red; font-weight: bold }

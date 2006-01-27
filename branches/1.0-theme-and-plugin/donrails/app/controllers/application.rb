@@ -119,6 +119,7 @@ class ApplicationController < ActionController::Base
     end
     pd = Digest::SHA1.digest(nonce + created + pass)
     if pd == passdigest
+      @user = user
       return true
     else
       return false

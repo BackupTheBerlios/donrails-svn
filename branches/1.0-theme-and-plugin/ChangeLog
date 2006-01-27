@@ -1,4 +1,68 @@
+2006-01-26  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/atom_controller.rb (AtomController::feed): Apply for paginate.
+
+	* donrails/app/views/atom/feed.rxml: 
+	- Apply for AtomAPI(feed) response. (Refrence: so-net blog API response)
+	- Apply for paginate.
+	
+
+2006-01-25  araki yasuhiro  <yasu@debian.or.jp>
+
+	* rails/app/views/shared/comment-form.rhtml: remove input form for url. Because nobody use this.
+
+	* donrails/lib/antispam.rb (AntiSpam::scan_uri_format): New method. If uri is ended without path (cf, http://araki.net/), reject this posts as comment and trackback.
+
+2006-01-24  araki yasuhiro  <yasu@debian.or.jp>
+
+	* rails/app/controllers/notes_controller.rb (NotesController::tendays): Change to return 404, if no article to show.
+
+	* rails/test/functional/notes_controller_test.rb (NotesControllerTest::test_tendays): likewise
+
+2006-01-23  araki yasuhiro  <yasu@debian.or.jp>
+
+	* rails/app/controllers/notes_controller.rb 
+	(NotesController::show_title): Change to return 404, if no article to show.
+	(NotesController::show_category): likewise.
+	(NotesController::show_category_noteslist): Clean up.
+
+	* rails/test/functional/notes_controller_test.rb
+	(NotesControllerTest::test_show_title__[2-6]) and (NotesControllerTest::test_show_title): New test methods.
+	(NotesControllerTest::test_show_category__2) and (NotesControllerTest::test_show_category): 
+
+2006-01-21  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/atom_controller.rb (AtomController): Fix un-sweep cached content.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::delete_unwrite_author): Fixed to change Author.writable = 0 or 1.
+
+	* donrails/app/models/trackback.rb (Trackback): Cleanup.
+
+	**** PLEASE CHECK YOUR authors TABLE on your Database. ****
+	* ADD NEW column in authors and articles table.(authors.nickname, articles.author_id). ADD restriction to authors.name is unique. 
+	* donrails/app/models/article.rb (Article): add relation to author.
+	* donrails/tool/tables-sqlite.txt: add author_id column in articles table.(alter table articles add column author_id INTEGER;)
+	* donrails/tool/tables-postgresql.txt: likewise.
+	* donrails/app/controllers/login_controller.rb (LoginController::add_article): likewise.
+	* donrails/app/views/login/new_article.rhtml: likewise.
+	* donrails/app/views/login/manage_article.rhtml: likewise.
+	* donrails/app/controllers/atom_controller.rb (AtomController::post): likewise.
+	* donrails/app/controllers/atom_controller.rb (AtomController::edit): likewise	
+	* donrails/app/controllers/login_controller.rb (LoginController::add_author): likewise
+	* donrails/app/views/login/manage_author.rhtml: likewise.
+	* donrails/public/stylesheets/araki.css: likewise. Add div.mainarticle div.section.
+	* donrails/app/views/shared/authorhead.rhtml: New file. likewise.
+	* donrails/app/views/notes/noteslist.rhtm: likewise.
+	* donrails/app/views/notes/show_title.rhtml : likewise.
+
+	* UPGRADE_1.1: Add upgrade method for 'blogpings' table
+
 2006-01-20  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/login/index.rhtml: Fixed typo. Fix: Routing probleem which is reported by Tagoh.
+	* donrails/app/views/layouts/login.rhtml: Add link to new_article.
+	* donrails/app/controllers/login_controller.rb (LoginController::new_article): New method. Spin off from LoginController::authenticate.
+	* donrails/app/views/login/new_article.rhtml: New file.
 
 	* rails/app/views/shared/comment2.rhtml: Fixed typo.
 

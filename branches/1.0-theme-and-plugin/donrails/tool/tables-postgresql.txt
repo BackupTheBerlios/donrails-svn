@@ -34,6 +34,7 @@ size     INTEGER,
 article_date     TIMESTAMP,
 article_mtime    TIMESTAMP,
 hnfid    INTEGER,
+author_id  INTEGER,
 format   VARCHAR
 );
 
@@ -55,7 +56,8 @@ primary key (comment_id, article_id)
 
 CREATE TABLE authors (
 id       SERIAL PRIMARY KEY,
-name   VARCHAR,
+name   VARCHAR NOT NULL UNIQUE,
+nickname   VARCHAR,
 pass   VARCHAR,
 writable INTEGER NOT NULL
 );

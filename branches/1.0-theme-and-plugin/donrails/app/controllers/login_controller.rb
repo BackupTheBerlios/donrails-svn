@@ -5,10 +5,10 @@ class LoginController < ApplicationController
   after_filter :compress
 
   cache_sweeper :article_sweeper, :only => [ :delete_article ]
-#  caches_sweeper :login_sweeper, :only => [ :delete_article ]
+  layout "login", :except => [:login_index, :index]
 
   def login_index
-    render_action "index"
+    render :action => "index"
   end
 
   def authorize
@@ -24,9 +24,13 @@ class LoginController < ApplicationController
     password = c["p"]
     if namae == ADMIN_USER and password == ADMIN_PASSWORD
       @session["person"] = "ok"
+      redirect_to :action => "new_article"
     else
       redirect_to :action => "login_index"
     end
+  end
+
+  def new_article
     @categories = Category.find_all
     retval = Article.find_by_sql("SELECT format, count(*) AS num FROM articles GROUP BY format ORDER BY num DESC")
     if retval.nil? || retval.empty? then
@@ -106,6 +110,8 @@ class LoginController < ApplicationController
     cat1 = c["category"]
     format = @params["format"]
 
+    author = Author.find(:first, :conditions => ["name = ?", c["author"]])
+
     get_ymd
     aris1 = Article.new("title" => title,
                         "body" => body,
@@ -114,6 +120,7 @@ class LoginController < ApplicationController
                         "article_date" => @ymd,
                         "article_mtime" => Time.now
                         )
+    aris1.author_id = author.id if author
 
     if category0.size > 0
       ca = category0.to_a
@@ -249,6 +256,9 @@ class LoginController < ApplicationController
         if b.writable == 1
           b.writable = 0
           b.save
+        else
+          b.writable = 1
+          b.save          
         end
       end
     end
@@ -264,9 +274,14 @@ class LoginController < ApplicationController
 
   def add_author
     c = @params["author"]
-    aris1 = Author.new("name" => c["name"],
-                       "pass" => c["pass"],
-                       "writable" => 1)
+    
+    aris1 = Author.find(:first, :conditions => ["name = ?", c["name"]])
+    unless aris1
+      aris1 = Author.new("name" => c["name"])
+    end
+    aris1.pass = c["pass"]
+    aris1.nickname = c["nickname"]
+    aris1.writable = 1
     aris1.save
     redirect_to :action => "manage_author"
   end

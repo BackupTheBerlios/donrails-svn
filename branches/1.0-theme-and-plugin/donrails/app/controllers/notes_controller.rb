@@ -325,13 +325,16 @@ class NotesController < ApplicationController
     elsif @params['pickid']
       @articles =  Article.find(:all, :conditions => ["id = ?", @params['pickid']]) 
       redirect_to :action => 'show_title', :id => @articles.first.id if @articles
-    elsif @params['title'].size > 0
+    elsif @params['title'] and @params['title'].size > 0
       @articles =  Article.find(:all, :conditions => ["title = ?", @params['title']]) 
       redirect_to :action => 'show_title', :id => @articles.first.id if @articles
+    else
+      render_text "no article", 404
     end
-    @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
-
-    if @articles.size >= 1
+    if @articles
+      @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
+    end
+    if @articles and @articles.size >= 1
       @lm = @articles.first.article_mtime.gmtime
       a = don_get_object(@articles.first, 'html')
       @heading = don_chomp_tags(a.title_to_html)
@@ -345,28 +348,38 @@ class NotesController < ApplicationController
         @nextarticle = Article.find(:first, :conditions => ["id > ?", cid])
       rescue
       end
+    else
+      render_text "no article", 404
     end
   end
 
   def show_category
     @category = Category.find(:first, :conditions => ["name = ?", @params['category']])
-    @articles_pages, @articles = 
-      paginate(:article, 
-               :order_by => 'articles.article_date DESC',
-               :per_page => 30, 
-               :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
-               )
-    @heading = "カテゴリ:#{@params['category']}"
-    unless @articles.empty? then
-      @lm = @articles.first.article_mtime.gmtime
+
+    if @category and @category.id
+      @articles_pages, @articles = 
+        paginate(:article, 
+                 :order_by => 'articles.article_date DESC',
+                 :per_page => 30, 
+                 :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
+                 )
+      @heading = "カテゴリ:#{@params['category']}"
+      unless @articles.empty? then
+        @lm = @articles.first.article_mtime.gmtime
+      end
+    else
+      render_text "no article", 404
     end
   end
 
   def show_category_noteslist
-    show_category
-    @rdf_category = @params['category']
-    @heading = "カテゴリ:#{@params['category']}"
-    render_action 'noteslist'
+    begin
+      show_category
+      @rdf_category = @params['category']
+      render_action 'noteslist'
+    rescue
+      render_text "no article", 404
+    end
   end
 
   def afterday
@@ -383,8 +396,7 @@ class NotesController < ApplicationController
         @lm = @articles.first.article_mtime.gmtime unless @articles.empty?
         render_action 'noteslist'
       else
-        @notice = "#{@ymd}以降に該当する記事はありません"
-        render_action 'noteslist', 404
+        render_text "#{@ymd}以降に該当する記事はありません", 404
       end
     else
       render_text "please select only one day", 404
@@ -405,7 +417,7 @@ class NotesController < ApplicationController
       render_action 'noteslist'
     else
       @notice = "正しく日付を指定してください" unless @notice
-      redirect_to :action => 'noteslist', :notice => @notice
+      render_text "#{@ymd}以降に該当する記事はありません", 404
     end
   end
 

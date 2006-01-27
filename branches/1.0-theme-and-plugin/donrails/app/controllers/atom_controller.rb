@@ -9,6 +9,7 @@ class AtomController < ApplicationController
   ]
   before_filter :wsse_auth, :except => :feed
   after_filter :compress
+  cache_sweeper :article_sweeper, :only => [ :post, :edit ]
 
   def wsse_auth
     if request.env["HTTP_X_WSSE"]
@@ -31,12 +32,12 @@ class AtomController < ApplicationController
   # atom feed
   def feed
     if @params['id'] == nil
-      @articles = Article.find(:all, :order => 'id DESC', :limit => 20)
+      @articles_pages, @articles = paginate(:article, :per_page => 20, :order_by => 'id DESC')
     else
       begin
         @article = Article.find(@params['id'])
       rescue
-        render :text => "no this id", :status => 400
+        render :text => "no this id", :status => 404
       end
     end
   end
@@ -45,12 +46,14 @@ class AtomController < ApplicationController
   def post
     if request.method == :post
       begin
+        author = Author.find(:first, :conditions => ["name = ?", @user])
         if @params['id']
           aris1 = Article.new("id" => @params['id'])
         else
           aris1 = Article.new
         end
         atom_update_article2(aris1, request.raw_post)
+        aris1.author_id = author.id if author        
         aris1.save
         @article = aris1
         render :status => 201 # 201 Created @ Location
@@ -67,8 +70,10 @@ class AtomController < ApplicationController
   def edit
     if request.method == :put
       begin
+        author = Author.find(:first, :conditions => ["name = ?", @user])
         aris1 = Article.find(@params['id'])
         atom_update_article2(aris1, request.raw_post)
+        aris1.author_id = author.id if author        
         aris1.save
         @article = aris1
         render :action => "post", :status => 200
