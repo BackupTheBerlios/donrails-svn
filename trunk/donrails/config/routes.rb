@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "notes/d/:category", :controller => "notes", 
   :action => "show_category_noteslist",
   :requirements => { 
-    :category => /\w+/,
+    :category => /\w+/
   }
   
 

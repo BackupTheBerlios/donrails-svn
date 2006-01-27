@@ -1,5 +1,11 @@
 2006-01-27  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/models/article_sweeper.rb (ArticleSweeper::expire_for): add expire method for recent_trigger_title.
+
+	* donrails/app/views/notes/category_select_a.rhtml: remove static <form />.
+	* donrails/app/views/shared/comment-form.rhtml: likewise
+	* donrails/app/views/login/index.rhtml: likewise 
+
 	* UPGRADE_1.1: Add information to articles and authors table's column.
 
 	* donrails/app/models/article_sweeper.rb (ArticleSweeper::expire_for): delete for recent_category_title_a.
