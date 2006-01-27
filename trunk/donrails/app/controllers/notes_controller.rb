@@ -1,8 +1,15 @@
 require 'kconv'
 class NotesController < ApplicationController
-  before_filter :set_charset
+
+  before_filter :set_charset, :except => [
+    :pick_article_a, :pick_article_a2, :comment_form_a,
+    :recent_category_title_a, :recent_trigger_title_a, :category_select_a
+  ]
+
   caches_page :index, :rdf_recent, :rdf_article, :rdf_category, :show_month, :show_nnen, :show_date, :show_title, :show_category, :show_category_noteslist, :articles_long, :noteslist
-  caches_action :recent_category_title_a, :recent_trigger_title_a, :category_select_a, :pick_article_a, :pick_article_a2
+  caches_action :pick_article_a, :pick_article_a2
+  caches_page :category_select_a, :recent_category_title_a
+# caches_action :recent_trigger_title_a
   after_filter :add_cache_control
   after_filter :compress
 

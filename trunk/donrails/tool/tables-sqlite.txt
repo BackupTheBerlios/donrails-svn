@@ -78,7 +78,8 @@ activation    BOOLEAN
 
 CREATE TABLE blogpings (
 id          INTEGER PRIMARY KEY NOT NULL,
-server_url    VARCHAR NOT NULL UNIQUE
+server_url    VARCHAR NOT NULL UNIQUE,
+active	      INTEGER
 );
 
 CREATE TABLE pings (

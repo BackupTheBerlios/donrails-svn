@@ -6,3 +6,10 @@
 
  alter table blogpings add column active INTEGER;
 
+** articlesテーブルにauthor_idカラムが必要です。
+
+ alter table articles add column author_id INTEGER;
+
+** authorsテーブルにnicknameカラムが必要です。
+
+ alter table authors add column nickname VARCHAR;

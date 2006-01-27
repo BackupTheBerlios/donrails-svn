@@ -1,4 +1,33 @@
+2006-01-27  araki yasuhiro  <yasu@debian.or.jp>
+
+	* UPGRADE_1.1: Add information to articles and authors table's column.
+
+	* donrails/app/models/article_sweeper.rb (ArticleSweeper::expire_for): delete for recent_category_title_a.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController): Change to suse caches_page for NotesController::category_select_a and NotesController::recent_category_title_a.
+
+	* donrails/app/views/shared/category_select.rhtml: Change to call remote_function by HTTP GET. (Change from HTTP POST).
+	* donrails/app/views/shared/trigger_title_list.rhtml: likewise.
+	* donrails/app/views/shared/category_title_list.rhtml: likewise.
+	
+	* donrails/tool/atomclient/atomcheck.rb 
+	(AtomPost::atompost): Fix typo.
+	(AtomPost::atompost): If connection to server is refused, show refuse message.
+
+	* donrails/app/controllers/atom_controller.rb 
+	(AtomController::feed): Change response for non-POST request.
+	(AtomController::wsse_auth): Change response code: If wsse fail, return 401.
+	(AtomController::feed): Change response code: If does not exist requested uri, return 403.
+	(AtomController::post): Change response code: If some trouble (cf. input parse error), return 400.
+	(AtomController::edit): likewise.
+	(AtomController::edit): Change response for non DELETE or PUT request. Then return 502.
+
 2006-01-26  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/atom/post.rxml: Change to add <author><name></name></author> and <content/>.
+	* donrails/app/views/atom/index.rxml: 
+	- Remove: entry to 'not NEW' article.
+	- Remove (comment out): link to service.categories
 
 	* donrails/app/controllers/atom_controller.rb (AtomController::feed): Apply for paginate.
 

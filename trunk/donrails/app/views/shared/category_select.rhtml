@@ -4,6 +4,6 @@ reading..
 <!-- BUG?? need to add  script type... and CDATA lines by hand -->
 <script type="text/javascript">
 //<![CDATA[
-<%= remote_function(:update => "category_select", :url => {:controller => "notes", :action => "category_select_a" }) %>
+<%= remote_function(:update => "category_select", :url => {:controller => "notes", :action => "category_select_a"}, :method => 'get') %>
 //]]>
 </script>

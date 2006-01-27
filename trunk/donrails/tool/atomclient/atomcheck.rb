@@ -132,9 +132,14 @@ class AtomPost
     req['X-WSSE'] = WSSE.new.generate(user, pass)
     req['host'] = url.host
     req['Content-Type']= 'application/atom+xml'
-    res = Net::HTTP.new(url.host, url.port).start {|http|
-      http.request(req, postbody)
-    }
+    begin
+      res = Net::HTTP.new(url.host, url.port).start {|http|
+        http.request(req, postbody)
+      }
+    rescue Errno::ECONNREFUSED
+      print "#{target_url} is not alive. Connection refused.\n"
+      exit 1
+    end
 
     case res
     when Net::HTTPCreated 
@@ -142,7 +147,7 @@ class AtomPost
       as.update(id, 201,check)
       return res
     when Net::HTTPRedirection
-      p "Redirect to res['location']"
+      p "Redirect to #{res['location']}"
       atompost(res['location'], user, pass, title, body, article_date, category, format, check, preescape, content_mode)
     else
       p "Error, #{article_date}"

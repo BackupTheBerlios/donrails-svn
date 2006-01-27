@@ -12,10 +12,24 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   def expire_for(record)
     case record
     when Article
-      expire_action(:controller => 'notes', :action => %w(recent_category_title_a recent_trigger_title_a category_select_a pick_article_a pick_article_a2))
+#      expire_action(:controller => 'notes', :action => %w(recent_category_title_a recent_trigger_title_a category_select_a pick_article_a pick_article_a2))
+      expire_action(:controller => 'notes', :action => %w(pick_article_a pick_article_a2))
 
       expire_page(:controller => 'notes', :action => %w(index rdf_recent articles_long))
 
+      expire_page(:controller => 'notes', :action => 'recent_category_title_a')
+      begin
+        ppdir = RAILS_ROOT + "/public/notes/recent_category_title_a"
+        ppdir2 = Dir.entries(ppdir)
+        ppdir2.each do |x|
+          if x =~ /(\w+).html/
+            expire_page(:controller => 'notes', :action => 'noteslist', :category => $1)
+          end
+        end
+      rescue Errno::ENOENT
+      rescue
+        p $!
+      end
       expire_page(:controller => 'notes', :action => 'noteslist')
       begin
         ppdir = RAILS_ROOT + "/public/notes/d/page"
@@ -45,7 +59,6 @@ class ArticleSweeper < ActionController::Caching::Sweeper
       end
 
       expire_page(:controller => 'notes', :action => %w(rdf_article show_title), :id => record.id)
-      #      expire_page(:controller => 'notes', :action => %w(pick_article), :pickid => record.id)
       expire_page(:controller => 'notes', :action => %w(rdf_article show_title2), :title => record.title)
 
       clall = Category.find_all
@@ -82,6 +95,9 @@ class ArticleSweeper < ActionController::Caching::Sweeper
       expire_page(:controller => 'notes', :action => 'show_nnen', :day => record.article_date.day, :month => record.article_date.month)
       expire_page(:controller => 'notes', :action => 'show_date', :day => record.article_date.day, :month => record.article_date.month, :year => record.article_date.year)
 
+    when Category
+      expire_page(:controller => 'notes', :action => 'category_select_a')
+      
     end
   end
 

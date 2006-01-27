@@ -14,12 +14,12 @@ class AtomController < ApplicationController
   def wsse_auth
     if request.env["HTTP_X_WSSE"]
       if false == wsse_match(request.env["HTTP_X_WSSE"])
-        render :text => "you are not valid user for atom.", :status => 403
+        render :text => "you are not valid user for atom.", :status => 401
       end
     elsif request.env["REMOTE_ADDR"] == "127.0.0.1"
       # for debug
     else
-      render :text => "you are not valid user for atom. Use with WSSE.", :status => 403
+      render :text => "you are not valid user for atom. Use with WSSE.", :status => 401
     end
   end
 
@@ -31,14 +31,18 @@ class AtomController < ApplicationController
 
   # atom feed
   def feed
-    if @params['id'] == nil
-      @articles_pages, @articles = paginate(:article, :per_page => 20, :order_by => 'id DESC')
-    else
-      begin
-        @article = Article.find(@params['id'])
-      rescue
-        render :text => "no this id", :status => 404
+    if request.method == :post
+      if @params['id'] == nil
+        @articles_pages, @articles = paginate(:article, :per_page => 20, :order_by => 'id DESC')
+      else
+        begin
+          @article = Article.find(@params['id'])
+        rescue
+          render :text => "no this id", :status => 403
+        end
       end
+    else
+      render :status => 502, :text => "bud request"
     end
   end
 
@@ -59,7 +63,7 @@ class AtomController < ApplicationController
         render :status => 201 # 201 Created @ Location
       rescue
         p $!
-        render :status => 404
+        render :status => 400
       end
     else
       render :status => 502
@@ -79,7 +83,7 @@ class AtomController < ApplicationController
         render :action => "post", :status => 200
       rescue
         p $!
-        render :status => 404
+        render :status => 400
       end
     elsif request.method == :delete
       begin
@@ -89,10 +93,11 @@ class AtomController < ApplicationController
         render :text => "no method #{request.method}", :status => 403
       end
     else
-      render :status => 404
+      render :status => 502
     end
   end
 
+  # beta testing..
   def categories
     if @params['id'] == nil
       render :text => "no method #{request.method}", :status => 400
