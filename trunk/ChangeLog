@@ -1,5 +1,7 @@
 2006-01-30  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/views/atom/feed.rxml: Fixed typo.
+
 	* donrails/app/controllers/atom_controller.rb (AtomController): New feature: page cache of /atom/feed.xml.
 	* donrails/app/models/article_sweeper.rb (ArticleSweeper::expire_for): likewise.
 	* UPGRADE_1.1: likewise.	

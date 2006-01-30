@@ -25,9 +25,8 @@ xml.feed("xmlns" => "http://purl.org/atom/ns\#") do
 
   xml.title RDF_TITLE
 
-  xml.entry("xmlns" => "http://purl.org/atom/ns\#") do
-
-    @articles.each do |@article|
+  @articles.each do |@article|
+    xml.entry("xmlns" => "http://purl.org/atom/ns\#") do
       article = don_get_object(@article, 'html')
       xml.title article.title_to_html
       xml.link("type" => "text/html",
