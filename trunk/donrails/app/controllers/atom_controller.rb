@@ -8,8 +8,9 @@ class AtomController < ApplicationController
     :preview
   ]
   before_filter :wsse_auth, :except => :feed
-  after_filter :compress
   cache_sweeper :article_sweeper, :only => [ :post, :edit ]
+  caches_page :feed
+  after_filter :compress
 
   def wsse_auth
     if request.env["HTTP_X_WSSE"]
@@ -31,18 +32,14 @@ class AtomController < ApplicationController
 
   # atom feed
   def feed
-    if request.method == :post
-      if @params['id'] == nil
-        @articles_pages, @articles = paginate(:article, :per_page => 20, :order_by => 'id DESC')
-      else
-        begin
-          @article = Article.find(@params['id'])
-        rescue
-          render :text => "no this id", :status => 403
-        end
-      end
+    if @params['id'] == nil
+      @articles_pages, @articles = paginate(:article, :per_page => 20, :order_by => 'id DESC')
     else
-      render :status => 502, :text => "bud request"
+      begin
+        @article = Article.find(@params['id'])
+      rescue
+        render :text => "no this id", :status => 403
+      end
     end
   end
 

@@ -13,3 +13,12 @@
 ** authorsテーブルにnicknameカラムが必要です。
 
  alter table authors add column nickname VARCHAR;
+
+* Cache のためのdirectoryが必要になります。
+
+httpdを動作させているユーザ(例えばwww-data等)
+ rails/public/index.html
+ rails/public/notes/ 以下
+ rails/public/atom/  以下
+の書き込み権限が必要になります。
+

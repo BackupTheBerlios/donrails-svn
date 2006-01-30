@@ -1,3 +1,12 @@
+2006-01-30  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/atom_controller.rb (AtomController): New feature: page cache of /atom/feed.xml.
+	* donrails/app/models/article_sweeper.rb (ArticleSweeper::expire_for): likewise.
+	* UPGRADE_1.1: likewise.	
+	* donrails/config/routes.rb: likewise.	
+
+	* donrails/example/notes.rhtml: Update to use link of AtomAPI feed.
+
 2006-01-27  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/models/article_sweeper.rb (ArticleSweeper::expire_for): add expire method for recent_trigger_title.
