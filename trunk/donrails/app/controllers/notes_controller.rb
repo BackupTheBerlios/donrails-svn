@@ -9,7 +9,7 @@ class NotesController < ApplicationController
   caches_page :index, :rdf_recent, :rdf_article, :rdf_category, :show_month, :show_nnen, :show_date, :show_title, :show_category, :show_category_noteslist, :articles_long, :noteslist
 #  caches_action :pick_article_a, :pick_article_a2
   caches_page :category_select_a, :recent_category_title_a
-
+  caches_page :articles_author
   after_filter :add_cache_control
   after_filter :compress
 
@@ -76,6 +76,29 @@ class NotesController < ApplicationController
       @lm = @articles.first.article_mtime.gmtime
     end
     render_action 'noteslist'
+  end
+
+  def articles_author
+    begin
+      @articles_pages, @articles = paginate(:article, :per_page => 10,
+                                            :order_by => 'id DESC',
+                                            :conditions => ["author_id = ?", @params['id']]
+                                            )
+      @author = Author.find(@params['id'])
+      if @author
+        if @author.nickname
+          @heading = @author.nickname + "の記事"
+        else
+          @heading = @author.name + "の記事"
+        end
+        unless @articles.empty? then
+          @lm = @articles.first.article_mtime.gmtime
+        end
+        render_action 'noteslist'
+      end
+    rescue
+      render :text => 'no entry', :status => 404
+    end
   end
 
   def indexabc
@@ -218,6 +241,7 @@ class NotesController < ApplicationController
     return articles.reverse!
   end
   private :recent_category
+
 
   def recent_trigger_title_a
     @headers["Content-Type"] = "text/html; charset=utf-8"

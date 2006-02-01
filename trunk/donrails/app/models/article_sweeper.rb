@@ -73,6 +73,20 @@ class ArticleSweeper < ActionController::Caching::Sweeper
         p $!
       end
 
+      expire_page(:controller => 'notes', :action => 'articles_author', :id => record.author_id)
+      begin
+        ppdir = RAILS_ROOT + "/public/notes/articles_author/#{record.author_id}/page"
+        ppdir2 = Dir.entries(ppdir)
+        ppdir2.each do |x|
+          if x =~ /(\d+).html/
+            expire_page(:controller => 'notes', :action => 'articles_author', :id => record.author_id, :page => $1)
+          end
+        end
+      rescue Errno::ENOENT
+      rescue
+        p $!
+      end
+
       expire_page(:controller => 'notes', :action => 'articles_long')
       begin
         ppdir = RAILS_ROOT + "/public/notes/articles_long/d/page"

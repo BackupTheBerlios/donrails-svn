@@ -8,6 +8,17 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "notes/d", :controller => "notes", :action => "noteslist"
   map.connect "notes/d/page/:page", :controller => "notes", :action => "noteslist", :page => /\d+/
 
+  map.connect "notes/articles_author/:id", :controller => "notes", :action => "articles_author",
+  :requirements => { 
+    :id => /\d+/
+  }
+  map.connect "notes/articles_author/:id/page/:page", :controller => "notes", :action => "articles_author",
+  :requirements => { 
+    :id => /\d+/,
+    :page => /\d+/
+  }
+
+
   map.connect "notes/d/:category", :controller => "notes", 
   :action => "show_category_noteslist",
   :requirements => { 

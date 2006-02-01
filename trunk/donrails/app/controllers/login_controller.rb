@@ -272,6 +272,10 @@ class LoginController < ApplicationController
     redirect_to :action => "manage_author"
   end
 
+  def edit_author
+    @author = Author.find(@params['id'])
+  end
+
   def add_author
     c = @params["author"]
     
@@ -281,6 +285,7 @@ class LoginController < ApplicationController
     end
     aris1.pass = c["pass"]
     aris1.nickname = c["nickname"]
+    aris1.summary = c["summary"]
     aris1.writable = 1
     aris1.save
     redirect_to :action => "manage_author"

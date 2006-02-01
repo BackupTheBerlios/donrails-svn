@@ -1,3 +1,18 @@
+2006-02-01  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/tool/tables-postgresql.txt: *** NOTICE: NEW COLUMN in authors TABLE ***. Add new column as Author.summary. This column stores short information of each author.
+	* donrails/tool/tables-sqlite.txt: likewise.
+	* UPGRADE_1.1: likewise.
+	* donrails/app/views/login/manage_author.rhtml: likewise. And change to use shared/edit_author.
+	* donrails/app/views/login/edit_author.rhtml: likewise. New file.
+	* donrails/app/views/shared/edit_author.rhtml: likewise. New file.
+
+2006-01-31  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::articles_author): New method.
+	* donrails/app/models/article_sweeper.rb (ArticleSweeper::expire_for): likewise.
+	* donrails/app/views/shared/authorhead.rhtml: likewise. Add link_to NOtesController::artilces_author.
+
 2006-01-30  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/atom/feed.rxml: Fixed typo.

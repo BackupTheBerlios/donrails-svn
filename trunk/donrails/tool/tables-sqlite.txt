@@ -59,6 +59,7 @@ id     INTEGER PRIMARY KEY,
 name   VARCHAR NOT NULL UNIQUE,
 nickname   VARCHAR,
 pass   VARCHAR,
+summary   VARCHAR,
 writable INTEGER NOT NULL
 );
 

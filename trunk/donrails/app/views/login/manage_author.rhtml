@@ -4,13 +4,7 @@
 <hr>
 新規著者の追加
 <p>
-<%= form_tag :action => "add_author" %>
-name:<%= text_field "author", "name" %><br>
-nickname:<%= text_field "author", "nickname" %><br>
-password:<%= password_field "author", "pass" %><br>
-<%= submit_tag "著者を追加する" %>
-<%= end_form_tag %>
-
+<%= render("shared/edit_author") %>
 <hr>
 著者の管理
 <% if @authors %>
@@ -19,7 +13,7 @@ password:<%= password_field "author", "pass" %><br>
 <% end %>
 
 <%= form_tag :action => "delete_unwrite_author" %>
-<table  border="1" cellspacing="0">
+<table border="1" cellspacing="0">
   <tr>
     <td>著者を消去</td>
     <td>id</td>
@@ -31,7 +25,7 @@ password:<%= password_field "author", "pass" %><br>
 
   <% @authors.each do |co| %>
   <tr>
-    <td><%= check_box "deleteid", co.id %></td>
+    <td><%= link_to 'Edit', {:action => :edit_author, :id => co.id} %><%= check_box "deleteid", co.id %></td>
     <td><%= co.id %></td>
     <td><%= co.name %></td>
     <td><%= co.nickname %></td>
