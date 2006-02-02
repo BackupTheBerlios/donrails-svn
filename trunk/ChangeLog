@@ -1,7 +1,9 @@
 2006-02-02  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/login_controller.rb 
-	(LoginController): Change to use verify_form_posts_have_security_token. Tamper for CSRF.
+	(LoginController): Change to use
+	verify_form_posts_have_security_token. Tamper for CSRF. Please see
+	README.3rdparty.
 	(LoginController::picture_save): Change to return 406 when picture upload was failed.
 	(LoginController::picture_save): Fixed typo.
 
