@@ -1,4 +1,28 @@
+2006-02-02  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/login_controller.rb 
+	(LoginController): Change to use verify_form_posts_have_security_token. Tamper for CSRF.
+	(LoginController::picture_save): Change to return 406 when picture upload was failed.
+	(LoginController::picture_save): Fixed typo.
+
+	* donrails/app/views/login/new_article.rhtml: Change tampering for CSRF. Change to use verify_form_posts_have_security_token. 'form_tag' -> 'secure_form_tag'. 
+	* donrails/app/views/shared/edit_author.rhtml: likewise.
+	* donrails/app/views/login/manage_trackback.rhtml: likewise.
+	* donrails/app/views/login/manage_comment.rhtml: likewise.
+	* donrails/app/views/login/manage_author.rhtml: likewise.
+	* donrails/app/views/login/manage_blacklist.rhtml: likewise.
+	* donrails/app/views/login/manage_blogping.rhtml: likewise.
+	* donrails/app/views/login/manage_article.rhtml: likewise.
+	* donrails/app/views/login/form_article.rhtml: likewise.
+	* donrails/app/views/login/index.rhtml: likewise. 
+
 2006-02-01  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/login_controller.rb (LoginController::authorize): Change to reset session. Tamper for CSRF.
+	(LoginController::authenticate): likewise.
+	(LoginController::logout): likewise.
+
+	* Check tags (revision 167) 'pre-CSRF'. 
 
 	* donrails/tool/tables-postgresql.txt: *** NOTICE: NEW COLUMN in authors TABLE ***. Add new column as Author.summary. This column stores short information of each author.
 	* donrails/tool/tables-sqlite.txt: likewise.

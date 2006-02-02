@@ -7,24 +7,41 @@ class LoginController < ApplicationController
   cache_sweeper :article_sweeper, :only => [ :delete_article ]
   layout "login", :except => [:login_index, :index]
 
+  verify_form_posts_have_security_token :only => [
+    :fix_article, :authenticate, :delete_article,
+    :delete_unwrite_author, :add_blacklist, :delete_blacklist,
+    :add_blogping, :delete_blogping, :delete_comment,
+    :delete_trackback, :picture_save, :add_article, :add_author
+  ]
+
+
   def login_index
     render :action => "index"
   end
 
   def authorize
     unless @session["person"] == "ok"
+      @request.reset_session
+      @session = @request.session
       redirect_to :action => "login_index"
     end
     @response.headers["X-donrails"] = "login"
   end
   
   def authenticate
-    c = @params["nz"]
-    namae = c["n"]
-    password = c["p"]
-    if namae == ADMIN_USER and password == ADMIN_PASSWORD
-      @session["person"] = "ok"
-      redirect_to :action => "new_article"
+    case @request.method
+    when :post
+      c = @params["nz"]
+      namae = c["n"]
+      password = c["p"]
+      if namae == ADMIN_USER and password == ADMIN_PASSWORD
+        @request.reset_session
+        @session = @request.session
+        @session["person"] = "ok"
+        redirect_to :action => "new_article"
+      else
+        redirect_to :action => "login_index"
+      end
     else
       redirect_to :action => "login_index"
     end
@@ -41,6 +58,8 @@ class LoginController < ApplicationController
   end
 
   def logout
+    @request.reset_session
+    @session = @request.session
     @session["person"] = "logout"
     redirect_to :action => "login_index"
   end
@@ -395,12 +414,15 @@ class LoginController < ApplicationController
   end
 
   def picture_save
-    @picture = Picture.new(params[:picture])
-    if @picture.save
-      render_text "uploaded to #{@picture.path} (#{@picture.size} bytes)"
-    else
-      render_action :picture_get
+    begin
+      @picture = Picture.new(@params['picture'])
+      if @picture.save
+        render_text "uploaded to #{@picture.path} (#{@picture.size} bytes)"
+      else
+        render_action :picture_get
+      end
+    rescue
+      render :text => 'fail', :status => 403
     end
   end
-
 end

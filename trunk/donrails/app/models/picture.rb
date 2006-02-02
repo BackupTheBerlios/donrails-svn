@@ -13,6 +13,7 @@ class Picture < ActiveRecord::Base
     self.content_type = picture_field.content_type.chomp
 
     t1 = Time.now
+
     dumpdir = File.expand_path(RAILS_ROOT) + IMAGE_DUMP_PATH + t1.year.to_s + '-' + t1.month.to_s + '-' + t1.day.to_s + '/'
     unless File.directory? dumpdir
       Dir.mkdir dumpdir

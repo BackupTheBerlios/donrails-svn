@@ -6,7 +6,7 @@
 <%= pagination_links @comments_pages %>
 <% end %>
 
-<%= form_tag :action => "delete_comment" %>
+<%= secure_form_tag :action => "delete_comment" %>
 <div class="kakomi">
 <div id="comment_ajax">
 [記事]を押すと削除対象コメントと親記事が表示されます

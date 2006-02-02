@@ -12,7 +12,7 @@
 <%= pagination_links @authors_pages %>
 <% end %>
 
-<%= form_tag :action => "delete_unwrite_author" %>
+<%= secure_form_tag :action => "delete_unwrite_author" %>
 <table border="1" cellspacing="0">
   <tr>
     <td>著者を消去</td>

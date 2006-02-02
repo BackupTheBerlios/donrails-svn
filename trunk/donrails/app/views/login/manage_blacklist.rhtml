@@ -14,7 +14,7 @@
   <dd>コメントを禁止するホスト名を指定します。</dd>
 </dl>
 <p>
-<%= form_tag :action => "add_blacklist" %>
+<%= secure_form_tag :action => "add_blacklist" %>
 pattern:
 <%= text_field "blacklist", "pattern" %>
 format:
@@ -34,7 +34,7 @@ format:
 <%= pagination_links @blacklists_pages %>
 <% end %>
 
-<%= form_tag :action => "delete_blacklist" %>
+<%= secure_form_tag :action => "delete_blacklist" %>
 <table  border="1" cellspacing="0">
   <tr>
     <td>消去</td>

@@ -1,0 +1,8 @@
+security_extensions:
+ See: http://www.nowherenear.net/documents/security_extensions/index.html
+
+ Installation:
+ $ cd vendor/plugins
+ $ svn export http://svn.aviditybytes.com/rails/plugins/
+ security_extensions
+

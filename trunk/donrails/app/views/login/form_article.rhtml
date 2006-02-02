@@ -1,9 +1,7 @@
-
-
 <% @heading = "form_article" %>
 
 <% kiji = @article %>
-<%= form_tag :action => "fix_article" %>
+<%= secure_form_tag :action => "fix_article" %>
 <%= hidden_field "article", "id", "value" => kiji.id %>
 
 <br>

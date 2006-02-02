@@ -6,7 +6,7 @@
 <%= pagination_links @articles_pages %>
 <% end %>
 
-<%= form_tag :action => "delete_article" %>
+<%= secure_form_tag :action => "delete_article" %>
 <div class="kakomi">
 <div id="ca">
 [記事]を押すと記事が表示されます
