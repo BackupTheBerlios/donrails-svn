@@ -1,0 +1,27 @@
+<% @heading = "form_article" %>
+
+<% kiji = @article %>
+<%= secure_form_tag :action => "fix_article" %>
+<%= hidden_field "article", "id", "value" => kiji.id %>
+
+<br>
+フォーマット形式:
+<select name="format">
+  <option value="<%= kiji.format %>"><%= kiji.format %></option>
+  <option value="plain">plain</option>
+  <option value="html">html</option>
+  <option value="hnf">hnf</option>
+  <option value="rd">rd</option>
+  <option value="wiliki">wiliki</option>
+</select>
+<br>
+タイトル:
+<br>
+<%= text_field "article", "title", "size" => 80, "value" => kiji.title %>
+<br>
+本文:
+<br>
+<%= text_area "article", "body", "rows" => 10, "cols" => 80, "value" => kiji.body %>
+<br>
+<%= submit_tag "save" %>
+<%= end_form_tag %>
