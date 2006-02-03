@@ -9,10 +9,12 @@ xml.tag!("rdf:RDF",
          "xml:lang" => "ja") do
 
   xml.channel("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => 'show_title', :id => @article.id)) do
-
+    
     xml.title RDF_TITLE
     xml.link(@request.protocol + @request.host_with_port + url_for(:action => "noteslist"))
     xml.description RDF_DESCRIPTION
+    xml.copyright RDF_COPYRIGHT
+
     xml.items do    
       xml.tag!("rdf:Seq") do
         xml.rdf(:li, "rdf:resource"=> "#{@request.protocol}#{@request.host_with_port}#{url_for(:action => "show_title", :id => @article.id)}")
@@ -25,6 +27,12 @@ xml.tag!("rdf:RDF",
 
     xml.title(item.title_to_xml)
     xml.link(@request.protocol + @request.host_with_port + url_for(:action => "show_title", :id => item.id))
+    item.categories.each do |cat|
+      xml.category cat.name
+    end
+    xml.trackback @request.protocol + @request.host_with_port + url_for(:controller => 'notes', :action => 'trackback', :id => item.id)
+
+
     begin
       ce = item.body_to_xml
       if ce =~ (/<content>(.*)<\/content>/m)

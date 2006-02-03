@@ -24,6 +24,10 @@ xml.feed("xmlns" => "http://purl.org/atom/ns\#") do
   xml.link("type" => "application/atom+xml", "rel" => "next", "href" => @request.protocol + @request.host_with_port + url_for(:action => "feed", :id => @articles.last.id - 1), "title" => RDF_TITLE)
 
   xml.title RDF_TITLE
+  xml.generator "donrails", "url" => "http://developer.berlios.de/projects/donrails/"
+  xml.modified pub_date(@articles.first.article_mtime)
+  xml.tagline RDF_DESCRIPTION
+  xml.copyright RDF_COPYRIGHT
 
   @articles.each do |@article|
     xml.entry("xmlns" => "http://purl.org/atom/ns\#") do
@@ -43,7 +47,8 @@ xml.feed("xmlns" => "http://purl.org/atom/ns\#") do
       article.categories.each do |cat|
         xml.category cat.name
       end
-      
+      xml.trackbck @request.protocol + @request.host_with_port + url_for(:controller => 'notes', :action => 'trackback', :id => article.id)
+
       xml.content("type" => "text/html",
                   "xml:lang" => "ja",
                   "xml:base" => @request.protocol + @request.host_with_port + url_for(:action => "edit", :id => article.id)) do

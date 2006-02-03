@@ -1,5 +1,12 @@
 2006-02-02  araki yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/tool/atomclient/tables.sql: New file.
+
+	* README.3rdparty: Add a security_extensions plugin install method.
+
+	* donrails/app/views/notes/rdf_*.rxml: Add <trackback/>, <category/> and <copyright/>
+	* donrails/app/views/atom/feed.rxml: Add <generator/>, <copyright>, <tagline/> and <modified/>.
+
 	* donrails/app/controllers/login_controller.rb 
 	(LoginController): Change to use
 	verify_form_posts_have_security_token. Tamper for CSRF. Please see

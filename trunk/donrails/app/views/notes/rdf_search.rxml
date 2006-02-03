@@ -12,6 +12,8 @@ xml.tag!("rdf:RDF",
     xml.title RDF_TITLE
     xml.link(@request.protocol + @request.host_with_port + url_for(:action => "search", :q => @rdf_search))
     xml.description RDF_DESCRIPTION
+    xml.copyright RDF_COPYRIGHT
+
     xml.items do    
       xml.tag!("rdf:Seq") do
         for item in @recent_articles
@@ -28,6 +30,10 @@ xml.tag!("rdf:RDF",
 
       xml.title(item.title_to_xml)
       xml.link(@request.protocol + @request.host_with_port + url_for(:action => "show_title", :id => item.id))
+      item.categories.each do |cat|
+        xml.category cat.name
+      end
+      xml.trackback @request.protocol + @request.host_with_port + url_for(:controller => 'notes', :action => 'trackback', :id => item.id)
 
       begin
         ce = item.body_to_xml

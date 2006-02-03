@@ -1,4 +1,3 @@
-
 xml.instruct! :xml, :version=>"1.0", :encoding => "utf-8"
 xml.instruct! :rss, :version=>"1.0"
 
@@ -9,9 +8,12 @@ xml.tag!("rdf:RDF",
          "xmlns:content" => "http://purl.org/rss/1.0/modules/content/",
          "xml:lang" => "ja") do
   xml.channel("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => 'show_category_noteslist', :category => @rdf_category)) do
+
     xml.title RDF_TITLE
     xml.link(@request.protocol + @request.host_with_port + url_for(:action => "show_category_noteslist", :category => @rdf_category))
     xml.description RDF_DESCRIPTION
+    xml.copyright RDF_COPYRIGHT
+
     xml.items do    
       xml.tag!("rdf:Seq") do
         for item in @recent_articles
@@ -27,6 +29,11 @@ xml.tag!("rdf:RDF",
     xml.item("rdf:about" => @request.protocol + @request.host_with_port + url_for(:action => "show_title", :id => item.id)) do
       xml.title(item.title_to_xml)
       xml.link(@request.protocol + @request.host_with_port + url_for(:action => "show_title", :id => item.id))
+      item.categories.each do |cat|
+        xml.category cat.name
+      end
+      xml.trackback @request.protocol + @request.host_with_port + url_for(:controller => 'notes', :action => 'trackback', :id => item.id)
+
       begin
         ce = item.body_to_xml
         if ce =~ (/<content>(.*)<\/content>/m)
