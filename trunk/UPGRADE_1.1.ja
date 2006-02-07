@@ -1,3 +1,16 @@
+1.0から1.1にUPGRADEする方へ。互換性がない機能と変更についての案内です。
+
+----
+* CSRF対策のため、security_extensions pluginを使うようになりました。
+
+追加方法は、script/pluginコマンドを使用します。
+rails directory以下に移動し、
+
+ ./script/plugin source http://svn.aviditybytes.com/rails/plugins/
+ ./script/plugin install security_extensions 
+
+を行います。
+
 * テーブルが一部変更されました。
 
 ** blogpingsテーブルにactiveカラムが必要です。

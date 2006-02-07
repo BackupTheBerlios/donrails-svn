@@ -1,3 +1,23 @@
+2006-02-08  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/tool/atomclient/README.ja: New file.
+
+2006-02-07  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/tool/atomclient/atommail.rb 
+	New config parameter: 
+	'report_mailaddress': (reportmail): New method. If this parameter setted, it sends report to 'report_mailaddress' which configured in ~/.donrails/atompost.yaml.
+	'certify_mailaddress': If this parameter setted, it restricts article update from this mailaddress only.
+	'category': If this paramter setted, it adds <category/> in AtomAPI POST message.
+
+2006-02-06  araki yasuhiro  <yasu@debian.or.jp>
+
+	* Makefile: Add dist rule.
+
+2006-02-04  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/login_controller.rb (LoginController::authorize): This method was Changed to protected.
+
 2006-02-02  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/tool/atomclient/tables.sql: New file.

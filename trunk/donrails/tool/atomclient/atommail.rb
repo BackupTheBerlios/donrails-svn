@@ -9,6 +9,7 @@ require 'getoptlong'
 require 'atomcheck'
 require 'rmail/parser'
 require 'nkf'
+require 'net/smtp'
 
 =begin
 
@@ -24,22 +25,42 @@ invoke from .forward
 
 def usage
   print "#{$0}\n\n"
-#  print "--username or -a=username:\n\t Set username for WSSE auth.\n"
-#  print "--password or -p=password:\n\t Set password for WSSE auth.\n"
-#  print "--target_url=target_url:\n\t Set URL for Atom POST.\n"
-#  print "--title or -t=title:\n\t Set TITLE for your post article.\n"
   print "--config or -c=configfile:\n\t Set YAML format config file.\n"
-#  print "--html\n\t Set article format to HTML.\n" 
-#  print "--hnf\n\t Set article format to HNF.\n"
   print "--nocheck\n\t NO CHECK article is already has posted or not. (Default checkd.)\n"
-#  print "--preescape\n\t html escape in <pre></pre> text. (Default no preescaped.)\n\t(Some text caused internal server error without this option.)\n"
-#  print "--content-mode=(escaped)\n\t <content></content> encode mode. (Default no encoded.)\n\t\t'escaped' is the only supported encode mode."
   print "--help\n\t Show this message\n"
   exit
 end
 
+# send report to report_mailaddress
+def reportmail(report_mailaddress, from_mailaddress, title, reason='Sucess')
+  if title
+    title = NKF.nkf("-j", title) 
+  else
+    title = "(no title)"
+  end
+  msgstr = <<END_OF_MESSAGE
+From: reporter
+To: #{report_mailaddress}
+Subject: receive atompost request
+MIME-Version: 1.0
+Content-Type: text/plain; charset="ISO-2022-JP"
+
+#{reason}: accept as follows,
+
+Title: #{title}
+
+END_OF_MESSAGE
+
+  Net::SMTP.start('localhost', 25) do |smtp|
+    smtp.send_message msgstr, from_mailaddress, report_mailaddress
+  end
+end
+
 user = nil
 pass = nil
+mailpass = nil
+certify_mailaddress = nil
+report_mailaddress = nil
 target_url = nil
 title = nil
 body = nil
@@ -48,6 +69,7 @@ format = nil
 check = true
 preescape = false
 content_mode = nil
+category = nil
 
 parser = GetoptLong.new
 parser.set_options(['--config', '-c', GetoptLong::REQUIRED_ARGUMENT],
@@ -77,17 +99,28 @@ begin
   conf = YAML::load(fconf)
   user = conf['user'] unless user
   pass = conf['pass'] unless pass
+#  mailpass = conf['mailpass'] unless mailpass
+  certify_mailaddress = conf['certify_mailaddress'] unless certify_mailaddress
+  report_mailaddress = conf['report_mailaddress'] unless report_mailaddress
   target_url = conf['target_url'] unless target_url
+  category = conf['category'] unless category
 rescue
   p $!
 end
-
 
 message = RMail::Parser.read(STDIN)
 body = ''
 bodyhtml = ''
 
-#p message.header.content_type
+from_mailaddress = message.header.from[0].local + '@' + message.header.from[0].domain
+if certify_mailaddress
+  unless certify_mailaddress.include?(from_mailaddress) 
+    print from_mailaddress + " is not certified address\n"
+    reportmail(report_mailaddress, from_mailaddress, title, 'Not certified address.') if report_mailaddress
+    exit
+  end
+end
+
 title = NKF.nkf("-m -w", message.header.subject)
 
 ## multipart message is not stable...
@@ -112,23 +145,20 @@ else
 end
 
 puts NKF.nkf('-e', title)
-#puts NKF.nkf('-e', body)
-#puts NKF.nkf('-e', bodyhtml)
-#p body.length
-#p bodyhtml.length
-
 ap = AtomPost.new
 p target_url
-#ap.atompost(target_url, user, pass, 
-#            title, body, nil, 
-#            nil, nil, check, preescape, content_mode)
 
 if bodyhtml.length > 0
   ap.atompost(target_url, user, pass, 
               title, bodyhtml, nil, 
-              nil, nil, check, 
+              category, nil, check, 
               preescape, nil)
 
 else
-  ap.atompost(target_url, user, pass, title, body, nil, nil, nil, check, preescape, 'plain')
+  ap.atompost(target_url, user, pass, 
+              title, body.chomp, nil, 
+              category, nil, check, 
+              preescape, 'plain')
 end
+
+reportmail(report_mailaddress, from_mailaddress, title) if report_mailaddress

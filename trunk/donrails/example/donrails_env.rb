@@ -10,3 +10,4 @@ RDF_COPYRIGHT = "Copyright 2005, ARAKI Yasuhiro"
 RDF_MANAGINGEDITOR = "yasu-donrails@araki.net (ARAKI Yasuhiro)"
 RDF_WEBMASTER = "yasu-donrails@araki.net (ARAKI Yasuhiro)"
 
+$KCODE = 'u'

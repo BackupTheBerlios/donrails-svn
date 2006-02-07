@@ -19,6 +19,7 @@ class LoginController < ApplicationController
     render :action => "index"
   end
 
+  protected
   def authorize
     unless @session["person"] == "ok"
       @request.reset_session
@@ -28,6 +29,7 @@ class LoginController < ApplicationController
     @response.headers["X-donrails"] = "login"
   end
   
+  public
   def authenticate
     case @request.method
     when :post

@@ -1,5 +1,8 @@
 #!/usr/bin/make
 
+NAME = donrails
+VERSION = 1.1pre0
+
 all: link
 
 link: linkrails linkinit links linkj 
@@ -37,3 +40,14 @@ dist10: clean
 
 clean:
 	rm -f *~ */*~ */*/*~ */*/*/*~ */*/*/*/*~ *.orig */*.orig */*/*.orig
+	-rm -f $(NAME)-$(VERSION).tar.gz
+
+dist:	clean
+	cd .. ; tar czvf $(NAME)-$(VERSION).tar.gz \
+		--exclude .svn \
+		--exclude rails \
+		--exclude donrails-trunk/donrails/app/views/notes/index.rhtml \
+		--exclude donrails-trunk/donrails/app/views/layouts/notes.rhtml \
+		donrails-trunk ; \
+		mv $(NAME)-$(VERSION).tar.gz donrails-trunk 
+
