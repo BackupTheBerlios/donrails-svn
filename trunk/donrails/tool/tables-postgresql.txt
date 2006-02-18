@@ -5,7 +5,8 @@ name     VARCHAR,
 path      VARCHAR,
 size      INTEGER,
 content_type   VARCHAR,
-comment        VARCHAR
+comment        VARCHAR,
+article_id     VARCHAR
 );
 
 CREATE TABLE comments (

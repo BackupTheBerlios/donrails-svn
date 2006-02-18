@@ -23,5 +23,13 @@
 <br>
 <%= text_area "article", "body", "rows" => 10, "cols" => 80, "value" => kiji.body %>
 <br>
+<% kiji.categories.each do |cat| %>
+<%= check_box "catname", cat.id, "checked" => "checked" %>
+<%=h cat.name %>
+<br>
+<% end %>
+
+さらにカテゴリを追加する⇒<%= text_field "article", "category", "size" => 20, "value" => '' %>
+<br>	  
 <%= submit_tag "save" %>
 <%= end_form_tag %>

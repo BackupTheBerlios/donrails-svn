@@ -1,5 +1,6 @@
 * 1.1での変更点(1.0からの変更そのままで動かないものについては、UPGRADE_1.1参照)
 
+- login/manage_articleにおいて、articleに関連づけているcategoryを変更できるようにした。
 - CSRF対策
 - AtomAPI、RSSを含む出力の追加
 - 複数著者による記事の追加をサポート
@@ -8,3 +9,4 @@
 - コメントおよびトラックバックspam機能強化
 - Cache-Control: および Last-Modified: ヘッダによるブラウザキャッシュ制御
 - Blog ping送信先のon/off切替
+- AtomAPIによるimage postの追加

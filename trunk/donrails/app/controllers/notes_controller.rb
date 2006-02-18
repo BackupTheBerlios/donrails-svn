@@ -482,6 +482,11 @@ class NotesController < ApplicationController
     @picture = Picture.new
   end
 
+  def show_image 
+    @image = Image.find(@params['id'])
+    redirect_to '/' + @image.path.split('/public/')[1]
+  end
+
   def trackback
     if request.method == :post
       begin

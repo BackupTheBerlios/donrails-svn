@@ -13,6 +13,13 @@ rails directory以下に移動し、
 
 * テーブルが一部変更されました。
 
+** picturesテーブルにarticle_idカラムが必要です。
+
+追加方法
+
+ alter table pictures add column article_id INTEGER;
+
+
 ** blogpingsテーブルにactiveカラムが必要です。
 
 追加方法

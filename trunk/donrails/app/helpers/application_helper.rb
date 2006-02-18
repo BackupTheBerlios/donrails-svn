@@ -8,6 +8,8 @@ require 'jcode'
 require 'rexml/document'
 require 'cgi'
 
+require 'base64'
+
 module ApplicationHelper
 
 =begin rdoc
@@ -231,6 +233,52 @@ module ApplicationHelper
     if blogping and blogping.size > 0
       sendping(article, blogping)
     end
+  end
+
+
+  def atom_parse_image(image, raw_post)
+
+    xml = REXML::Document.new(raw_post)
+    databody = String.new
+    filetype = ''
+    suffix = 'gif'
+    t1 = Time.now
+
+    p 'L247'
+    if xml.root.elements['relateid']
+      ida = xml.root.elements['relateid'].text.split(':')
+      p ida
+      if ida[0] == 'tag' and ida[1] == @request.host and ida[2] == 'notes'
+        image.article_id = ida[3].to_i
+      end
+    end
+
+    image.content_type = xml.root.elements['content'].attributes["type"]
+    if image.content_type =~ /image\/(.+)$/i
+      if $1 =~ /(jpeg|jpg)/i
+        suffix = 'jpg'
+      elsif $1 =~ /(gif)/i
+        suffix = 'gif'
+      elsif $1 =~ /(png)/i
+        suffix = 'png'
+      else
+        suffix = $1
+      end
+      image.name = t1.to_i.to_s + '-' + raw_post.size.to_s + '.' + suffix
+    end
+
+    if xml.root.elements['content'].attributes['mode'] == 'base64'
+      image_data = Base64.decode64(xml.root.elements['content'].text)
+    end
+
+    dumpdir = File.expand_path(RAILS_ROOT) + IMAGE_DUMP_PATH + t1.year.to_s + '-' + t1.month.to_s + '-' + t1.day.to_s + '/'
+    unless File.directory? dumpdir
+      Dir.mkdir dumpdir
+    end
+    image.path = dumpdir + image.name
+    f = File.new(image.path, "w")
+    image.size = f.write(image_data)
+    f.close
   end
 
 end

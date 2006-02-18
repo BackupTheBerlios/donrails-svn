@@ -112,13 +112,39 @@ class LoginController < ApplicationController
   def fix_article
     c = @params["article"]
     format = @params["format"]
+    catname = @params["catname"]
+
     title = c["title"]
     body = c["body"]
     id = c["id"].to_i
+    newcategory = c["category"]
+
     aris = Article.find(id)
     aris.title = title
     aris.body = body
     aris.format = format
+    aris.categories.clear
+
+    if newcategory
+      nb = Category.find(:first, :conditions => ["name = ?", newcategory])
+      if nb
+        aris.categories.push_with_attributes(nb)
+      end
+    end
+
+    if catname
+      catname.each do |k, v|
+        begin
+          if v.to_i == 1
+            b = Category.find(k.to_i)
+            aris.categories.push_with_attributes(b)
+          else
+          end
+        rescue
+        end
+      end
+    end
+
     aris.save
     redirect_to :action => "manage_article"
   end

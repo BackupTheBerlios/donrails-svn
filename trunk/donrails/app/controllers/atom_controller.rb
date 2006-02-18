@@ -109,4 +109,21 @@ class AtomController < ApplicationController
     end
   end
 
+  # beta testing.. XXX
+  def image_post
+    if request.method == :post
+      begin
+        @image = Image.new
+        atom_parse_image(@image, request.raw_post)
+        @image.save
+        render :status => 201
+      rescue
+        p $!
+        render :status => 400
+      end
+    else
+      render :status => 405
+    end
+  end
+
 end

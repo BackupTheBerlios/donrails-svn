@@ -71,7 +71,7 @@ class AtomPost
   def atompost(target_url, user, pass, 
                title, body, article_date, 
                category, format, check=true, 
-               preescape=true, content_mode=nil)
+               preescape=true, content_mode=nil, relateid=nil)
 
     as = AtomStatus.new
     id = as.check(target_url, title, body, check)
@@ -85,6 +85,8 @@ class AtomPost
     postbody = "<entry xmlns='http://www.w3.org/2005/Atom'>\n"
     article_date = Time.now.iso8601 unless article_date
     postbody += "<articledate>#{article_date}</articledate>\n"
+    postbody += "<relateid>#{relateid}</relateid>\n" if relateid
+    p relateid if relateid
 
     if category
       category.each do |cate|
@@ -117,6 +119,8 @@ class AtomPost
         postbody += "<content type='text/html' mode='escaped'>" + CGI.escapeHTML(CGI.unescapeHTML(body)) + '</content>'
       elsif content_mode == 'plain'
         postbody += "<content type='text/plain' mode='escaped'>" + CGI.escapeHTML(CGI.unescapeHTML(body)) + '</content>'
+      elsif content_mode == 'base64'
+        postbody += "<content type='#{format}' mode='base64'>" + body + '</content>'
       else
         postbody += "<content type='text/html'>#{body}</content>" 
       end
@@ -138,7 +142,7 @@ class AtomPost
       }
     rescue Errno::ECONNREFUSED
       print "#{target_url} is not alive. Connection refused.\n"
-      exit 1
+      raise Errno::ECONNREFUSED
     end
 
     case res
@@ -154,6 +158,7 @@ class AtomPost
       p res
       res.error!
       as.update(id, -1)
+      return res
     end
   end
 

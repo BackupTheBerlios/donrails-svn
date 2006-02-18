@@ -1,4 +1,48 @@
+2006-02-18  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/login/manage_article.rhtml: Change to add image link.
+
+	* donrails/app/views/login/form_article.rhtml: Change to re-edit relation of articles and categories.
+
+	* donrails/tool/atomclient/atomcheck.rb: Some change for add relation of article and image.
+
+	* donrails/tool/atomclient/atommail.rb: Change to apply for MIME multipart message.
+
+2006-02-16  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::show_image): New method.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::fix_article): NEW feature: Article.categories can be changed.
+
+	* donrails/app/controllers/atom_controller.rb (AtomController::image_post): New method.
+
+	* donrails/app/models/picture.rb (Picture): Add belongs_to article.
+
+	* donrails/app/models/article.rb (Article): Add relation to 'pictures'. 
+	* donrails/app/models/image.rb: New models. It use 'pictures' table.
+
+	* NEWS.ja: add new feature information.
+
+	* UPGRADE_1.1.ja: Add new table information on pictures table. 
+	** NOTICE ** You shuld add 'article_id' column in picures table.
+	- donrails/tool/tables-{sqlite,postgresql}.txt: likewise.
+
+2006-02-12  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/atom/image_post.rxml: New file. It include alternate link to show_title, show_image and image_post.
+
+	* donrails/app/helpers/application_helper.rb (ApplicationHelper::atom_parse_image): New method.
+
+2006-02-10  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::show_image): New method.
+	* NEW feature: Image post by AtomAPI. 
+
 2006-02-08  araki yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/tool/atomclient/atommail.rb (reportmail): If some error raise in AtomPost::atompost, send error report mail.
+
+	* donrails/tool/atomclient/atomcheck.rb (AtomPost::atompost): If refused by AtomAPI server, raise Errono::ECONNREFUSED. (path through from Net::HTTP.)
 
 	* donrails/tool/atomclient/README.ja: New file.
 

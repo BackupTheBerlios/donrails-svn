@@ -10,6 +10,7 @@ require 'atomcheck'
 require 'rmail/parser'
 require 'nkf'
 require 'net/smtp'
+require 'htree'
 
 =begin
 
@@ -103,6 +104,7 @@ begin
   certify_mailaddress = conf['certify_mailaddress'] unless certify_mailaddress
   report_mailaddress = conf['report_mailaddress'] unless report_mailaddress
   target_url = conf['target_url'] unless target_url
+  target_url_image = conf['target_url_image'] unless target_url_image
   category = conf['category'] unless category
 rescue
   p $!
@@ -122,43 +124,63 @@ if certify_mailaddress
 end
 
 title = NKF.nkf("-m -w", message.header.subject)
+puts NKF.nkf('-e', title)
+
+image = Array.new
 
 ## multipart message is not stable...
 if message.multipart? and message.header.content_type == "multipart/alternative"
   message.each_part do |mp|
     if mp.header.content_type == "text/html"
       bodyhtml = NKF.nkf("-w", mp.body)
-    end
-    if mp.header.content_type == "text/plain"
+    elsif mp.header.content_type == "text/plain"
       body = NKF.nkf("-w", mp.body)
     end
   end
 elsif message.multipart?
   message.each_part do |mp|
-    if mp.header.content_type =~ /text\//
+    if mp.header.content_type == "text/html"
       bodyhtml = NKF.nkf("-w", mp.body)
-      break
+    elsif mp.header.content_type == "text/plain"
+      body = NKF.nkf("-w", mp.body)
+    elsif mp.header.content_type =~ /^image\// then
+#      image.push(mp.body)
+      image.push(mp)
     end
   end
 else
   body = NKF.nkf("-w", message.body)
 end
 
-puts NKF.nkf('-e', title)
-ap = AtomPost.new
 p target_url
 
-if bodyhtml.length > 0
-  ap.atompost(target_url, user, pass, 
-              title, bodyhtml, nil, 
-              category, nil, check, 
-              preescape, nil)
-
-else
-  ap.atompost(target_url, user, pass, 
-              title, body.chomp, nil, 
-              category, nil, check, 
-              preescape, 'plain')
+## send text 
+begin
+  ap = AtomPost.new
+  if bodyhtml and bodyhtml.length > 0
+    res = ap.atompost(target_url, user, pass, title, bodyhtml, nil, category, nil, check, preescape, nil)
+  else
+    res = ap.atompost(target_url, user, pass, title, body.chomp, nil, category, nil, check, preescape, 'plain')
+  end
+  br = HTree.parse(res.body).to_rexml
+  id = br.root.elements['id'].text
+  reportmail(report_mailaddress, from_mailaddress, title, id) if report_mailaddress
+rescue
+  reportmail(report_mailaddress, from_mailaddress, title, $!) if report_mailaddress
+  exit
 end
 
-reportmail(report_mailaddress, from_mailaddress, title) if report_mailaddress
+relateid = id
+
+if target_url_image
+  image.each do |mp|
+    p mp.header.content_type
+
+    if mp.header.match?(/^content-transfer-encoding$/i, /base64/)
+      res = ap.atompost(target_url_image, user, pass, title, mp.body, nil, category, mp.header.content_type, check, preescape, 'base64', relateid)
+      br = HTree.parse(res.body).to_rexml
+      id = br.root.elements['id'].text
+      reportmail(report_mailaddress, from_mailaddress, title, id) if report_mailaddress
+    end
+  end
+end

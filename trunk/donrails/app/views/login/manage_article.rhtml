@@ -22,6 +22,7 @@
      <td>format</td>
      <td>category</td>
      <td>body</td>
+     <td>image</td>
    </tr>
 
    <% @articles.each do |co| %>
@@ -41,6 +42,11 @@
        <% end %>
      </td>
      <td><%= don_mb_truncate(co.body) if co.body %></td>
+     <td>
+       <% co.pictures.each do |picture| %>
+       <%= link_to picture.id, {:controller => 'notes', :action => 'show_image', :id => picture.id} %>
+       <%end%>
+     </td>
    </tr>
    <% end %>
  </table>
