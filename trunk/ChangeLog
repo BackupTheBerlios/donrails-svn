@@ -1,3 +1,15 @@
+2006-03-22  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/layouts/login.rhtml: add link to manage_article.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::picture_save): If success, redirect to manage_picture.
+
+	* donrails/app/views/login/manage_picture.rhtml: Change to show small image by '<img width=100 ..>'. Add file delete checkbox.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::delete_article): At delete article, remove picture.article_id.
+	(LoginController::delete_picture): New method.
+	(LoginController::manage_picture): New method.
+
 2006-02-18  araki yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/login/manage_article.rhtml: Change to add image link.

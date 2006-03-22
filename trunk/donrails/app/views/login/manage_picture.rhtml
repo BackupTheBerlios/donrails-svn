@@ -1,0 +1,53 @@
+<h1>picture management</h1>
+<% @heading = 'picture management' %>
+
+<% if @pictures %>
+
+<% if @pictures_pages %>
+<%= pagination_links @pictures_pages %>
+<% end %>
+
+<%= secure_form_tag :action => "delete_picture" %>
+<div class="kakomi">
+<div id="ca">
+記事が表示されます
+</div>
+</div>
+<%= submit_tag "チェックした画像を削除する" %>
+<table  border="1" cellspacing="0">
+   <tr>
+     <td>image</td>
+     <td>Delete?</td>
+     <td>id</td>
+     <td>size</td>
+     <td>content_type</td>
+     <td>記事</td>
+     <td>comment</td>
+     <td>name</td>
+     <td>File Delete?</td>
+   </tr>
+
+   <% @pictures.each do |pic| %>
+   <% rpath = '/' + pic.path.split('/public/').last %>
+   <tr>
+     <td><%= image_tag(rpath, :size => '100') %></td>
+     <td><%= check_box "deleteid", pic.id %></td>
+     <td><%= link_to pic.id, {:controller => 'notes', :action => 'show_image', :id => pic.id} %></td>
+     <td><%= pic.size if pic.size %></td>
+     <td><%= pic.content_type if pic.content_type %></td>
+     <td>
+       <%= link_to_remote(pic.article_id, :update => "ca", :url => {:controller => "notes", :action => "pick_article_a", :pickid => pic.article_id }) %>
+     </td>
+     <td><%= pic.comment if pic.comment %></td>
+     <td><%= pic.name if pic.name %></td>
+     <td><%= check_box "filedeleteid", pic.id %></td>
+   </tr>
+   <% end %>
+ </table>
+ <%= submit_tag "チェックした記事を削除する" %>
+ <%= end_form_tag %>
+ <% end %>
+
+ <% if @pictures_pages %>
+ <%= pagination_links @pictures_pages %>
+ <% end %>

@@ -16,6 +16,7 @@
 <table  border="1" cellspacing="0">
    <tr>
      <td>Delete?</td>
+     <td>id</td>
      <td>author</td>
      <td>title</td>
      <td>date</td>
@@ -32,6 +33,7 @@
        <%= link_to_remote("[記事]", :update => "ca", :url => {:controller => "notes", :action => "pick_article_a", :pickid => co.id }) %>
        <%= link_to "[修正]", :action => "form_article", :pickid => co.id %>
      </td>
+     <td><%= co.id %></td>
      <td><%= co.author.name if co.author_id %></td>
      <td><%= don_mb_truncate(co.title) if co.title %></td>
      <td><%= co.article_date.to_date.to_s if co.article_date %></td>

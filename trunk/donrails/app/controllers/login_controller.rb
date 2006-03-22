@@ -66,6 +66,52 @@ class LoginController < ApplicationController
     redirect_to :action => "login_index"
   end
 
+  ## picture
+  def manage_picture
+    @pictures_pages, @pictures = paginate(:picture,:per_page => 30,:order_by => 'id DESC')
+  end
+
+  def delete_picture
+    begin
+      if cf = @params["filedeleteid"]
+        cf.each do |k, v|
+          if v.to_i == 1
+            pf = Picture.find(k.to_i)
+            File.delete pf.path
+            Picture.delete(k.to_i)
+          end
+        end
+      elsif c = @params["deleteid"]
+        c.each do |k, v|
+          if v.to_i == 1
+            Picture.delete(k.to_i)
+          end
+        end
+      end
+    rescue
+      @heading = 'fail delete_picture' + $!
+    end
+    redirect_to :action => "manage_picture"
+  end
+
+  def picture_get
+    @picture = Picture.new
+  end
+
+  def picture_save
+    begin
+      @picture = Picture.new(@params['picture'])
+      if @picture.save
+        redirect_to :action => "manage_picture"
+      else
+        render_action :picture_get
+      end
+    rescue
+      render :text => 'fail', :status => 403
+    end
+  end
+
+
   ## trackback
   def manage_trackback
     @trackbacks_pages, @trackbacks = paginate(:trackback, :per_page => 30,
@@ -212,6 +258,12 @@ class LoginController < ApplicationController
           Comment.destroy(bc.id)
         end
         b.comments.delete(b_comment)
+
+        b.pictures.each do |bp|
+          bp.article_id = nil
+          bp.save
+        end
+
         b.destroy
       end
     end
@@ -437,20 +489,4 @@ class LoginController < ApplicationController
     return hnfbody, hnf_file
   end
 
-  def picture_get
-    @picture = Picture.new
-  end
-
-  def picture_save
-    begin
-      @picture = Picture.new(@params['picture'])
-      if @picture.save
-        render_text "uploaded to #{@picture.path} (#{@picture.size} bytes)"
-      else
-        render_action :picture_get
-      end
-    rescue
-      render :text => 'fail', :status => 403
-    end
-  end
 end
