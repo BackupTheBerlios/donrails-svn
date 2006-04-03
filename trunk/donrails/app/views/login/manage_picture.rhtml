@@ -1,5 +1,11 @@
-<h1>picture management</h1>
 <% @heading = 'picture management' %>
+<h1>picture management</h1>
+ファイルのアップロード
+
+<%= secure_form_tag({:action => "picture_save"},:multipart => 'true')  %>
+<input id="picture_picture" name="picture[picture]" size="30" type="file" />
+<input name="commit" type="submit" value="Upload file" />
+<%= end_form_tag %>
 
 <% if @pictures %>
 
@@ -13,38 +19,55 @@
 記事が表示されます
 </div>
 </div>
-<%= submit_tag "チェックした画像を削除する" %>
+
+<ul>
+  <li>Delete?ボックスをチェックすると、pictureがdb上から削除されます</li>
+  <li>File Delet?ボックスをチェックすると、pictureのファイルが削除されます</li>
+  <li>Edit? をクリックするとpictureと記事を関連づけたり、より詳細な情報を見ることができます</li>
+</ul>
+
+<%= submit_tag %>
 <table  border="1" cellspacing="0">
    <tr>
-     <td>image</td>
-     <td>Delete?</td>
      <td>id</td>
+     <td>image</td>
+     <td>Delete?/Edit?</td>
+<!--
      <td>size</td>
      <td>content_type</td>
-     <td>記事</td>
-     <td>comment</td>
+-->
      <td>name</td>
+     
      <td>File Delete?</td>
    </tr>
 
    <% @pictures.each do |pic| %>
    <% rpath = '/' + pic.path.split('/public/').last %>
    <tr>
+     <td><%= link_to pic.id, {:controller => 'notes', :action => 'show_image', :id => pic.id} %></td>     
      <td><%= image_tag(rpath, :size => '100') %></td>
-     <td><%= check_box "deleteid", pic.id %></td>
-     <td><%= link_to pic.id, {:controller => 'notes', :action => 'show_image', :id => pic.id} %></td>
+     <td>
+       <%= check_box "deleteid", pic.id %>/
+       <% if pic.article_id %>
+       <%= link_to_remote(pic.article_id, :update => "ca", :url => {:controller => "notes", :action => "pick_article_a", :pickid => pic.article_id }) %>
+       <% else %>
+       <%= link_to("edit", :action => "manage_picture_detail", :id => pic.id) %>
+       <% end %>
+     </td>
+<!--
      <td><%= pic.size if pic.size %></td>
      <td><%= pic.content_type if pic.content_type %></td>
+
      <td>
-       <%= link_to_remote(pic.article_id, :update => "ca", :url => {:controller => "notes", :action => "pick_article_a", :pickid => pic.article_id }) %>
+       <%= pic.comment if pic.comment %>
      </td>
-     <td><%= pic.comment if pic.comment %></td>
+-->     
      <td><%= pic.name if pic.name %></td>
      <td><%= check_box "filedeleteid", pic.id %></td>
    </tr>
    <% end %>
  </table>
- <%= submit_tag "チェックした記事を削除する" %>
+ <%= submit_tag %>
  <%= end_form_tag %>
  <% end %>
 

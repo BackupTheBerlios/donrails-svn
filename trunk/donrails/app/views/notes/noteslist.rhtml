@@ -49,9 +49,19 @@ From <%= @ymd3 %> to <%= @ymd4 %>
 </div> <!-- end nnenhead -->
 
 <div class="section">
+<%
+article.pictures.each do |pic|
+if pic.path
+hoi = pic.path.split('/public/').last
+rpath = "/" + hoi
+%>
+<%= image_tag(rpath, :size => '100', :align => 'right') %>
+<% end %>
+<% end %>
 <%= auto_link article.body_to_html %>
 <%= render("shared/authorhead", "article" => article) %>
 <%= render("shared/comment2", "article" => article) %>
+<br clear='all'>
 </div> <!-- end section -->
 
  <% end %>

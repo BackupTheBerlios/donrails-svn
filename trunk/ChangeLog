@@ -1,3 +1,8 @@
+2006-03-27  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* rails/app/controllers/login_controller.rb (LoginController::edit_picture): New method. In order to edit picture related information.
+	(LoginController::manage_picture_detail): likewise.
+
 2006-03-22  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/layouts/login.rhtml: add link to manage_article.

@@ -70,6 +70,19 @@ class LoginController < ApplicationController
   def manage_picture
     @pictures_pages, @pictures = paginate(:picture,:per_page => 30,:order_by => 'id DESC')
   end
+  def manage_picture_detail
+    @picture = Picture.find(@params["id"])
+  end
+  def edit_picture
+    p2 = @params["picture"]
+    if p2['id']
+      @picture = Picture.find(p2['id'])
+      @picture.article_id = p2['article_id'] if p2['article_id']
+      @picture.comment = p2['comment'] if p2['comment']
+      @picture.save
+    end
+    redirect_to :back
+  end
 
   def delete_picture
     begin
@@ -89,7 +102,7 @@ class LoginController < ApplicationController
         end
       end
     rescue
-      @heading = 'fail delete_picture' + $!
+      @heading = $!
     end
     redirect_to :action => "manage_picture"
   end
