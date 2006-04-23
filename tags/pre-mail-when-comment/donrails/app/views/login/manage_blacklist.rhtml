@@ -1,0 +1,63 @@
+<h1>blacklist management</h1>
+
+<hr>
+<h2>新規ブラックリストの追加</h2>
+2種類のブラックリストformatをサポートしています。formatを指定して追加してください。
+<dl>
+  <dt>regexp</dt>
+  <dd>コメントに含まれてほしくない文字列をRubyの正規表現で記述します。</dd>
+  <dt>string</dt>
+  <dd>コメントに含まれてほしくない文字列を記述します。</dd>
+  <dt>ipaddr</dt>
+  <dd>コメントを禁止するIPアドレスを指定します。</dd>
+  <dt>hostname</dt>
+  <dd>コメントを禁止するホスト名を指定します。</dd>
+</dl>
+<p>
+<%= secure_form_tag :action => "add_blacklist" %>
+pattern:
+<%= text_field "blacklist", "pattern" %>
+format:
+<select name="format">
+  <option value="regexp">regexp</option>
+  <option value="string">string</option>
+  <option value="ipaddr">ipaddr</option>
+  <option value="hostname">hostname</option>
+</select>
+<%= submit_tag "ブラックリストを追加する" %>
+<%= end_form_tag %>
+
+<hr>
+ブラックリストの管理
+<% if @blacklists %>
+<% if @blacklists_pages %>
+<%= pagination_links @blacklists_pages %>
+<% end %>
+
+<%= secure_form_tag :action => "delete_blacklist" %>
+<table  border="1" cellspacing="0">
+  <tr>
+    <td>消去</td>
+    <td>id</td>
+    <td>format</td>
+    <td>pattern</td>
+  </tr>
+
+  <% @blacklists.each do |co| %>
+  <tr>
+    <td><%= check_box "deleteid", co.id %></td>
+    <td><%= co.id %></td>
+    <td><%= co.format %></td>
+    <td><%= co.pattern %></td>
+  </tr>
+  <% end %>
+</table>
+<%= submit_tag "send" %>
+<%= end_form_tag %>
+<% end %>
+
+<% if @blacklists_pages %>
+<%= pagination_links @blacklists_pages %>
+<% end %>
+
+ 

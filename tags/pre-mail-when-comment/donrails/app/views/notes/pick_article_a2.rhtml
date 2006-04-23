@@ -1,0 +1,15 @@
+<% article = don_get_object(@article, 'html') %>
+<div class="section">
+<%
+article.pictures.each do |pic|
+if pic.path
+hoi = pic.path.split('/public/').last
+rpath = "/" + hoi
+%>
+<%= image_tag(rpath, :size => '100', :align => 'right') %>
+<% end %>
+<% end %>
+<%= auto_link article.body_to_html if article.body %>
+<%= render("shared/comment2", "article" => article) %>
+<br clear='all'>
+</div>
