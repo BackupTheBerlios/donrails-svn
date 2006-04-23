@@ -2,8 +2,8 @@
 <% article.comments.each do |x| %>
 <div class="tsukkomi" >
 <dl class="comments">
-<dt><span class="poster">この記事へのコメント: by <%= x.author %></span></dt>
-<dd><%= x.body %></dd>
+<dt><span class="poster">この記事へのコメント: by <%=h x.author %> / <%= x.date %></span></dt>
+<dd><%= auto_link x.body %></dd>
 </dl>
 </div>
 <% end %>
@@ -13,7 +13,7 @@
 <% article.trackbacks.each do |x| %>
 <div class="trackback" >
 <dl class="comments">
-<dt><span class="poster">この記事へのトラックバック: by <%= x.blog_name %><%= auto_link x.url %></span></dt>
+<dt><span class="poster">この記事へのトラックバック: by <%=h x.blog_name %><%= auto_link x.url %></span></dt>
 <dd>Title: <%= x.title %><%= x.excerpt %></dd>
 </dl>
 </div>

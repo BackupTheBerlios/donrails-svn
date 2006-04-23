@@ -176,13 +176,25 @@ class LoginController < ApplicationController
     title = c["title"]
     body = c["body"]
     id = c["id"].to_i
+
     newcategory = c["category"]
 
-    aris = Article.find(id)
+    if @params["newid"]["#{id}"] == "0"
+      aris = Article.find(id)
+      aris.categories.clear
+    elsif @params["newid"]["#{id}"] == "1"
+      aris = Article.new
+    end
+
     aris.title = title
     aris.body = body
     aris.format = format
-    aris.categories.clear
+    aris.article_date = c["article_date"]
+
+    if c["author_name"] and c["author_name"].length > 0
+      au = Author.find(:first, :conditions => ["name = ?", c["author_name"]])
+      aris.author_id = au.id
+    end
 
     if newcategory
       nb = Category.find(:first, :conditions => ["name = ?", newcategory])

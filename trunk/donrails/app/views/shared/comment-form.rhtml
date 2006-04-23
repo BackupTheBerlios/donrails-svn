@@ -2,7 +2,7 @@
 おなまえ:
 <%= text_field "comment", "author", "size" => 20, "id" => "dx_addcomment2author_#{article.id}" %>
 <br />
-パスワード(10文字まで):
+パスワード(ないときはコメントは無効です):
 <%= password_field "comment", "password", "maxlength" => 10, "id" => "dx_addcomment2password_#{article.id}" %>
 <br />
 タイトル:

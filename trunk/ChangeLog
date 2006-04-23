@@ -1,3 +1,27 @@
+2006-04-24  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/models/{trackback,comment}.rb: Japanese text code convert to utf8.
+	* donrails/app/views/shared/comment-form.rhtml: Change to show 'password is required.' for posting comment.
+
+2006-04-21  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/shared/comment.rhtml: Change to show Comment.date.
+
+	* donrails/app/views/shared/comment2.rhtml: Change to show Comment.date.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::noteslist): Fix if article does not have ariticle_mtime.
+	(NotesController::recent): likewise.
+	(NotesController::show_category): likewise.
+	... and many part ...
+
+2006-04-04  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/login_controller.rb (LoginController::fix_article): Change to change Ariticle.author.
+
+2006-04-03  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/login_controller.rb (LoginController::fix_article): Change to change Article.article_date.
+
 2006-03-27  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* rails/app/controllers/login_controller.rb (LoginController::edit_picture): New method. In order to edit picture related information.

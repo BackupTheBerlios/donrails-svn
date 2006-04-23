@@ -34,7 +34,7 @@
        <%= link_to "[修正]", :action => "form_article", :pickid => co.id %>
      </td>
      <td><%= co.id %></td>
-     <td><%= co.author.name if co.author_id %></td>
+     <td><%= co.author.name if co.author %></td>
      <td><%= don_mb_truncate(co.title) if co.title %></td>
      <td><%= co.article_date.to_date.to_s if co.article_date %></td>
      <td><%= co.format if co.format %></td>

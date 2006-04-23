@@ -1,3 +1,5 @@
+require 'kconv'
+
 class Comment < ActiveRecord::Base
   has_and_belongs_to_many :articles, :join_table => "comments_articles"
 
@@ -8,7 +10,19 @@ class Comment < ActiveRecord::Base
   validates_antispam :url, :ipaddr, :body
 
   protected
-  before_save :correct_url, :strip_html_in_body
+  before_save :kcode_convert, :correct_url, :strip_html_in_body
+
+  def kcode_convert
+    if body
+      self.body = body.toutf8
+    end
+    if author
+      self.author = author.toutf8
+    end
+    if title
+      self.title = title.toutf8
+    end
+  end
 
   def correct_url
     unless url.to_s.empty?
