@@ -10,3 +10,4 @@
 - Cache-Control: および Last-Modified: ヘッダによるブラウザキャッシュ制御
 - Blog ping送信先のon/off切替
 - AtomAPIによるimage postの追加
+- コメントとトラックバック時にメールする機能

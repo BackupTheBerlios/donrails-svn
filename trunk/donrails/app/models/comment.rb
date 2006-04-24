@@ -11,6 +11,11 @@ class Comment < ActiveRecord::Base
 
   protected
   before_save :kcode_convert, :correct_url, :strip_html_in_body
+  after_save :notify_by_mail
+
+  def notify_by_mail
+    CommentMailer.deliver_notify(body, author)
+  end
 
   def kcode_convert
     if body

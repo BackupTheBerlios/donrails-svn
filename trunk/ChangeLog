@@ -1,5 +1,11 @@
 2006-04-24  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/models/trackback.rb (Trackback::notify_by_mail): If new comment or trackback coming, send notify by mail to ADMIN_MAILADD.
+	* donrails/app/models/comment_mailer.rb (CommentMailer::notify): likewise.
+	* donrails/app/views/comment_mailer/notify.rhtml: likewise.
+	* donrails/app/models/comment.rb (Comment::notify_by_mail): likewise.
+	* NEWS, NEWS.ja: likewise.
+	
 	* donrails/app/models/{trackback,comment}.rb: Japanese text code convert to utf8.
 	* donrails/app/views/shared/comment-form.rhtml: Change to show 'password is required.' for posting comment.
 

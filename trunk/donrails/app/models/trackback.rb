@@ -4,6 +4,11 @@ class Trackback < ActiveRecord::Base
 
   protected
   before_save :kcode_convert
+  after_save :notify_by_mail
+
+  def notify_by_mail
+    CommentMailer.deliver_notify(excerpt, blog_name)
+  end
 
   def kcode_convert
     if excerpt
