@@ -1,3 +1,7 @@
+2006-04-26  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::add_comment2): Fix: If no parameters are inputted, redirect to 'noteslist'.
+
 2006-04-24  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/models/trackback.rb (Trackback::notify_by_mail): If new comment or trackback coming, send notify by mail to ADMIN_MAILADD.

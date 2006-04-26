@@ -465,25 +465,29 @@ class NotesController < ApplicationController
 
   def add_comment2
     c = @params["comment"]
-    author = c["author"]
-    password = c["password"]
-    url = c["url"]
-    title = c["title"]
-    body = c["body"]
-    article_id = c["article_id"].to_i
+    if c
+      author = c["author"]
+      password = c["password"]
+      url = c["url"]
+      title = c["title"]
+      body = c["body"]
+      article_id = c["article_id"].to_i
 
-    aris1 = Comment.new("password" => password,
-                        "date" => Time.now,
-                        "title" => title,
-                        "author" => author,
-                        "url" => url,
-                        "ipaddr" => @request.remote_ip,
-                        "body" => body
-                        )
-    a = Article.find(article_id)
-    aris1.articles.push_with_attributes(a)
-    if aris1.save
-      redirect_to :action => "show_title", :id => article_id
+      aris1 = Comment.new("password" => password,
+                          "date" => Time.now,
+                          "title" => title,
+                          "author" => author,
+                          "url" => url,
+                          "ipaddr" => @request.remote_ip,
+                          "body" => body
+                          )
+      a = Article.find(article_id)
+      aris1.articles.push_with_attributes(a)
+      if aris1.save
+        redirect_to :action => "show_title", :id => article_id
+      else
+        redirect_to :action => "noteslist"
+      end
     else
       redirect_to :action => "noteslist"
     end
