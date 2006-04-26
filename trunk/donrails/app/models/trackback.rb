@@ -1,6 +1,11 @@
 class Trackback < ActiveRecord::Base
   belongs_to :article
-  validates_antispam :url, :ip, :excerpt
+
+  validates_antispam :url
+  validates_antispam :ip
+  validates_antispam :excerpt
+  validates_antispam :blog_name
+  validates_antispam :title
 
   protected
   before_save :kcode_convert

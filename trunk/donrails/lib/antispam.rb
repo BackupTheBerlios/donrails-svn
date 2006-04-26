@@ -27,6 +27,14 @@ class AntiSpam
         self.scan_ipaddr(string)
       elsif name == :body
         self.scan_text(string)
+      elsif name == :blog_name
+        self.scan_text(string)
+      elsif name == :title
+        self.scan_text(string)
+      elsif name == :excerpt
+        self.scan_text(string)
+      elsif name == :author
+        self.scan_text(string)
       else
         return false # is not spam!
       end

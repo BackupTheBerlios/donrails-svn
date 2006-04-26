@@ -1,5 +1,9 @@
 2006-04-26  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/models/trackback.rb (Trackback): Fixed. Before this fix, validates_antispam is run only for :url.
+	* donrails/app/models/comment.rb (Comment): likewise.
+	* donrails/lib/antispam.rb (AntiSpam::is_spam): likewise.
+
 	* donrails/lib/antispam.rb (AntiSpam::initialize): Change to costomize for antispam. You can configure @IP_RBL, @HOST_RBL and @URL_LIMIT.
 
 	* donrails/app/controllers/notes_controller.rb (NotesController::add_comment2): Fix: If no parameters are inputted, redirect to 'noteslist'.
