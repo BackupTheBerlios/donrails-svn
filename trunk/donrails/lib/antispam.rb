@@ -10,9 +10,9 @@ require_dependency 'blacklist'
 
 class AntiSpam
   def initialize
-    @IP_RBL = [ 'bsb.empty.us', 'list.dsbl.org' ]
-    @HOST_RBL = [ 'sc.surbl.org', 'bsb.empty.us' ]
-    @URL_LIMIT = 5
+    @IP_RBL = [ 'opm.blitzed.us', 'bsb.empty.us' ] unless @IP_RBL
+    @HOST_RBL = [ 'rbl.bulkfeeds.jp', 'sc.surbl.org', 'bsb.empty.us' ] unless @HOST_RBL
+    @URL_LIMIT = 5 unless @URL_LIMIT
   end
 
   def is_spam?(name, string)
