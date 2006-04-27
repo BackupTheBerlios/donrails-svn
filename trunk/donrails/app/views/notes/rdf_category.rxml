@@ -48,8 +48,10 @@ xml.tag!("rdf:RDF",
       rescue
         print "Error: #{$!} in #{item.id}\n"
       end
-      xml.tag!("dc:date") do
-        xml.text! "#{pub_date(item.article_mtime)}"
+      if item.article_mtime
+        xml.tag!("dc:date") do
+          xml.text! "#{pub_date(item.article_mtime)}"
+        end
       end
     end
   end

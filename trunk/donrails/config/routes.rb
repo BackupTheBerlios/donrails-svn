@@ -131,7 +131,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.xml 'atom/feed.xml', :controller => 'atom', :action => "feed"
   map.xml 'atom/feed/page/:page/feed.xml', :controller => 'atom', :action => "feed", :page => /\d+/
-  map.xml 'atom/feed/id/:id/feed.xml', :controller => 'atom', :action => "feed", :id => /\d+/
+  map.xml 'atom/feed/:id/feed.xml', :controller => 'atom', :action => "feed", :id => /\d+/
 
   # Here's a sample route:
   # map.connect 'products/:id', :controller => 'catalog', :action => 'view'

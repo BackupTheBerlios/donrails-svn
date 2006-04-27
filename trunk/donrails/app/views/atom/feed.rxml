@@ -25,7 +25,7 @@ xml.feed("xmlns" => "http://purl.org/atom/ns\#") do
 
   xml.title RDF_TITLE
   xml.generator "donrails", "url" => "http://developer.berlios.de/projects/donrails/"
-  xml.modified pub_date(@articles.first.article_mtime)
+  xml.modified pub_date(@articles.first.article_mtime) if @articles.first and @articles.first.article_mtime
   xml.tagline RDF_DESCRIPTION
   xml.copyright RDF_COPYRIGHT
 
@@ -35,12 +35,12 @@ xml.feed("xmlns" => "http://purl.org/atom/ns\#") do
       xml.title article.title_to_html
       xml.link("type" => "text/html",
                "rel" => "alternate", 
-               "href" => @request.protocol + @request.host_with_port + url_for(:action => "show_article", :id => article.id))
+               "href" => @request.protocol + @request.host_with_port + url_for(:action => "feed", :id => article.id))
       xml.link("type" => "application/atom+xml",
                "rel" => "service.edit",
                "href" => @request.protocol + @request.host_with_port + url_for(:action => "edit", :id => article.id),
                "title" => article.title)
-      xml.modified pub_date(article.article_mtime)
+      xml.modified pub_date(article.article_mtime) if article.article_mtime
       xml.issued pub_date(article.article_date)
       xml.id 'tag:' + @request.host + ':notes:' + article.id.to_s
       
@@ -54,6 +54,7 @@ xml.feed("xmlns" => "http://purl.org/atom/ns\#") do
                   "xml:base" => @request.protocol + @request.host_with_port + url_for(:action => "edit", :id => article.id)) do
         xml.text! article.body_to_html
       end
+
     end
   end
 end

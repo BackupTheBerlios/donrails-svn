@@ -1,3 +1,27 @@
+2006-04-28  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/lib/antispam.rb (AntiSpam::is_spam): Fix. I lacked to describe Trackback.ip.
+
+2006-04-27  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/lib/antispam.rb (AntiSpam::initialize): 
+	- Add niku.2ch.net for @IP_RBL.
+	- Change to costomize for antispam. You can configure IP_RBL, HOST_RBL and URL_LIMIT.
+
+	* donrails/app/views/atom/feed.rxml: Fix link.
+
+	* donrails/config/routes.rb: Fix for Atom feed.
+
+	* donrails/app/controllers/atom_controller.rb (AtomController): Cleanup.
+
+	* donrails/app/views/notes/rdf_category.rxml: likewise.
+
+	* donrails/app/views/notes/rdf_recent.rxml: likewise.
+
+	* donrails/app/views/notes/rdf_article.rxml: likewise.
+
+	* donrails/app/views/atom/feed.rxml: Fixed. If @article had not aritcle_mtime, some error caused.
+
 2006-04-26  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/models/trackback.rb (Trackback): Fixed. Before this fix, validates_antispam is run only for :url.

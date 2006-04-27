@@ -7,7 +7,7 @@ class AtomController < ApplicationController
   layout "atom", :only => [
     :preview
   ]
-  before_filter :wsse_auth, :except => :feed
+  before_filter :wsse_auth, :except => [:feed]
   cache_sweeper :article_sweeper, :only => [ :post, :edit ]
   caches_page :feed
   after_filter :compress
@@ -109,7 +109,6 @@ class AtomController < ApplicationController
     end
   end
 
-  # beta testing.. XXX
   def image_post
     if request.method == :post
       begin

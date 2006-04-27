@@ -10,9 +10,21 @@ require_dependency 'blacklist'
 
 class AntiSpam
   def initialize
-    @IP_RBL = [ 'opm.blitzed.us', 'bsb.empty.us' ] unless @IP_RBL
-    @HOST_RBL = [ 'rbl.bulkfeeds.jp', 'sc.surbl.org', 'bsb.empty.us' ] unless @HOST_RBL
-    @URL_LIMIT = 5 unless @URL_LIMIT
+    if IP_RBL
+      @IP_RBL = IP_RBL
+    else
+      @IP_RBL = [ 'niku.2ch.net', 'opm.blitzed.us', 'bsb.empty.us' ]
+    end
+    if HOST_RBL
+      @HOST_RBL = HOST_RBL
+    else
+      @HOST_RBL = [ 'rbl.bulkfeeds.jp', 'sc.surbl.org', 'bsb.empty.us' ]
+    end
+    if URL_LIMIT
+      @URL_LIMIT = URL_LIMIT
+    else
+      @URL_LIMIT = 5
+    end
   end
 
   def is_spam?(name, string)
@@ -24,6 +36,8 @@ class AntiSpam
         self.scan_uri_format(string)
         self.scan_uri(URI.parse(string).host)
       elsif name == :ipaddr
+        self.scan_ipaddr(string)
+      elsif name == :ip
         self.scan_ipaddr(string)
       elsif name == :body
         self.scan_text(string)
