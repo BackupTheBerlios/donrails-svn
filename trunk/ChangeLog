@@ -1,3 +1,14 @@
+2006-05-08  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/notes/rdf_recent.rxml: Fix for formated body.
+	* donrails/app/views/notes/rdf_search.rxml: likewise.
+	* donrails/app/views/notes/rdf_category.rxml: likewise.
+	* donrails/app/views/notes/rdf_article.rxml: likewise.
+	* donrails/lib/modules/html.rb (DonRails::HTML::body_to_xml): likewise. Fix for using HTree.
+	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::body_to_xml): likewise.
+	* donrails/lib/modules/hnf.rb (DonRails::HNF::body_to_xml): likewise.
+	* donrails/lib/modules/rd.rb (DonRails::RD::body_to_xml): likewise.
+
 2006-04-28  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/lib/antispam.rb (AntiSpam::is_spam): Fix. I lacked to describe Trackback.ip.

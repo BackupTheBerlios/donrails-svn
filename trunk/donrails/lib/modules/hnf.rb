@@ -130,9 +130,11 @@ module DonRails
 
     def body_to_xml
       begin
-        xml = HTree.parse(self.body_to_html).to_rexml
+        bth = '<html><body>' + self.body_to_html + '</body></html>'
+        xml = HTree.parse(bth).to_rexml
         return xml.to_s
       rescue
+        p $!
         return self.body_to_html
       end
     end # def body_to_xml

@@ -37,6 +37,9 @@ xml.tag!("rdf:RDF",
 
       begin
         ce = item.body_to_xml
+        if ce =~ (/^<html xmlns='http:\/\/www.w3.org\/1999\/xhtml'><body>(.*)<\/body><\/html>$/m)
+          ce = $1
+        end    
         if ce =~ (/<content>(.*)<\/content>/m)
           ce = $1
         end    
@@ -48,12 +51,14 @@ xml.tag!("rdf:RDF",
         end    
       rescue
         print "Error: #{$!} in #{item.id}\n"
+        print "Error: #{$!} in #{item.body.toeuc}\n"
       end
       if item.article_mtime
         xml.tag!("dc:date") do
           xml.text! "#{pub_date(item.article_mtime)}"
         end
       end
+      xml.format(item.format)
     end
   end
 
