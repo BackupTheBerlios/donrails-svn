@@ -26,6 +26,7 @@ CREATE TABLE categories (
 id       SERIAL PRIMARY KEY,
 name         VARCHAR NOT NULL UNIQUE,
 parent_id    INTEGER,
+description VARCHAR,
 constraint   fk_category foreign key (parent_id) references categories(id)
 );
 
