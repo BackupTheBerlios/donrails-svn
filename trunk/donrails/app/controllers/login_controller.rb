@@ -66,6 +66,55 @@ class LoginController < ApplicationController
     redirect_to :action => "login_index"
   end
 
+  ## category
+  def manage_category
+    if @params['id']
+      @category = Category.find(@params['id'])
+      @parent = @category.parent if @category.parent
+    end
+
+    @categories_pages, @categories = paginate(:category,:per_page => 30,:order_by => 'id DESC')
+
+    @roots = Category.find(:all, :conditions => ["parent_id IS NULL"])
+    @size = Category.find(:all).size
+  end
+
+  def add_category
+    c = @params["category"]
+    parent = Category.find(:first, :conditions => ["name = ?", c["parent_name"]])
+    aris1 = Category.find(:first, :conditions => ["name = ?", c["name"]])
+
+    if parent and aris1
+      aris1.parent_id = parent.id
+    elsif parent
+      aris1 = parent.children.new("name" => c["name"])
+    elsif aris1
+    else
+      aris1 = Category.new("name" => c["name"])      
+    end
+    aris1.description = c["description"]
+    aris1.save
+    redirect_to :action => "manage_category"
+  end
+
+  def delete_category
+    c = @params["deleteid"].nil? ? [] : @params["deleteid"]
+    c.each do |k, v|
+      if v.to_i == 1
+        
+        cas = Category.find(:all, :conditions => ["parent_id = ?", k.to_i])
+        cas.each do |ca|
+          ca.parent_id = nil
+          ca.save
+        end
+
+        b = Category.find(k.to_i)
+        b.destroy
+      end
+    end
+    redirect_to :action => "manage_category"
+ end
+
   ## picture
   def manage_picture
     @pictures_pages, @pictures = paginate(:picture,:per_page => 30,:order_by => 'id DESC')
@@ -367,6 +416,9 @@ class LoginController < ApplicationController
 
   # author
   def manage_author
+    if @params['id']
+      @author = Author.find(@params['id'])
+    end
     @authors_pages, @authors = paginate(:author, :per_page => 30,
                                           :order_by => 'id DESC'
                                           )
@@ -394,10 +446,6 @@ class LoginController < ApplicationController
       end
     end
     redirect_to :action => "manage_author"
-  end
-
-  def edit_author
-    @author = Author.find(@params['id'])
   end
 
   def add_author

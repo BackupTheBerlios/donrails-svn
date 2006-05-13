@@ -24,7 +24,9 @@ body     VARCHAR
 
 CREATE TABLE categories (
 id       INTEGER PRIMARY KEY,
-name         VARCHAR NOT NULL UNIQUE
+name         VARCHAR NOT NULL UNIQUE,
+parent_id    INTEGER,
+constraint   fk_category foreign key (parent_id) references categories(id)
 );
 
 CREATE TABLE articles (

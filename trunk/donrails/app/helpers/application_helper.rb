@@ -244,10 +244,8 @@ module ApplicationHelper
     suffix = 'gif'
     t1 = Time.now
 
-    p 'L247'
     if xml.root.elements['relateid']
       ida = xml.root.elements['relateid'].text.split(':')
-      p ida
       if ida[0] == 'tag' and ida[1] == @request.host and ida[2] == 'notes'
         image.article_id = ida[3].to_i
       end
@@ -279,6 +277,40 @@ module ApplicationHelper
     f = File.new(image.path, "w")
     image.size = f.write(image_data)
     f.close
+  end
+
+  def display_categories_roots_ul(categories, manage=nil)
+    content = ''
+    if categories.size > 0
+      content = '<ul>'
+      categories.each do |category|
+        content += '<li>' + link_to(category.name, {:controller => 'notes', :action => :show_category, :id => category.id}) 
+        if manage
+          content += '[' + link_to('管理', {:controller => 'login', :action => :manage_category, :id => category.id}) + ']'
+        end
+        content += '(' + category.articles.size.to_s + ')'
+        content += display_categories_roots_ul(category.children, manage)
+        content += '</li>'
+      end
+      content += '</ul>'
+    end
+    return content
+  end
+
+  def display_categories_roots_ul_description(categories)
+    content = ''
+    if categories.size > 0
+      content = '<ul>'
+      categories.each do |category|
+        content += '<li>' + link_to(category.name, {:controller => 'notes', :action => :show_category, :id => category.id}) 
+        content += '(' + category.articles.size.to_s + ')'
+        content += ' / ' + category.description if category.description
+        content += display_categories_roots_ul_description(category.children)
+        content += '</li>'
+      end
+      content += '</ul>'
+    end
+    return content
   end
 
 end

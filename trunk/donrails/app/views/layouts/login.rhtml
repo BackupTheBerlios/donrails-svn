@@ -5,15 +5,18 @@
 <link rev="made" href="mailto:yasu@debian.or.jp">
 <meta name="author" content="ARAKI Yasuhiro">
 
-<%= stylesheet_link_tag "araki" %>
+<%= stylesheet_link_tag "login" %>
+
 <%= javascript_include_tag "code-toggle-popup.js" %>
 <%= javascript_include_tag "prototype.js" %>
 <meta name="robots" content="noindex,nofollows">
 
 <title>login <%=h @heading %></title>
+
 </head>
 
 <body>
+<div id="page">
 <div class="head">
 <%= link_to "トップ", {:action => "index", :controller => "notes"} %>/
 <%= link_to "日記", {:action => "noteslist", :controller => "notes"} %>/ 
@@ -24,19 +27,19 @@
 <%= link_to "記事管理", {:action => "manage_article"} %>/
 <%= link_to "画像ファイル管理", {:action => "manage_picture"} %>/
 <%= link_to "コメント管理", {:action => "manage_comment"} %>/
+<%= link_to "カテゴリ管理", {:action => "manage_category"} %>/
 <%= link_to "トラックバック管理", {:action => "manage_trackback"} %>/
 <%= link_to "ブラックリスト管理", {:action => "manage_blacklist"} %>/
 <%= link_to "投稿者管理", {:action => "manage_author"} %>/
 <%= link_to "Ping先管理", {:action => "manage_blogping"} %>/
 <%= link_to "Ping履歴", {:action => "manage_ping"} %>/
-
 <%= link_to "hnf保存", {:action => "hnf_save_all"}, :confirm => "Really login for save hnf files?" %>/
+</div> <!-- end of class:head -->
 
-<br>
-</div> <!-- end of head -->
-
-<div class="mainarticle">
+<div id="content">
 <%= @content_for_layout %>
-</div>
+</div> <!-- id:content -->
+</div> <!-- id:page -->
+
 </body>
 </html>

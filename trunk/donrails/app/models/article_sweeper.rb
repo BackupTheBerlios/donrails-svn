@@ -29,7 +29,7 @@ class ArticleSweeper < ActionController::Caching::Sweeper
         p $!
       end
 
-      expire_page(:controller => 'notes', :action => %w(index rdf_recent articles_long))
+      expire_page(:controller => 'notes', :action => %w(index rdf_recent articles_long category_tree_list_a))
 
       expire_page(:controller => 'notes', :action => 'recent_trigger_title_a')
       begin
@@ -140,6 +140,7 @@ class ArticleSweeper < ActionController::Caching::Sweeper
 
     when Category
       expire_page(:controller => 'notes', :action => 'category_select_a')
+      expire_page(:controller => 'notes', :action => 'category_tree_list_a')
     end
   end
 

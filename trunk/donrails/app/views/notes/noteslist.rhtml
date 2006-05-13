@@ -12,9 +12,13 @@ From <%= @ymd3 %> to <%= @ymd4 %>
 <% end %>
 
 <% if @category %>
-<h3>カテゴリ: <%= @category.name %> の記事
+<h3>カテゴリ: <%=h @category.name %> の記事
 [<%= link_to "リスト", {:action => "show_category", :category => @category.name} %>]
 </h3>
+<%=h @category.description %>
+<div id='roots_ul'>
+<%= display_categories_roots_ul_description(@category.children) %>
+</div>
 <% end %>
 
 <% if @articles_pages and @articles_pages.length > 1 %>

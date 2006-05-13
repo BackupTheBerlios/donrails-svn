@@ -21,16 +21,18 @@
     <td>nickname</td>
     <td>writable</td>
     <td>書きこみ権限変更</td>
+    <td>サマリ</td>
   </tr>
 
   <% @authors.each do |co| %>
   <tr>
-    <td><%= link_to 'Edit', {:action => :edit_author, :id => co.id} %><%= check_box "deleteid", co.id %></td>
+    <td><%= link_to 'Edit', {:action => :manage_author, :id => co.id} %><%= check_box "deleteid", co.id %></td>
     <td><%= co.id %></td>
-    <td><%= co.name %></td>
-    <td><%= co.nickname %></td>
+    <td><%=h co.name %></td>
+    <td><%=h co.nickname %></td>
     <td><%= co.writable %></td>
     <td><%= check_box "unwriteid", co.id %></td>
+    <td><%=h co.summary %></td>
   </tr>
   <% end %>
 </table>

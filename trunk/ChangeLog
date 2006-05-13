@@ -1,3 +1,32 @@
+2006-05-13  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::category_tree_list_a): New method.
+	(NotesController::show_category): Add to find by Category.id. And add to find by without category.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::manage_category): New method.
+	(LoginController::add_category): New method.
+	(LoginController::delete_category): New method.
+	(LoginController::manage_author): Add to find by Author.id.
+	(LoginController::edit_author): Remove method.
+
+	* donrails/app/models/article_sweeper.rb (ArticleSweeper::expire_for): Add entry for category_tree_list_a.
+
+	* donrails/app/helpers/application_helper.rb (ApplicationHelper::display_categories_roots_ul): New method.
+	(ApplicationHelper::display_categories_roots_ul_description): New method.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::show_category): Add. Now you can link category entry by show_category/:id.
+	Some change for category_tree_list_a.
+
+2006-05-12  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/layouts/login.rhtml: Add link to manage_category.
+
+2006-05-11  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/models/category.rb (Category): Add acts_as_tree.
+	* donrails/tool/tables-postgresql.txt: likewise
+	* donrails/tool/tables-sqlite.txt: likewise
+
 2006-05-08  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/notes/rdf_recent.rxml: Fix for formated body.

@@ -3,12 +3,13 @@ class NotesController < ApplicationController
 
   before_filter :set_charset, :except => [
     :pick_article_a, :pick_article_a2, :comment_form_a,
-    :recent_category_title_a, :recent_trigger_title_a, :category_select_a
+    :recent_category_title_a, :recent_trigger_title_a, :category_select_a,
+    :category_tree_list_a
   ]
 
   caches_page :index, :rdf_recent, :rdf_article, :rdf_category, :show_month, :show_nnen, :show_date, :show_title, :show_category, :show_category_noteslist, :articles_long, :noteslist
 #  caches_action :pick_article_a, :pick_article_a2
-  caches_page :category_select_a, :recent_category_title_a
+  caches_page :category_select_a, :recent_category_title_a, :category_tree_list_a
   caches_page :articles_author
   after_filter :add_cache_control
   after_filter :compress
@@ -25,7 +26,8 @@ class NotesController < ApplicationController
     :trackback,
     :catch_ping,
     :category_select_a,
-    :comment_form_a
+    :comment_form_a,
+    :category_tree_list_a
   ]
 
   def index
@@ -281,6 +283,11 @@ class NotesController < ApplicationController
     @categories = Category.find_all
   end
 
+  def category_tree_list_a
+    @headers["Content-Type"] = "text/html; charset=utf-8"
+    @roots = Category.find(:all, :conditions => ["parent_id IS NULL"])
+  end
+
   def show_month
     begin
       get_ymd
@@ -392,7 +399,13 @@ class NotesController < ApplicationController
   end
 
   def show_category
-    @category = Category.find(:first, :conditions => ["name = ?", @params['category']])
+    if @params[:id]
+      @category = Category.find(@params[:id])
+    elsif @params['category']
+      @category = Category.find(:first, :conditions => ["name = ?", @params['category']])
+    elsif @params['nocategory']
+      @category = Category.find(:first, :conditions => ["NOT name = ?", @params['nocategory']])
+    end
 
     if @category and @category.id
       @articles_pages, @articles = 
@@ -402,6 +415,9 @@ class NotesController < ApplicationController
                  :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
                  )
       @heading = "カテゴリ:#{@params['category']}"
+      @heading += '(' + @category.articles.size.to_s + ')' 
+      @heading += ' + (' + @category.children.size.to_s + ')' if @category.children.size > 0
+
       unless @articles.empty? then
         @lm = @articles.first.article_mtime.gmtime if @articles.first.article_mtime
       end

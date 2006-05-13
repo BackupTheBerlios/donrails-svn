@@ -1,6 +1,10 @@
 <h3>カテゴリ: <%= @category.name %> のリスト
 [<%= link_to "記事", {:action => "show_category_noteslist", :category => @category.name} %>]
 </h3>
+<%=h @category.description %>
+<div id='roots_ul'>
+<%= display_categories_roots_ul_description(@category.children) %>
+</div>
 
 <% if @articles_pages and @articles_pages.length > 1 %>
 <div class="pagelink">

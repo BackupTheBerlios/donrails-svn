@@ -11,14 +11,19 @@ rails directory以下に移動し、
 
 を行います。
 
+----
 * テーブルが一部変更されました。
+
+テーブルの追加にはALTERコマンドを使用します。
+
+** categoriesテーブルにdescriptionカラムが必要です。
+
+ alter table categories add column description VARCHAR;
+
 
 ** picturesテーブルにarticle_idカラムが必要です。
 
-追加方法
-
  alter table pictures add column article_id INTEGER;
-
 
 ** blogpingsテーブルにactiveカラムが必要です。
 
