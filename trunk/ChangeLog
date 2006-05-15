@@ -1,3 +1,9 @@
+2006-05-16  Akira TAGOH  <at@gclab.org>
+
+	* donrails/tool/hnf2db.rb: load environment.rb and removed an
+	abosolute path to activerecord. now it depends on RoR where you setup
+	from.
+
 2006-05-13  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/notes_controller.rb (NotesController::category_tree_list_a): New method.
