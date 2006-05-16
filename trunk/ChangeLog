@@ -1,3 +1,11 @@
+2006-05-17  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/login/manage_article.rhtml: Some fix..
+
+	* donrails/app/controllers/notes_controller.rb (NotesController): refine cache_sweeper and verify_form_posts_security_token entry.
+
+	* donrails/app/controllers/login_controller.rb (LoginController): refine cache_sweeper entry.
+
 2006-05-16  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/notes_controller.rb (NotesController): Fix: I lacked to add cache for :recent_category_title_a.

@@ -4,7 +4,8 @@ class LoginController < ApplicationController
   before_filter :authorize, :except => [:login_index, :authenticate]
   after_filter :compress
 
-  cache_sweeper :article_sweeper, :only => [ :delete_article ]
+  cache_sweeper :article_sweeper, :only => [ :delete_article, :new_article, :fix_article, :add_category, :delete_category, :add_article ]
+
   layout "login", :except => [:login_index, :index]
 
   verify_form_posts_have_security_token :only => [

@@ -7,6 +7,9 @@ class NotesController < ApplicationController
     :category_tree_list_a
   ]
 
+  cache_sweeper :article_sweeper, :only => [:add_comment2, :trackback]
+  verify_form_posts_have_security_token :only => [:add_comment2]
+
   caches_page :index, :rdf_recent, :rdf_article, :rdf_category, :show_month, :show_nnen, :show_date, :show_title, :show_category, :show_category_noteslist, :articles_long, :noteslist
 
   caches_page :category_select_a, :recent_trigger_title_a, :recent_category_title_a, :category_tree_list_a
