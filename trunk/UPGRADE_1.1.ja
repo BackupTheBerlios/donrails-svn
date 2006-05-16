@@ -16,10 +16,18 @@ rails directory以下に移動し、
 
 テーブルの追加にはALTERコマンドを使用します。
 
+** categoriesテーブルにparent_idカラムが必要です。
+
+ alter table categories add column parent_id INTEGER;
+ alter table categories add constraint fk_category foreign key (parent_id) references categories(id);
+
+ (sqlite/sqlite3の場合はconstraintをALTERで追加できません。
+  いったんdumpして変更する必要があります。
+  http://donrails.araki.net/notes/id/5220 を参考にしてください)
+
 ** categoriesテーブルにdescriptionカラムが必要です。
 
  alter table categories add column description VARCHAR;
-
 
 ** picturesテーブルにarticle_idカラムが必要です。
 

@@ -1,3 +1,9 @@
+2006-05-16  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/notes_controller.rb (NotesController): Fix: I lacked to add cache for :recent_category_title_a.
+
+	* UPGRADE_1.1.ja: Add information for adding parent_id column in Categories TABLE.
+
 2006-05-16  Akira TAGOH  <at@gclab.org>
 
 	* donrails/tool/hnf2db.rb: load environment.rb and removed an

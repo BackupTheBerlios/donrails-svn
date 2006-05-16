@@ -8,8 +8,8 @@ class NotesController < ApplicationController
   ]
 
   caches_page :index, :rdf_recent, :rdf_article, :rdf_category, :show_month, :show_nnen, :show_date, :show_title, :show_category, :show_category_noteslist, :articles_long, :noteslist
-#  caches_action :pick_article_a, :pick_article_a2
-  caches_page :category_select_a, :recent_category_title_a, :category_tree_list_a
+
+  caches_page :category_select_a, :recent_trigger_title_a, :recent_category_title_a, :category_tree_list_a
   caches_page :articles_author
   after_filter :add_cache_control
   after_filter :compress
@@ -285,6 +285,7 @@ class NotesController < ApplicationController
 
   def category_tree_list_a
     @headers["Content-Type"] = "text/html; charset=utf-8"
+    expires_in 72.hours, 'max-stale' => 120.hours, :private => nil, :public => true
     @roots = Category.find(:all, :conditions => ["parent_id IS NULL"])
   end
 
