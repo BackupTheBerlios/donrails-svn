@@ -1,3 +1,8 @@
+2006-05-18  Akira TAGOH  <at@gclab.org>
+
+	* donrails/app/controllers/login_controller.rb (new_article):
+	follow the previous article to determine the default format style.
+
 2006-05-17  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/login/manage_article.rhtml: Some fix..

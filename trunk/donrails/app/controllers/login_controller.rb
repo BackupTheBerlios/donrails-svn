@@ -52,7 +52,7 @@ class LoginController < ApplicationController
 
   def new_article
     @categories = Category.find_all
-    retval = Article.find_by_sql("SELECT format, count(*) AS num FROM articles GROUP BY format ORDER BY num DESC")
+    retval = Article.find_by_sql("SELECT format FROM articles ORDER BY id DESC LIMIT 1")
     if retval.nil? || retval.empty? then
       @defaultformat = 'plain'
     else
