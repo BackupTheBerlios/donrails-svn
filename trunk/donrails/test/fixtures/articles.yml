@@ -1,5 +1,17 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 first_article:
   id: 1
+  title: first title
+  body: first body
+  size: 10
+  article_date: 1999-01-01 00:00:00
+  article_mtime: 1999-01-01 00:00:01
+  format: plain
 another_article:
   id: 2
+  title: 2
+  body: 2
+  size: 1
+  article_date: 1999-01-02 00:00:00
+  article_mtime: 1999-01-02 00:00:01
+  format: plain

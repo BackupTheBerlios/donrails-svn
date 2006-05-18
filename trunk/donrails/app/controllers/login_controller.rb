@@ -355,7 +355,7 @@ class LoginController < ApplicationController
     c = @params["deleteid"].nil? ? [] : @params["deleteid"]
     c.each do |k, v|
       if v.to_i == 1
-        b = Blacklist.find(k.to_i)
+        b = Banlist.find(k.to_i)
         b.destroy
       end
     end
@@ -364,8 +364,8 @@ class LoginController < ApplicationController
 
   def add_blacklist
     c = @params["blacklist"]
-    aris1 = Blacklist.new("pattern" => c["pattern"],
-                          "format" => @params["format"])
+    aris1 = Banlist.new("pattern" => c["pattern"],
+                        "format" => @params["format"])
     aris1.save
     redirect_to :action => "manage_blacklist"
   end

@@ -67,7 +67,8 @@ summary   VARCHAR,
 writable INTEGER NOT NULL
 );
 
-CREATE TABLE blacklists (
+-- CREATE TABLE blacklists (
+CREATE TABLE banlists (
 id     INTEGER PRIMARY KEY,
 format   VARCHAR,
 pattern   VARCHAR

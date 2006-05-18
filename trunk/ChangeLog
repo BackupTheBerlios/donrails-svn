@@ -1,3 +1,7 @@
+2006-05-19  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/tool/tables-sqlite.txt: Change table name 'blacklist' to 'banlists'. Because 'blacklists' is reserved by Rails1.1.
+
 2006-05-18  Akira TAGOH  <at@gclab.org>
 
 	* donrails/app/controllers/login_controller.rb (new_article):

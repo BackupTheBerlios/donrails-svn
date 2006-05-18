@@ -1,5 +1,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 first_trackback:
   id: 1
-another_trackback:
-  id: 2
+  article_id: 1
+  category_id: 1
+  blog_name: test tb blog
+  title: title test tb blog
+  excerpt: excerpt test tb blog
+  url: http://example.com
+  ip: 127.0.0.1
+  created_at: 1999-01-01 01:00:00
