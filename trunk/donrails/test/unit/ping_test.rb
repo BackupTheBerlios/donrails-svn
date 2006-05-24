@@ -4,10 +4,10 @@ require 'rexml/document'
 require 'htree'
 
 class PingTest < Test::Unit::TestCase
-  fixtures :pings
+  fixtures :pings, :articles
 
   def setup
-    @ping = Ping.find(1)
+    @ping = Ping.new
 #    unless @ping.article_id
 #     @ping.article_id = 4846
 #    end
@@ -17,6 +17,7 @@ class PingTest < Test::Unit::TestCase
 #    @ping.save
   end
 
+=begin
   def test_send_ping2
     pingurl = "http://localhost:3000/notes/catch_ping/"
     title = "test title"
@@ -31,5 +32,10 @@ class PingTest < Test::Unit::TestCase
       p $!
     end
   end
- 
+=end
+
+ def test_truth
+   assert_kind_of Ping,  @ping
+ end
+
 end

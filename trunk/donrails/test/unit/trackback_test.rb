@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TrackbackTest < Test::Unit::TestCase
-  fixtures :trackbacks
+  fixtures :trackbacks, :articles, :categories
 
   def setup
-    @trackback = Trackback.find(1)
+    @trackback = Trackback.new
   end
 
   # Replace this with your real tests.

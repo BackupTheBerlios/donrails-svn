@@ -1,6 +1,32 @@
+2006-05-25  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* ((NOTICE)): I will change to apply for Category model use from acts_as_tree to acts_as_nested_set. ActiveRecord::Acts::NestedSet::ClassMethods is better module.
+  	* donrails/app/models/{category,comment}.rb: Change to apply for Category model use acts_as_tree.
+	* donrails/app/controllers/login_controller.rb: likewise.
+	* donrails/app/controllers/notes_controller.rb: likewise.
+	* donrails/app/views/layouts/login.rhtml: likewise.
+
+	* donrails/tool/tables-mysql.sql: New files for MySQL.
+	
+2006-05-21  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/models/comment.rb (Comment): Fix at validates_length_of. Remove :too_short message.
+
 2006-05-19  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
-	* donrails/tool/tables-sqlite.txt: Change table name 'blacklist' to 'banlists'. Because 'blacklists' is reserved by Rails1.1.
+	* ((IMPORTANT CHANGE)): Change table name 'blacklist' to 'banlists'. Because 'blacklists' is reserved by Rails1.1.
+	* donrails/tool/tables-sqlite.txt: likewise.
+	* donrails/app/controllers/login_controller.rb: likewise.
+	* donrails/app/models/banlist.rb: likewise
+	* donrails/tool/tables-postgresql.txt: likewise
+	* donrails/app/views/login/manage_blacklist.rhtml: Remove. likewise.
+	* donrails/app/views/login/manage_banlist.rhtml: Add. likewise.
+	* donrails/lib/antispam.rb: likewise.
+
+	* donrails/test/fixtures/*.yml: New files.
+	* donrails/test/*: Refine test related files. Many files are added or changed.
+
+	* ((Let's start modify codes for running on rails 1.1))
 
 2006-05-18  Akira TAGOH  <at@gclab.org>
 

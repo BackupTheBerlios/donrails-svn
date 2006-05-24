@@ -6,7 +6,7 @@
 ##    some code derived from "typo"
 ##
 
-require_dependency 'blacklist'
+require_dependency 'banlist'
 
 class AntiSpam
   def initialize
@@ -63,8 +63,8 @@ class AntiSpam
   def scan_ipaddr(ip_address)
     logger.info("[SP] Scanning IP #{ip_address}")
 
-    Blacklist.find(:all, :conditions => ["format = ?", "ipaddr"]).each do |bp|
-      logger.info("[SP] Scanning blacklist ipaddr #{bp}")
+    Banlist.find(:all, :conditions => ["format = ?", "ipaddr"]).each do |bp|
+      logger.info("[SP] Scanning banlist ipaddr #{bp}")
       throw :hit, "IPaddress #{bp.pattern} matched" if ip_address.match(/#{bp.pattern}/)
     end
     
@@ -96,8 +96,8 @@ class AntiSpam
     domain = Array.new
     logger.info("[SP] Scanning domain #{domain.join('.')}")
 
-    Blacklist.find(:all, :conditions => ["format = ?", "hostname"]).each do |bp|
-      logger.info("[SP] Scanning blacklist host #{bp}")
+    Banlist.find(:all, :conditions => ["format = ?", "hostname"]).each do |bp|
+      logger.info("[SP] Scanning banlist host #{bp}")
       throw :hit, "Hostname #{bp.pattern} matched" if host.match(/#{bp.pattern}/)
     end
     
@@ -131,14 +131,14 @@ class AntiSpam
       scan_uri(host)
     end
 
-    # add blacklist match here.
-    Blacklist.find(:all, :conditions => ["format = ?", "regexp"]).each do |bp|
-      logger.info("[SP] Scanning blacklist text #{bp}")
+    # add banlist match here.
+    Banlist.find(:all, :conditions => ["format = ?", "regexp"]).each do |bp|
+      logger.info("[SP] Scanning banlist text #{bp}")
       throw :hit, "String #{bp.pattern} matched" if string.match(/#{Regexp.quote(bp.pattern)}/)
     end
 
-    Blacklist.find(:all, :conditions => ["format = ?", "string"]).each do |bp|
-      logger.info("[SP] Scanning blacklist text #{bp}")
+    Banlist.find(:all, :conditions => ["format = ?", "string"]).each do |bp|
+      logger.info("[SP] Scanning banlist text #{bp}")
       throw :hit, "Regex #{bp.pattern} matched" if string.match(/#{bp.pattern}/)
     end
 

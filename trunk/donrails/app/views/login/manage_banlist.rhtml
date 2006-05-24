@@ -1,8 +1,8 @@
-<h1>blacklist management</h1>
+<h1>banlist management</h1>
 
 <hr>
 <h2>新規ブラックリストの追加</h2>
-2種類のブラックリストformatをサポートしています。formatを指定して追加してください。
+以下ブラックリストformatをサポートしています。formatを指定して追加してください。
 <dl>
   <dt>regexp</dt>
   <dd>コメントに含まれてほしくない文字列をRubyの正規表現で記述します。</dd>
@@ -14,9 +14,9 @@
   <dd>コメントを禁止するホスト名を指定します。</dd>
 </dl>
 <p>
-<%= secure_form_tag :action => "add_blacklist" %>
+<%= secure_form_tag :action => "add_banlist" %>
 pattern:
-<%= text_field "blacklist", "pattern" %>
+<%= text_field "banlist", "pattern" %>
 format:
 <select name="format">
   <option value="regexp">regexp</option>
@@ -29,12 +29,12 @@ format:
 
 <hr>
 ブラックリストの管理
-<% if @blacklists %>
-<% if @blacklists_pages %>
-<%= pagination_links @blacklists_pages %>
+<% if @banlists %>
+<% if @banlists_pages %>
+<%= pagination_links @banlists_pages %>
 <% end %>
 
-<%= secure_form_tag :action => "delete_blacklist" %>
+<%= secure_form_tag :action => "delete_banlist" %>
 <table  border="1" cellspacing="0">
   <tr>
     <td>消去</td>
@@ -43,7 +43,7 @@ format:
     <td>pattern</td>
   </tr>
 
-  <% @blacklists.each do |co| %>
+  <% @banlists.each do |co| %>
   <tr>
     <td><%= check_box "deleteid", co.id %></td>
     <td><%= co.id %></td>
@@ -56,8 +56,8 @@ format:
 <%= end_form_tag %>
 <% end %>
 
-<% if @blacklists_pages %>
-<%= pagination_links @blacklists_pages %>
+<% if @banlists_pages %>
+<%= pagination_links @banlists_pages %>
 <% end %>
 
  

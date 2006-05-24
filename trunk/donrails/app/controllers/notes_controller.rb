@@ -374,7 +374,7 @@ class NotesController < ApplicationController
       redirect_to :action => 'show_title', :id => @articles.first.id if @articles
     elsif @params['title'] and @params['title'].size > 0
       @articles =  Article.find(:all, :conditions => ["title = ?", @params['title']]) 
-      redirect_to :action => 'show_title', :id => @articles.first.id if @articles
+      redirect_to :action => 'show_title', :id => @articles.first.id if @articles and @articles.first
     else
       render_text "no article", 404
     end
@@ -503,6 +503,7 @@ class NotesController < ApplicationController
                           )
       a = Article.find(article_id)
       aris1.articles.push_with_attributes(a)
+
       if aris1.save
         redirect_to :action => "show_title", :id => article_id
       else

@@ -4,8 +4,8 @@ class Comment < ActiveRecord::Base
   has_and_belongs_to_many :articles, :join_table => "comments_articles"
 
   validates_presence_of :author
-  validates_length_of :password, :minimum => 4, :too_short => "pick a longer password"
-  validates_length_of :body, :minimum => 5, :too_short => "too short article"
+  validates_length_of :password, :minimum => 4
+  validates_length_of :body, :minimum => 5
 
   validates_antispam :url
   validates_antispam :ipaddr

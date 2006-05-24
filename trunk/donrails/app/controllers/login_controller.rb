@@ -10,7 +10,7 @@ class LoginController < ApplicationController
 
   verify_form_posts_have_security_token :only => [
     :fix_article, :authenticate, :delete_article,
-    :delete_unwrite_author, :add_blacklist, :delete_blacklist,
+    :delete_unwrite_author, :add_banlist, :delete_banlist,
     :add_blogping, :delete_blogping, :delete_comment,
     :delete_trackback, :picture_save, :add_article, :add_author
   ]
@@ -345,13 +345,13 @@ class LoginController < ApplicationController
     redirect_to :action => "manage_article"
   end
 
-  def manage_blacklist
-    @blacklists_pages, @blacklists = paginate(:blacklist, :per_page => 30,
+  def manage_banlist
+    @banlists_pages, @banlists = paginate(:banlist, :per_page => 30,
                                           :order_by => 'id DESC'
                                           )
   end
 
-  def delete_blacklist
+  def delete_banlist
     c = @params["deleteid"].nil? ? [] : @params["deleteid"]
     c.each do |k, v|
       if v.to_i == 1
@@ -359,15 +359,15 @@ class LoginController < ApplicationController
         b.destroy
       end
     end
-    redirect_to :action => "manage_blacklist"
+    redirect_to :action => "manage_banlist"
   end
 
-  def add_blacklist
-    c = @params["blacklist"]
+  def add_banlist
+    c = @params["banlist"]
     aris1 = Banlist.new("pattern" => c["pattern"],
                         "format" => @params["format"])
     aris1.save
-    redirect_to :action => "manage_blacklist"
+    redirect_to :action => "manage_banlist"
   end
 
   ## ping

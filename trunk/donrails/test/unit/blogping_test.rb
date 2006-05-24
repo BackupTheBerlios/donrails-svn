@@ -4,7 +4,8 @@ class BlogpingTest < Test::Unit::TestCase
   fixtures :blogpings
 
   def setup
-    @blogping = Blogping.find(1)
+#    @blogping = Blogping.find(1)
+    @blogping = Blogping.new
   end
 
   # Replace this with your real tests.

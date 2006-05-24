@@ -12,19 +12,18 @@ class NotesControllerTest < Test::Unit::TestCase
   end
 
 
-#   def test_trackback
-#     post :trackback,
-#     :id => 1,
-#     :title => 'title test util',
-#     :excerpt => 'excerpt text',
-#     :url => "http://test.example.com/blog/",
-#     :blog_name => 'test of donrails'
+  def test_trackback
+    post :trackback,
+    :id => 1,
+    :title => 'title test util',
+    :excerpt => 'excerpt text',
+    :url => "http://test.example.com/blog/",
+    :blog_name => 'test of donrails'
 
-#     require_response_body = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<response>\n  <error>0</error>\n  <message>success</message>\n</response>\n"
-#     assert_response :success
-#     # puts @response.body
-#     assert_equal require_response_body, @response.body
-#   end
+    require_response_body = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<response>\n  <error>0</error>\n  <message>success</message>\n</response>\n"
+    assert_response :success
+    assert_equal require_response_body, @response.body
+  end
 
   def test_index
     get :index
@@ -60,14 +59,13 @@ class NotesControllerTest < Test::Unit::TestCase
   end
   def test_indexabc
     get :indexabc, :nums => '200401a'
-    assert_response 302
-    assert_equal('http://test.host/notes/tendays?day=01&month=01&year=2004', @response.headers['location'])
+    assert_redirected_to :controller => 'notes', :action => 'tendays', :year => '2004', :month => '01', :day => '01'
+
     get :indexabc, :nums => '200401b'
-    assert_response 302
-    assert_equal('http://test.host/notes/tendays?day=11&month=01&year=2004', @response.headers['location'])
+    assert_redirected_to :controller => 'notes', :action => 'tendays', :year => '2004', :month => '01', :day => '11'
+
     get :indexabc, :nums => '200401c'
-    assert_response 302
-    assert_equal('http://test.host/notes/tendays?day=21&month=01&year=2004', @response.headers['location'])
+    assert_redirected_to :controller => 'notes', :action => 'tendays', :year => '2004', :month => '01', :day => '21'
 
     get :indexabc, :nums => '20040105c'
     assert_response 404
@@ -84,35 +82,31 @@ class NotesControllerTest < Test::Unit::TestCase
   def test_parse_nums
     get :parse_nums
     assert_response 302
-
+  end
+  def test_parse_nums__1
     get :parse_nums, :nums => '200403051'
     assert_response 302
-#    puts @response.body
     assert_equal('http://test.host/notes/d?notice=200403051', @response.headers['location'])
-
+  end
+  def test_parse_nums__2
     get :parse_nums, :nums => '20040305'
-    assert_response 302
-#    puts @response.body
-    assert_equal('http://test.host/notes/2004/03/05', @response.headers['location'])
-
+    assert_redirected_to :controller => 'notes', :year => '2004', :day => '05', :month => '03'
+  end
+  def test_parse_nums__3
     get :parse_nums, :nums => '2004-03-05'
-    assert_response 302
-#    puts @response.body
-    assert_equal('http://test.host/notes/2004/03/05', @response.headers['location'])
-
-    get :parse_nums, :nums => '2004-3-05'
-    assert_response 302
-#    puts @response.body
-    assert_equal('http://test.host/notes/2004/3/05', @response.headers['location'])
-
+    assert_redirected_to :controller => 'notes', :year => '2004', :day => '05', :month => '03'
+  end
+#  def test_parse_nums__4
+#    get :parse_nums, :nums => '2004-3-05'
+#    assert_redirected_to :controller => 'notes', :year => '2004', :day => '05', :month => '03'
+#  end
+  def test_parse_nums__5
     get :parse_nums, :nums => '20040305.html'
-    assert_response 302
-#    puts @response.body
-    assert_equal('http://test.host/notes/2004/03/05', @response.headers['location'])
-    get :parse_nums, :nums => '2004-03-05.html'
-    assert_response 302
-#    puts @response.body
-    assert_equal('http://test.host/notes/2004/03/05', @response.headers['location'])
+    assert_redirected_to :controller => 'notes', :year => '2004', :day => '05', :month => '03'
+  end
+  def test_parse_nums__6
+    get :parse_nums, :nums => '2004-03-06.html'
+    assert_redirected_to :controller => 'notes', :year => '2004', :day => '06', :month => '03'
   end
 
   def test_rdf_recent
@@ -164,51 +158,51 @@ class NotesControllerTest < Test::Unit::TestCase
 
   def test_show_month 
     get :show_month ,:year => 1989, :month => 01
-#    p @response.headers
-    assert_response 404
-  end
-  def test_show_month__2
-    get :show_month ,:year => 2004, :month => 01
-    assert_response 200
-  end
-  def test_show_month__3
-    get :show_month ,:day => 31, :month => 01
-#    p @response.headers
-    assert_response 404
-    get :show_month , :month => 01
-#    p @response.headers
     assert_response 404
   end
 
+
+  def test_show_month__2
+    get :show_month ,:year => 1999, :month => 01
+    assert_response 200
+  end
+
+  def test_show_month__3
+    get :show_month ,:day => 31, :month => 01
+    assert_response 404
+    get :show_month , :month => 01
+    assert_response 404
+  end
+
+
+
   def test_show_nnen
-    get :show_nnen ,:day => 31, :month => 01
-#    p @response.headers
+    get :show_nnen ,:day => 01, :month => 01
     assert_response 200
   end
 
   def test_show_date
-    get :show_date ,:day => 31, :month => 01, :year => 2002
-#    p @response.headers
+    get :show_date ,:day => 01, :month => 01, :year => 1999
     assert_response 200
   end
   def test_show_date__2
     get :show_date ,:day => 31, :month => 01, :year => 2009
-#    p @response.headers
     assert_response 302
   end
-
 
   def test_show_title
     get :show_title, :id => 1
     assert_response 200
   end 
+
+
   def test_show_title__2
-    get :show_title, :pickid => 2
-    assert_response 302
+    get :show_title, :title => 2
+    assert_response 404
   end 
   def test_show_title__3
-    get :show_title, :title => 'MS spam'
-    assert_response 302
+    get :show_title, :title => 'first title in misc'
+    assert_redirected_to :controller => 'notes', :id => 1
   end 
   def test_show_title__4
     get :show_title, :id =>10000
@@ -222,7 +216,6 @@ class NotesControllerTest < Test::Unit::TestCase
     get :show_title, :inchiki => nil
     assert_response 404
   end
-
 
   def test_show_category
     get :show_category, :category => 'misc'
@@ -250,25 +243,27 @@ class NotesControllerTest < Test::Unit::TestCase
   end
 
   def test_afterday
-    get :afterday, :ymd2 => '2005-12-05'
+    get :afterday, :ymd2 => '1999-01-01'
     assert_response 200
   end
+
   def test_afterday__2
-    get :afterday, :ymd2 => '2006-12-05'
+    get :afterday, :ymd2 => '2016-12-05'
     assert_response 404
   end
 
   def test_tendays
-    get :tendays, :ymd2 => '2005-12-05'
+    get :tendays, :ymd2 => '1999-01-01'
     assert_response 200
   end
   def test_tendays__2
-    get :tendays, :ymd2 => '2007-12-05'
+    get :tendays, :ymd2 => '2017-12-05'
     assert_response 404
   end
 
+=begin
   def test_add_comment2
-    c = {"author" => "testauthor", "password" => "hoge", 
+    c = {"author" => "testauthor", "password" => "hoge5", 
       "url" => "http://localhost/test.html", 
       "title" => "testtitle", 
       "body" => "testbody", "article_id" => 1}
@@ -277,6 +272,9 @@ class NotesControllerTest < Test::Unit::TestCase
     assert_equal('http://test.host/notes/id/1', @response.headers['location'])
     assert_response 302
   end
+=end
+
+=begin
   def test_add_comment2__2
     c = {"author" => "testauthor", "password" => "hoge", 
       "url" => "http://localhost/", 
@@ -287,25 +285,11 @@ class NotesControllerTest < Test::Unit::TestCase
     assert_equal('http://test.host/notes/d', @response.headers['location'])
     assert_response 302
   end
-
-  def test_trackback
-  end
-
-  ###
-  def test_noteslist
-    get :noteslist
-    assert_response :success
-  end
+=end
 
   def test_catch_ping
     post :catch_ping, :category => 'misc', :blog_name => 'test blog',
     :title => 'test title', :excerpt => 'test excerpt', :url => 'http://localhost/test/blog'
-    assert_response :success
-  end
-
-  def test_recent_category_title_a
-    get :recent_category_title_a, :category => 'donrails'
-#    puts @response.body
     assert_response :success
   end
 
