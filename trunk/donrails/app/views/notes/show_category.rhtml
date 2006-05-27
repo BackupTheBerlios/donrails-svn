@@ -1,9 +1,9 @@
-<h3>カテゴリ: <%= @category.name %> のリスト
+<h3>カテゴリ: <%= @category.name %>(<%= @category.articles.size.to_s %>) のリスト
 [<%= link_to "記事", {:action => "show_category_noteslist", :category => @category.name} %>]
 </h3>
 <%=h @category.description %>
 <div id='roots_ul'>
-<%= display_categories_roots_ul_description(@category.children) %>
+<%= display_categories_roots_ul_description(@category.direct_children, 1) %>
 </div>
 
 <% if @articles_pages and @articles_pages.length > 1 %>

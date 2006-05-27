@@ -289,27 +289,33 @@ module ApplicationHelper
           content += '[' + link_to('管理', {:controller => 'login', :action => :manage_category, :id => category.id}) + ']'
         end
         content += '(' + category.articles.size.to_s + ')'
-        content += display_categories_roots_ul(category.children, manage)
+        content += display_categories_roots_ul(category.direct_children, manage)
         content += '</li>'
       end
       content += '</ul>'
     end
+    GC.start
     return content
   end
 
-  def display_categories_roots_ul_description(categories)
+  def display_categories_roots_ul_description(categories,depth=0)
     content = ''
+    i = 0
     if categories.size > 0
       content = '<ul>'
       categories.each do |category|
+        i += 1
         content += '<li>' + link_to(category.name, {:controller => 'notes', :action => :show_category, :id => category.id}) 
         content += '(' + category.articles.size.to_s + ')'
         content += ' / ' + category.description if category.description
-        content += display_categories_roots_ul_description(category.children)
+        if depth > i
+          content += display_categories_roots_ul_description(category.direct_children)
+        end
         content += '</li>'
       end
       content += '</ul>'
     end
+    GC.start
     return content
   end
 

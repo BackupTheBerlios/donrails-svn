@@ -1,4 +1,3 @@
-
 <% if @notice %>
 <div class="notice">
  <%=h @notice %>
@@ -17,7 +16,8 @@ From <%= @ymd3 %> to <%= @ymd4 %>
 </h3>
 <%=h @category.description %>
 <div id='roots_ul'>
-<%= display_categories_roots_ul_description(@category.children) %>
+<!-- %= display_categories_roots_ul_description(@category.children) %-->
+<%= display_categories_roots_ul_description(@category.direct_children) %>
 </div>
 <% end %>
 
@@ -47,7 +47,9 @@ From <%= @ymd3 %> to <%= @ymd4 %>
 <div class="nnenhead">
    <%= link_to "\##{an}", {:action => "show_title", :id => article.id} %>
    <% article.categories.each do |cat| %>
-     [<%= link_to cat.name, {:action => "show_category", :category => cat.name}  if cat.name %>]
+     <% if cat.name %>
+     [<%= link_to cat.name, {:action => "show_category", :category => cat.name}  %>]
+     <% end %>
    <% end %>
    <%= article.title_to_html %>
 </div> <!-- end nnenhead -->

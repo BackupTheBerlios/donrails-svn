@@ -19,7 +19,7 @@
      <td>id</td>
      <td>author</td>
      <td>title</td>
-     <td>date</td>
+     <td>date (last change)</td>
      <td>format</td>
      <td>category</td>
      <td>body</td>
@@ -38,7 +38,10 @@
      <td><%= co.id %></td>
      <td><%= co.author.name if co.author %></td>
      <td><%= don_mb_truncate(co.title) if co.title %></td>
-     <td><%= co.article_date.to_date.to_s if co.article_date %></td>
+     <td>
+       <%= co.article_date.to_date.to_s if co.article_date %>
+       (<%= co.article_mtime.to_s if co.article_mtime %>)
+     </td>
      <td><%= co.format if co.format %></td>
      <td>
        <% co.categories.each do |cat| %>

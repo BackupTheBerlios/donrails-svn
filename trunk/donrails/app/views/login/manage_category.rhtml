@@ -5,7 +5,7 @@
 <%= display_categories_roots_ul(@roots, true) %>
 </div> <!-- end of class:menu -->
 
-<h2>新規カテゴリの追加</h2>
+<h2>カテゴリの追加またはカテゴリ情報の更新</h2>
 <%= render("shared/edit_category") %>
 <hr>
 <h2>カテゴリの管理</h2>
@@ -29,7 +29,7 @@
 <%= submit_tag %>
 <table  border="1" cellspacing="0">
    <tr>
-     <td>Edit?</td>
+     <td>name</td>     
      <td>Delete?</td>     
      <td>name</td>
      <td>parent</td>
@@ -37,10 +37,14 @@
    </tr>
    <% @categories.each do |category| %>
    <tr>
-     <td><%= link_to category.id, {:action => :manage_category, :id => category.id} %></td>
+     <td><%= link_to category.name, {:action => :manage_category, :id => category.id} %></td>
      <td><%= check_box "deleteid", category.id %></td>
-     <td><%=h category.name %></td>
-     <td><%=h category.parent.name if category.parent %></td>
+
+     <td>
+       <% if category.parent_id %>
+       <%=h Category.find(category.parent_id).name %>
+       <% end %>
+     </td>
      <td><%=h category.description %></td>
    </tr>
    <% end %>

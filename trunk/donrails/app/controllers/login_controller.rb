@@ -3,6 +3,7 @@ require 'kconv'
 class LoginController < ApplicationController
   before_filter :authorize, :except => [:login_index, :authenticate]
   after_filter :compress
+  after_filter :clean_memory
 
   cache_sweeper :article_sweeper, :only => [ :delete_article, :new_article, :fix_article, :add_category, :delete_category, :add_article ]
 
@@ -71,7 +72,9 @@ class LoginController < ApplicationController
   def manage_category
     if @params['id']
       @category = Category.find(@params['id'])
-      @parent = @category.parent if @category.parent
+      if @category.parent_id
+        @parent = Category.find(@category.parent_id)
+      end
     end
 
     @categories_pages, @categories = paginate(:category,:per_page => 30,:order_by => 'id DESC')
@@ -88,7 +91,7 @@ class LoginController < ApplicationController
     if parent and aris1
       aris1.parent_id = parent.id
     elsif parent
-      aris1 = parent.children.new("name" => c["name"])
+      aris1 = parent.children.new("name" => c["name"]) # XXX
     elsif aris1
     else
       aris1 = Category.new("name" => c["name"])      

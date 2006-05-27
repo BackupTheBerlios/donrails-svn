@@ -11,6 +11,7 @@ class AtomController < ApplicationController
   cache_sweeper :article_sweeper, :only => [ :post, :edit ]
   caches_page :feed
   after_filter :compress
+  after_filter :clean_memory
 
   def wsse_auth
     if request.env["HTTP_X_WSSE"]

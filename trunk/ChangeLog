@@ -1,3 +1,22 @@
+2006-05-27  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/login/manage_article.rhtml: Add to show article_mtime.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::rdf_recent): Change to show from recent 'id' to recent 'article_mtime'.
+
+	* donrails/app/views/login/manage_category.rhtml: Some change.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::manage_category): Fix to find parent category.
+
+2006-05-26  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/application.rb (ApplicationController::clean_memory): New method. It invoke GC.start.
+	* donrails/app/controllers/notes_controller.rb (NotesController): call clean_memory for GC.
+	* donrails/app/controllers/atom_controller.rb (AtomController): likewise.
+
+	* donrails/app/helpers/application_helper.rb (ApplicationHelper::display_categories_roots_ul): Add GC.start. Is it memory leak?
+	(ApplicationHelper::display_categories_roots_ul_description): likewise.
+
 2006-05-25  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* ((NOTICE)): I will change to apply for Category model use from acts_as_tree to acts_as_nested_set. ActiveRecord::Acts::NestedSet::ClassMethods is better module.

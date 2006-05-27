@@ -16,6 +16,7 @@ class NotesController < ApplicationController
   caches_page :articles_author
   after_filter :add_cache_control
   after_filter :compress
+  after_filter :clean_memory
 
   layout "notes", :except => [
     :pick_article_a,
@@ -177,7 +178,7 @@ class NotesController < ApplicationController
 
   def rdf_recent
     @headers["Content-Type"] = "application/xml; charset=utf-8"
-    @recent_articles = Article.find(:all, :order => "id DESC", :limit => 20)
+    @recent_articles = Article.find(:all, :order => "article_mtime DESC", :limit => 20)
     unless @recent_articles.empty? then
       @lm = @recent_articles.first.article_mtime.gmtime if @recent_articles.first.article_mtime
     end
@@ -419,8 +420,9 @@ class NotesController < ApplicationController
                  :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
                  )
       @heading = "カテゴリ:#{@params['category']}"
-      @heading += '(' + @category.articles.size.to_s + ')' 
-      @heading += ' + (' + @category.children.size.to_s + ')' if @category.children.size > 0
+      @heading += '(' + @category.articles.size.to_s + ')'  # XXX
+#      @heading += ' + (' + @category.children.size.to_s + ')' if @category.children.size > 0
+#      @heading += ' + (' + @category.children_count.to_s + ')' if @category.children_count > 0 # XXX
 
       unless @articles.empty? then
         @lm = @articles.first.article_mtime.gmtime if @articles.first.article_mtime
