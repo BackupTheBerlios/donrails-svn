@@ -10,6 +10,7 @@ class Article < ActiveRecord::Base
   has_many :pictures, :order => "id ASC"
   belongs_to :author
 #  after_save :sendping
+  before_save :renew_mtime
 
   # Fulltext searches the body of published articles
   # this function original from "typo" models/article.rb
@@ -55,5 +56,8 @@ class Article < ActiveRecord::Base
     end
   end
 
+  def renew_mtime
+    self.article_mtime = Time.now
+  end
 
 end

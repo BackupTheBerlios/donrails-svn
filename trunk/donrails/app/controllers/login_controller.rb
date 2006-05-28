@@ -5,6 +5,9 @@ class LoginController < ApplicationController
   after_filter :compress
   after_filter :clean_memory
 
+  auto_complete_for :author, :name
+  auto_complete_for :category, :name
+
   cache_sweeper :article_sweeper, :only => [ :delete_article, :new_article, :fix_article, :add_category, :delete_category, :add_article ]
 
   layout "login", :except => [:login_index, :index]
@@ -230,8 +233,8 @@ class LoginController < ApplicationController
     body = c["body"]
     id = c["id"].to_i
 
-    newcategory = c["category"]
-
+    newcategory = @params["category"]['name']
+    
     if @params["newid"]["#{id}"] == "0"
       aris = Article.find(id)
       aris.categories.clear
@@ -277,30 +280,26 @@ class LoginController < ApplicationController
     c = @params["article"]
     title = c["title"]
     body = c["body"]
-    category0 = @params["category0"]
-    cat1 = c["category"]
     format = @params["format"]
 
-    author = Author.find(:first, :conditions => ["name = ?", c["author"]])
+    if @params["category"]['name']
+      category0 = @params["category"]['name']
+      ca = category0.split(/\s+/)
+    end
+
+    if @params["author"]['name']
+      author_name = @params["author"]['name']
+      author = Author.find(:first, :conditions => ["name = ?", author_name])
+    end
 
     get_ymd
     aris1 = Article.new("title" => title,
                         "body" => body,
                         "size" => body.size,
                         "format" => format,
-                        "article_date" => @ymd,
-                        "article_mtime" => Time.now
+                        "article_date" => @ymd
                         )
     aris1.author_id = author.id if author
-
-    if category0.size > 0
-      ca = category0.to_a
-      if cat1
-        ca += cat1.split(/\s+/)
-      end
-    elsif cat1
-      ca = cat1.split(/\s+/)
-    end
 
     ca.each do |ca0|
       b = Category.find(:first, :conditions => ["name = ?", ca0])

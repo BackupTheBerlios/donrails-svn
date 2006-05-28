@@ -41,7 +41,7 @@ Date:
 <br>
 <% end %>
 
-さらにカテゴリを追加する⇒<%= text_field "article", "category", "size" => 20, "value" => '' %>
+さらにカテゴリを追加する⇒カテゴリ:<%= text_field_with_auto_complete :category, :name %>
 <br>	  
 <%= submit_tag "save" %>
 <%= end_form_tag %>

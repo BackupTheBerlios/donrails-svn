@@ -1,4 +1,14 @@
+2006-05-28  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/login_controller.rb (LoginController::add_article): Change to use author_name and category_name auto completion.
+	* donrails/app/views/login/new_article.rhtml: likewise. 
+	* donrails/app/views/layouts/login.rhtml: likewise. Add {effects,controls}.js.
+
 2006-05-27  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/models/article.rb (Article::renew_mtime): New method. It updates 'article_mtime' before_save.
+	* donrails/app/controllers/login_controller.rb (LoginController::add_article): Remove "article_mtime" update.
+
 
 	* donrails/app/views/login/manage_article.rhtml: Add to show article_mtime.
 

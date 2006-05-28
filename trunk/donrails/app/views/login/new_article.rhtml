@@ -14,15 +14,7 @@
 <br>
 <%= date_select(:ymd2, :created_on, :start_year => 1997, :end_year => Date.today.year, :order => [:year, :month, :day]) %>
 <br>
-カテゴリ:
-<select name="category0">
-  <% @categories.each do |cat| %>
-  <option value="<%= cat.name %>"><%= cat.name %></option>
-    <% end %>
-  <option value="">NULL</option>
-</select>
-さらにカテゴリを追加する⇒<%= text_field "article", "category", "size" => 20 %>
-
+カテゴリ:<%= text_field_with_auto_complete :category, :name %>
 <br>
 フォーマット形式:
 <select name="format">
@@ -31,7 +23,7 @@
 <% end %>
 </select>
 <br>
-著者名:<br><%= text_field "article", "author", "size" => 20 %><br>
+著者名:<br><%= text_field_with_auto_complete :author, :name %><br>
 タイトル:<br><%= text_field "article", "title", "size" => 80 %><br>
 本文:<br><%= text_area "article", "body", "rows" => 40, "cols" => 80 %><br>
 <%= submit_tag "save" %>
@@ -39,4 +31,7 @@
 
 <hr>
 <a href="http://www.h14m.org/docs/hnf-j.html">hnf の記述方法</a>
+/
+<a href="http://www.shiro.dreamhost.com/scheme/wiliki/wiliki.cgi?WiLiKi%3a%e3%83%aa%e3%83%95%e3%82%a1%e3%83%ac%e3%83%b3%e3%82%b9%e3%83%9e%e3%83%8b%e3%83%a5%e3%82%a2%e3%83%ab%3a%e6%9b%b8%e5%bc%8f">WiLiKi:リファレンスマニュアル:書式</a>
+
 <hr>
