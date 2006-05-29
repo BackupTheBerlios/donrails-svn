@@ -16,6 +16,8 @@ rails directory以下に移動し、
 
 テーブルの追加にはALTERコマンドを使用します。
 
+** blacklistsテーブルがbanlistsに変更されました。
+
 ** categoriesテーブルにparent_idカラムが必要です。
 
  alter table categories add column parent_id INTEGER;

@@ -1,3 +1,9 @@
+2006-05-29  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* UPGRADE_1.1.ja: Add request for changing table name from blacklists to banlists.(Thanks tagoh)
+
+	* donrails/app/views/shared/comment-form.rhtml: Fix: Comment's response is 403. (Thanks tagoh)
+
 2006-05-28  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/login_controller.rb (LoginController::add_article): Change to use author_name and category_name auto completion.
