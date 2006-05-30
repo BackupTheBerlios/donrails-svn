@@ -487,7 +487,7 @@ class NotesController < ApplicationController
 
   def add_comment2
     c = @params["comment"]
-    if c
+    if c and request.post?
       author = c["author"]
       password = c["password"]
       url = c["url"]
@@ -507,7 +507,7 @@ class NotesController < ApplicationController
       aris1.articles.push_with_attributes(a)
 
       if aris1.save
-        redirect_to :action => "show_title", :id => article_id
+        redirect_to :action => "show_title", :id => article_id, :post_at => Time.now.to_i
       else
         redirect_to :action => "noteslist"
       end

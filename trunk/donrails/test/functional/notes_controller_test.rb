@@ -261,31 +261,38 @@ class NotesControllerTest < Test::Unit::TestCase
     assert_response 404
   end
 
-=begin
   def test_add_comment2
     c = {"author" => "testauthor", "password" => "hoge5", 
       "url" => "http://localhost/test.html", 
       "title" => "testtitle", 
       "body" => "testbody", "article_id" => 1}
 
-    get :add_comment2, :comment => c
-    assert_equal('http://test.host/notes/id/1', @response.headers['location'])
+    post :add_comment2, :comment => c
+    assert_match(/^http:\/\/test.host\/notes\/id\/1\?post_at=\d+/, @response.headers['location'])
     assert_response 302
   end
-=end
 
-=begin
-  def test_add_comment2__2
-    c = {"author" => "testauthor", "password" => "hoge", 
-      "url" => "http://localhost/", 
+  # get is not valid request.
+  def test_add_comment2_1
+    c = {"author" => "testauthor", "password" => "hoge5", 
+      "url" => "http://localhost/test.html", 
       "title" => "testtitle", 
-      "body" => "testbody", "article_id" => 11}
+      "body" => "testbody", "article_id" => 1}
 
     get :add_comment2, :comment => c
     assert_equal('http://test.host/notes/d', @response.headers['location'])
     assert_response 302
   end
-=end
+
+  def test_add_comment2_not
+    c = {"author" => "testauthor", "password" => "hoge5", 
+      "url" => "http://localhost/test.html", 
+      "title" => "testtitle", 
+      "body" => "testbody", "article_id" => 1}
+
+    post_without_security :add_comment2, :comment => c
+    assert_response 403
+  end
 
   def test_catch_ping
     post :catch_ping, :category => 'misc', :blog_name => 'test blog',

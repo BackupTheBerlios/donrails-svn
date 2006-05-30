@@ -1,6 +1,17 @@
 1.0から1.1にUPGRADEする方へ。互換性がない機能と変更についての案内です。
 
 ----
+* spam関連の変数をdonrails_env.rbに追加してください。
+
+IP_RBL = [ 'niku.2ch.net', 'opm.blitzed.us', 'bsb.empty.us' ]
+HOST_RBL = [ 'rbl.bulkfeeds.jp', 'sc.surbl.org', 'bsb.empty.us' ]
+URL_LIMIT = 5
+
+のようにします。記述しない場合はデフォルト値が使われます。
+antispam.rbのデフォルト値はなるべくそのとき知られたRBLが
+はいっていますが、保証いたしかねます。
+
+----
 * CSRF対策のため、security_extensions pluginを使うようになりました。
 
 追加方法は、script/pluginコマンドを使用します。

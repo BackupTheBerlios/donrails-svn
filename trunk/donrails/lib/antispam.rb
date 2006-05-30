@@ -10,19 +10,28 @@ require_dependency 'banlist'
 
 class AntiSpam
   def initialize
-    if IP_RBL
-      @IP_RBL = IP_RBL
-    else
+    begin
+      if IP_RBL
+        @IP_RBL = IP_RBL
+      end
+    rescue
+      p $!
       @IP_RBL = [ 'niku.2ch.net', 'opm.blitzed.us', 'bsb.empty.us' ]
     end
-    if HOST_RBL
-      @HOST_RBL = HOST_RBL
-    else
+    begin
+      if HOST_RBL
+        @HOST_RBL = HOST_RBL
+      end
+    rescue
+      p $!
       @HOST_RBL = [ 'rbl.bulkfeeds.jp', 'sc.surbl.org', 'bsb.empty.us' ]
     end
-    if URL_LIMIT
-      @URL_LIMIT = URL_LIMIT
-    else
+    begin
+      if URL_LIMIT
+        @URL_LIMIT = URL_LIMIT
+      end
+    rescue
+      p $!
       @URL_LIMIT = 5
     end
   end

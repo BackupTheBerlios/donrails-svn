@@ -1,5 +1,15 @@
+2006-05-30  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/lib/antispam.rb (AntiSpam::initialize): Change: If IP_RBL, HOST_RBL and URL_LIMIT are not defined in donrails_env.rb, use default parameters.
+
+	* donrails/test/functional/notes_controller_test.rb (NotesControllerTest::test_add_comment2_not): New test.
+	(NotesControllerTest::test_add_comment2_1): New test.
+	(NotesControllerTest::test_add_comment2): New test.
+
 2006-05-29  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
+	* UPGRADE_1.1.ja: Add notice for anti-spam related parameters.
+	
 	* UPGRADE_1.1.ja: Add request for changing table name from blacklists to banlists.(Thanks tagoh)
 
 	* donrails/app/views/shared/comment-form.rhtml: Fix: Comment's response is 403. (Thanks tagoh)
