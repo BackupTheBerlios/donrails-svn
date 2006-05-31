@@ -1,0 +1,29 @@
+<% if @article %>
+<% article = don_get_object(@article, 'html') %>
+
+<div class="nnenhead">
+   <% article.categories.each do |cat| %>
+     <% if cat.name %>
+     [<%= link_to cat.name, {:action => "show_category", :category => cat.name}  %>]
+     <% end %>
+   <% end %>
+<%= article.title_to_html %>
+</div> <!-- end nnenhead -->
+
+<div class="section">
+<%
+article.pictures.each do |pic|
+if pic.path
+hoi = pic.path.split('/public/').last
+rpath = "/" + hoi
+%>
+<%= image_tag(rpath, :size => '100', :align => 'right') %>
+<% end %>
+<% end %>
+<%= auto_link article.body_to_html %>
+<br clear='all'>
+</div> <!-- end section -->
+
+<hr>
+<%= render("shared/comment-form", "article" => @article) %>
+<% end %>

@@ -31,6 +31,7 @@ class NotesController < ApplicationController
     :catch_ping,
     :category_select_a,
     :comment_form_a,
+    :comment_form,
     :category_tree_list_a
   ]
 
@@ -68,6 +69,11 @@ class NotesController < ApplicationController
 
   def comment_form_a
     @headers["Content-Type"] = "text/html; charset=utf-8"
+    @article = Article.find(@params['id'].to_i)
+    @lm = @article.article_mtime.gmtime if @article and @article.article_mtime
+  end
+
+  def comment_form
     @article = Article.find(@params['id'].to_i)
     @lm = @article.article_mtime.gmtime if @article and @article.article_mtime
   end

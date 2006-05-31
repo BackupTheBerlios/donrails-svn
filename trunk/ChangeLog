@@ -1,3 +1,10 @@
+2006-05-31  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/notes/comment_form.rhtml: Add new file. Becase anti CSRF does conflict comment adding under cache is on. This file is alternative for comment_form_a.rhtml.
+	* donrails/app/controllers/notes_controller.rb (NotesController::comment_form): likewise. New method.
+	* donrails/app/views/shared/comment2.rhtml: likewise. Chenge link_to_remote from 'comment_form_a' to 'comment_form'. 
+	- passed through CGI.escapeHTML to show trackback entry.
+
 2006-05-31  Akira TAGOH  <at@gclab.org>
 
 	* donrails/app/views/login/manage_category.rhtml: removed a duplicate
