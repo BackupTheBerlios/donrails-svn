@@ -1,5 +1,7 @@
 2006-05-31  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/views/notes/show_title.rhtml: Change to use shared/comment to shared/comment2.
+
 	* donrails/app/views/notes/comment_form.rhtml: Add new file. Becase anti CSRF does conflict comment adding under cache is on. This file is alternative for comment_form_a.rhtml.
 	* donrails/app/controllers/notes_controller.rb (NotesController::comment_form): likewise. New method.
 	* donrails/app/views/shared/comment2.rhtml: likewise. Chenge link_to_remote from 'comment_form_a' to 'comment_form'. 
