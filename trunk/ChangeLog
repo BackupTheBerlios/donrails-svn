@@ -1,5 +1,8 @@
 2006-05-31  Akira TAGOH  <at@gclab.org>
 
+	* donrails/app/views/login/manage_category.rhtml: removed a duplicate
+	column of name.
+
 	* donrails/app/views/login/manage_banlist.rhtml: passed through
 	CGI.escapeHTML.
 
