@@ -48,7 +48,7 @@ format:
     <td><%= check_box "deleteid", co.id %></td>
     <td><%= co.id %></td>
     <td><%= co.format %></td>
-    <td><%= co.pattern %></td>
+    <td><%= CGI.escapeHTML(co.pattern) %></td>
   </tr>
   <% end %>
 </table>
