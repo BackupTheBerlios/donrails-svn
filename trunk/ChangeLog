@@ -1,3 +1,7 @@
+2006-06-01  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/notes/comment_form.rhtml: Fix Kanji-code.
+
 2006-05-31  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/notes/show_title.rhtml: Change to use shared/comment to shared/comment2.
