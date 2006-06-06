@@ -294,7 +294,6 @@ module ApplicationHelper
       end
       content += '</ul>'
     end
-    GC.start
     return content
   end
 
@@ -315,9 +314,38 @@ module ApplicationHelper
       end
       content += '</ul>'
     end
-    GC.start
+    return content
+  end
+
+  def display_article_date(article)
+    content = link_to "#{article.article_date.year}年#{article.article_date.month}月#{article.article_date.day}日(#{article.article_date.strftime('%a')})",
+         {:action => "show_date",
+          :year => article.article_date.year,
+          :month => article.article_date.month,
+          :day => article.article_date.day
+         }
+  end
+
+  def display_article_categories(article)
+    content = ''
+    article.categories.each do |cat|
+      if cat.name
+        content += '[' + link_to(cat.name, {:action => "show_category", :category => cat.name}) + ']'
+      end
+    end
+    return content
+  end
+
+  def display_article_images(article)
+    content = ''
+    article.pictures.each do |pic|
+      if pic.path
+        hoi = pic.path.split('/public/').last
+        rpath = "/" + hoi
+        content += image_tag(rpath, :size => '100', :align => 'right') 
+      end
+    end
     return content
   end
 
 end
-

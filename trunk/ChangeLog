@@ -1,3 +1,18 @@
+2006-06-06  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/helpers/application_helper.rb (ApplicationHelper::display_article_date): New method.
+	(ApplicationHelper::display_article_categories): New method.
+	(ApplicationHelper::display_article_images): New method.
+
+	* donrails/app/views/notes/noteslist.rhtml: Change to use display_article_date, display_article_categories and display_article_images.
+	* donrails/app/views/notes/pick_article_a.rhtml: likewise.
+	* donrails/app/views/notes/pick_article_a2.rhtml: likewise.
+
+	* donrails/app/views/shared/recent_category.rhtml: Remove file. This file is not used. And this file is empty.
+
+	* donrails/app/helpers/application_helper.rb (ApplicationHelper::display_categories_roots_ul_description): Remove GC.
+	(ApplicationHelper::display_categories_roots_ul): likewise.
+
 2006-06-01  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/views/notes/comment_form.rhtml: Fix Kanji-code.

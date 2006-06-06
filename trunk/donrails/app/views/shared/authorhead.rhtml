@@ -4,4 +4,5 @@ written by <%= link_to article.author.nickname, {:action => :articles_author, :i
 <% elsif article.author and article.author.name %>
 written by <%= link_to article.author.name, {:action => :articles_author, :id => article.author_id} %>
 <% end %>
+ at <%= article.article_mtime %>
 </div>

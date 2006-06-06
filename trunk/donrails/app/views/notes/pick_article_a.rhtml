@@ -1,21 +1,11 @@
 <% article = don_get_object(@article, 'html') %>
 <div class="nnenhead">
 <%= article.article_date %> /
-<% article.categories.each do |cat| %>
-[<%= link_to cat.name, {:action => "show_category", :category => cat.name} %>]
-<% end %>
+<%= display_article_categories article %>
 <%= article.title_to_html if article.title %> /
 </div> <!-- end nnenhead -->
 <div class="section">
-<%
-article.pictures.each do |pic|
-if pic.path
-hoi = pic.path.split('/public/').last
-rpath = "/" + hoi
-%>
-<%= image_tag(rpath, :size => '100', :align => 'right') %>
-<% end %>
-<% end %>
+<%= display_article_images article %>
 <%= auto_link article.body_to_html if article.body %>
 <%= render("shared/comment-noadd", "article" => article) %>
 <br clear='all'>

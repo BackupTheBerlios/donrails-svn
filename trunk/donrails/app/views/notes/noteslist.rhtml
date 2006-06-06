@@ -16,7 +16,6 @@ From <%= @ymd3 %> to <%= @ymd4 %>
 </h3>
 <%=h @category.description %>
 <div id='roots_ul'>
-<!-- %= display_categories_roots_ul_description(@category.children) %-->
 <%= display_categories_roots_ul_description(@category.direct_children) %>
 </div>
 <% end %>
@@ -32,38 +31,19 @@ From <%= @ymd3 %> to <%= @ymd4 %>
   article = don_get_object(a, 'html'); day0 = article.article_date.to_date %>
    <% if day1 != day0 %>
 <div class="nnenhead">
-<h3>
-    <%= link_to "#{article.article_date.year}年#{article.article_date.month}月#{article.article_date.day}日(#{article.article_date.strftime('%a')})",
-         {:action => "show_date",
-          :year => article.article_date.year,
-          :month => article.article_date.month,
-          :day => article.article_date.day
-         } %>
-</h3>
+<h3><%= display_article_date(article) %></h3>
 </div> <!-- end nnenhead -->
 <% day1 = article.article_date.to_date; an = 0 %>
    <% end %>
    <% an += 1 %>
 <div class="nnenhead">
-   <%= link_to "\##{an}", {:action => "show_title", :id => article.id} %>
-   <% article.categories.each do |cat| %>
-     <% if cat.name %>
-     [<%= link_to cat.name, {:action => "show_category", :category => cat.name}  %>]
-     <% end %>
-   <% end %>
-   <%= article.title_to_html %>
+<%= link_to "\##{an}", {:action => "show_title", :id => article.id} %>
+<%= display_article_categories article %>
+<%= article.title_to_html %>
 </div> <!-- end nnenhead -->
 
 <div class="section">
-<%
-article.pictures.each do |pic|
-if pic.path
-hoi = pic.path.split('/public/').last
-rpath = "/" + hoi
-%>
-<%= image_tag(rpath, :size => '100', :align => 'right') %>
-<% end %>
-<% end %>
+<%= display_article_images(article) %>
 <%= auto_link article.body_to_html %>
 <%= render("shared/authorhead", "article" => article) %>
 <%= render("shared/comment2", "article" => article) %>

@@ -18,24 +18,13 @@ day0 = Time.new; day1 = day0
 <div class="nnenhead">
 <p>
    <%= link_to "\#", {:action => "show_title", :id => article.id} %>
-   (<%= link_to article.article_date.to_date, {:action => 'show_date', :year => article.article_date.year, :month => article.article_date.month, :day => article.article_date.day} %>)
-   <% article.categories.each do |cat| %>
-     [<%= link_to cat.name, {:action => "show_category", :category => cat.name} %>]
-   <% end %>
+   <%= display_article_categories article %>
    <%= article.title_to_html %>
 </p>
 </div> <!-- end nnenhead -->
 
 <div class="section">
-<%
-article.pictures.each do |pic|
-if pic.path
-hoi = pic.path.split('/public/').last
-rpath = "/" + hoi
-%>
-<%= image_tag(rpath, :size => '100', :align => 'right') %>
-<% end %>
-<% end %>
+<%= display_article_images(article) %>
 <%= auto_link article.body_to_html %>
 <%= render("shared/authorhead", "article" => article) %>
 <%= render("shared/comment2", "article" => article) %>
