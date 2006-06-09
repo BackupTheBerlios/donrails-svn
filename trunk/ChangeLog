@@ -1,3 +1,7 @@
+2006-06-09  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::show_image): Fix to show picture.
+
 2006-06-06  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/helpers/application_helper.rb (ApplicationHelper::display_article_date): New method.

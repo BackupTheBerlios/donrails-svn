@@ -527,7 +527,7 @@ class NotesController < ApplicationController
   end
 
   def show_image 
-    @image = Image.find(@params['id'])
+    @image = Picture.find(@params['id'])
     redirect_to '/' + @image.path.split('/public/')[1]
   end
 
