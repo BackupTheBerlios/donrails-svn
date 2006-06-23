@@ -1,0 +1,26 @@
+以下ブラックリストformatをサポートしています。formatを指定して追加してください。
+<dl>
+  <dt>regexp</dt>
+  <dd>コメントに含まれてほしくない文字列をRubyの正規表現で記述します。</dd>
+  <dt>string</dt>
+  <dd>コメントに含まれてほしくない文字列を記述します。</dd>
+  <dt>ipaddr(whitelistにチェックするとこのIPアドレスからのコメントを有効にします)</dt>
+  <dd>コメントを禁止するIPアドレスを指定します。</dd>
+  <dt>hostname</dt>
+  <dd>コメントを禁止するホスト名を指定します。</dd>
+</dl>
+<p>
+<%= secure_form_tag :action => "add_banlist" %>
+pattern:
+<%= text_field "banlist", "pattern" %>
+format:
+<select name="format">
+  <option value="regexp">regexp</option>
+  <option value="string">string</option>
+  <option value="ipaddr">ipaddr</option>
+  <option value="hostname">hostname</option>
+</select>
+whitelistとして登録する
+<%= check_box "banlist", "white" %>
+<%= submit_tag "追加する" %>
+<%= end_form_tag %>
