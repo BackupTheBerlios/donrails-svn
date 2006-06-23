@@ -557,8 +557,13 @@ class NotesController < ApplicationController
           tb.ip = request.remote_ip
           tb.created_at = Time.now
           tb.save
-          @catched = true
-          @message = 'success'
+          if tb.errors.empty?
+            @catched = true
+            @message = 'success'
+          else
+            @catched = false
+            @message = 'count:' + tb.errors.count.to_s
+          end
         end
       rescue
         @catched = false

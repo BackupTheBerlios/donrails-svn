@@ -1,3 +1,20 @@
+2006-06-23  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/shared/add_banlist.rhtml: New file.
+	* donrails/app/views/login/manage_banlist.rhtml: Change to use 'add_banlist.rhtml'.
+	* donrails/app/views/login/manage_trackback.rhtml: likewise.
+	
+	* donrails/app/views/login/manage_trackback.rhtml: Fix: If article which is trackbacked somebody is not exist, now donrails shows 'deleted article'.
+
+	* donrails/tool/tables-mysql.sql: **PLEASE*** Add 'white' column in 'banlists' table. (See UPGRADE1.1)
+	* donrails/lib/antispam.rb (AntiSpam::scan_ipaddr_white): New method for ipaddr whitelist.
+	* donrails/test/functional/notes_controller_test.rb (NotesControllerTest::test_trackback__3): Net test method for it.
+	* donrails/app/views/login/manage_banlist.rhtml: Change for apply ipaddr whitelist.
+	* donrails/app/controllers/login_controller.rb (LoginController::add_banlist): likewise.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::trackback): Fix: When donrails receives unconditionl trackback like SPAM, send error response. (In last code, just ignore. Just send success response like good trackback.)
+	* donrails/test/functional/notes_controller_test.rb (NotesControllerTest::test_trackback__2): New test method for it.
+	
 2006-06-15  Akira TAGOH  <at@gclab.org>
 
 	* donrails/lib/antispam.rb (AntiSpam::initialize):

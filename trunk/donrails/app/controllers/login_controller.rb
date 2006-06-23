@@ -367,7 +367,8 @@ class LoginController < ApplicationController
   def add_banlist
     c = @params["banlist"]
     aris1 = Banlist.new("pattern" => c["pattern"],
-                        "format" => @params["format"])
+                        "format" => @params["format"],
+                        "white" => c["white"])
     aris1.save
     redirect_to :action => "manage_banlist"
   end

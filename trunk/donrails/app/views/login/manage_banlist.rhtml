@@ -1,32 +1,6 @@
 <h1>banlist management</h1>
 
-<hr>
-<h2>新規ブラックリストの追加</h2>
-以下ブラックリストformatをサポートしています。formatを指定して追加してください。
-<dl>
-  <dt>regexp</dt>
-  <dd>コメントに含まれてほしくない文字列をRubyの正規表現で記述します。</dd>
-  <dt>string</dt>
-  <dd>コメントに含まれてほしくない文字列を記述します。</dd>
-  <dt>ipaddr</dt>
-  <dd>コメントを禁止するIPアドレスを指定します。</dd>
-  <dt>hostname</dt>
-  <dd>コメントを禁止するホスト名を指定します。</dd>
-</dl>
-<p>
-<%= secure_form_tag :action => "add_banlist" %>
-pattern:
-<%= text_field "banlist", "pattern" %>
-format:
-<select name="format">
-  <option value="regexp">regexp</option>
-  <option value="string">string</option>
-  <option value="ipaddr">ipaddr</option>
-  <option value="hostname">hostname</option>
-</select>
-<%= submit_tag "ブラックリストを追加する" %>
-<%= end_form_tag %>
-
+<%= render('shared/add_banlist') %>
 <hr>
 ブラックリストの管理
 <% if @banlists %>
@@ -40,6 +14,7 @@ format:
     <td>消去</td>
     <td>id</td>
     <td>format</td>
+    <td>white?</td>
     <td>pattern</td>
   </tr>
 
@@ -48,6 +23,7 @@ format:
     <td><%= check_box "deleteid", co.id %></td>
     <td><%= co.id %></td>
     <td><%= co.format %></td>
+    <td><%= co.white %></td>    
     <td><%= CGI.escapeHTML(co.pattern) %></td>
   </tr>
   <% end %>

@@ -19,7 +19,7 @@ class LoginControllerTest < Test::Unit::TestCase
   def test_delete_trackback
     get :delete_trackback,
     :deleteid => {'1' => 1}
-    puts @response.body
+#    puts @response.body
     assert_response 302
   end
 end

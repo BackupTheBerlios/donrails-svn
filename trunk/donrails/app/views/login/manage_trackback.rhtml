@@ -6,12 +6,18 @@
 <%= pagination_links @trackbacks_pages %>
 <% end %>
 
+<h1><%= @heading %></h1>
+
+<%= render('shared/add_banlist') %>
+<hr>
 <%= secure_form_tag :action => "delete_trackback" %>
 <div class="kakomi">
 <div id="trackback_ajax">
 [記事]を押すと削除対象コメントと親記事が表示されます
 </div>
 </div>
+
+<hr>
 <%= submit_tag "チェックしたトラックバックを削除する" %>
 <table  border="1" cellspacing="0">
   <tr>
@@ -27,7 +33,11 @@
   <tr>
     <td>
       <%= check_box "deleteid", co.id %>
+      <% if co.article %>
       <%= link_to_remote("[記事]", :update => "trackback_ajax", :url => {:controller => "notes", :action => "pick_article_a", :pickid => co.article.id }) %>
+      <% else %>
+      (deleted article)
+      <% end %>
     </td>
     <td><%= co.blog_name %></td>
     <td><%= don_mb_truncate(co.title) %></td>

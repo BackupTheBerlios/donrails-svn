@@ -77,6 +77,7 @@ CREATE TABLE banlists (
 id     SERIAL UNIQUE,
 format   VARCHAR(100),
 pattern   VARCHAR(100),
+white     INTEGER,
 primary key (id)
 );
 

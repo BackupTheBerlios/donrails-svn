@@ -27,6 +27,10 @@ rails directory以下に移動し、
 
 テーブルの追加にはALTERコマンドを使用します。
 
+** banlistsテーブルにwhiteカラムが必要です。
+
+ alter table banlists add column white INTEGER;
+
 ** blacklistsテーブルがbanlistsに変更されました。
 
 ** categoriesテーブルにparent_idカラムが必要です。
