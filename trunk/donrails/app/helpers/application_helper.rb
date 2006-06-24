@@ -318,19 +318,24 @@ module ApplicationHelper
   end
 
   def display_article_date(article)
+    if article and article.article_date
     content = link_to "#{article.article_date.year}年#{article.article_date.month}月#{article.article_date.day}日(#{article.article_date.strftime('%a')})",
          {:action => "show_date",
           :year => article.article_date.year,
           :month => article.article_date.month,
           :day => article.article_date.day
          }
+    end
   end
 
   def display_article_categories(article)
     content = ''
     article.categories.each do |cat|
-      if cat.name
-        content += '[' + link_to(cat.name, {:action => "show_category", :category => cat.name}) + ']'
+      begin
+        if cat.name
+          content += '[' + link_to(cat.name, {:action => "show_category", :category => cat.name}) + ']'
+        end
+      rescue
       end
     end
     return content

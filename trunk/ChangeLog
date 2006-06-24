@@ -1,4 +1,15 @@
+2006-06-25  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/notes/rdf_{article,search,category,recent}.rxml: Add 'image:item'.
+
+2006-06-24  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/helpers/application_helper.rb (ApplicationHelper::display_article_date): Change to check existence of article_date.
+	(ApplicationHelper::display_article_categories): Fix for category name is not inputted.
+
 2006-06-23  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/login/manage_comment.rhtml: Change to use 'add_banlist.rhtml'.
 
 	* donrails/app/views/shared/add_banlist.rhtml: New file.
 	* donrails/app/views/login/manage_banlist.rhtml: Change to use 'add_banlist.rhtml'.
