@@ -47,7 +47,7 @@ xml.feed("xmlns" => "http://purl.org/atom/ns\#") do
       article.categories.each do |cat|
         xml.category cat.name
       end
-      xml.trackbck @request.protocol + @request.host_with_port + url_for(:controller => 'notes', :action => 'trackback', :id => article.id)
+      xml.trackback @request.protocol + @request.host_with_port + url_for(:controller => 'notes', :action => 'trackback', :id => article.id)
 
       xml.content("type" => "text/html",
                   "xml:lang" => "ja",
