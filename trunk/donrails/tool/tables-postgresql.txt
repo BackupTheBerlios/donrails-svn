@@ -71,7 +71,8 @@ writable INTEGER NOT NULL
 CREATE TABLE banlists (
 id     SERIAL PRIMARY KEY,
 format   VARCHAR,
-pattern   VARCHAR
+pattern   VARCHAR,
+white	  INTEGER
 );
 
 CREATE TABLE plugins (

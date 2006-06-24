@@ -1,5 +1,9 @@
 2006-06-25  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/tool/tables-{postgresql,sqlite}.txt: Add Banlist.white.
+
+	* donrails/app/views/atom/feed.rxml: Add image link.
+
 	* donrails/app/views/notes/rdf_{article,search,category,recent}.rxml: Add 'image:item'.
 
 2006-06-24  ARAKI Yasuhiro  <yasu@debian.or.jp>
