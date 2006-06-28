@@ -346,7 +346,11 @@ module ApplicationHelper
     article.pictures.each do |pic|
       if pic.path
         hoi = pic.path.split('/public/').last
-        rpath = "/" + hoi
+        if $IMAGE_BASE_PATH
+          rpath = $IMAGE_BASE_PATH + hoi
+        else
+          rpath = "/" + hoi
+        end
         content += image_tag(rpath, :size => '100', :align => 'right') 
       end
     end

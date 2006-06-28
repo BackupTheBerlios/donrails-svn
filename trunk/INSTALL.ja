@@ -54,4 +54,9 @@ railsを動作させる以外に必要な外部ライブラリは以下の通り
 	rails/public/images/dump
 	のディレクトリを動作ユーザから書きこめるようにしておく必要があります。
 
+	アップロードされたファイルは、GET /nosts/show_image/1 などとす
+	ると、/images/dump/image-files.png などにリダイレクトされます。
+
+	リダイレクト先は $IMAGE_BASE_PATH で指定できます。これが
+	/test/ のときは、/test/images/dump/image-files.png などにリダイレクトされます。
 	
