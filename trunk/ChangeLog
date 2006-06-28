@@ -1,5 +1,8 @@
 2006-06-28  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
+	* README_1.1.html: New file.
+	* VERSION: up to 1.1.0
+
 	* donrails/app/controllers/notes_controller.rb (NotesController::show_image): Change: If $IMAGE_BASE_PATH is setted in donrails_env.rb, redirect_to image under $IMAGE_BASE_PATH. (Request from tagoh.)
 	* donrails/app/helpers/application_helper.rb (ApplicationHelper::display_article_images): likewise.
 	* INSTALL.ja: Add related document.
