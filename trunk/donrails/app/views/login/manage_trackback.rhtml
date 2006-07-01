@@ -39,11 +39,11 @@
       (deleted article)
       <% end %>
     </td>
-    <td><%= co.blog_name %></td>
-    <td><%= don_mb_truncate(co.title) %></td>
-    <td><%= co.url %></td>
-    <td><%= co.ip %></td>
-    <td><%= don_mb_truncate(co.excerpt) %></td>
+    <td><%=h co.blog_name if co.blog_name %></td>
+    <td><%=h don_mb_truncate(co.title) if co.title %></td>
+    <td><%=h co.url if co.url %></td>
+    <td><%=h co.ip if co.ip %></td>
+    <td><%=h don_mb_truncate(co.excerpt) if co.excerpt %></td>
   </tr>
   <% end %>
 </table>

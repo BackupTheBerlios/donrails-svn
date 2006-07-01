@@ -373,6 +373,61 @@ class LoginController < ApplicationController
     redirect_to :action => "manage_banlist"
   end
 
+  def test_banlist
+    checktext = @params["banlist"]["pattern"]
+    flash[:ban] = nil
+    flash[:ban_message] = String.new
+
+    tb = Trackback.new
+    tb.excerpt = checktext
+    tb.valid?
+    if tb.errors.empty?
+      flash[:note] = checktext
+    else
+      tb.errors.each_full do |msg|
+        flash[:ban_message] += msg
+      end
+      flash[:ban] = tb.errors.count.to_s
+      flash[:note] = checktext
+    end
+
+    unless flash[:ban]
+      if checktext =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/
+        tb = Trackback.new
+        tb.ip = checktext
+        tb.valid?
+        if tb.errors.empty?
+          flash[:note] = checktext
+        else
+          tb.errors.each_full do |msg|
+            flash[:ban_message] += msg
+          end
+          flash[:ban] = tb.errors.count.to_s
+          flash[:note] = checktext
+        end
+      end
+    end
+
+    unless flash[:ban]
+      if checktext =~ /(http:\/\/[^\s"]+)/m
+        tb = Trackback.new
+        tb.url = checktext
+        tb.valid?
+        if tb.errors.empty?
+          flash[:note] = checktext
+        else
+          tb.errors.each_full do |msg|
+            flash[:ban_message] += msg
+          end
+          flash[:ban] = tb.errors.count.to_s
+          flash[:note] = checktext
+        end
+      end
+    end
+    tb.destroy
+    redirect_to :action => "manage_banlist"
+  end
+
   ## ping
   def manage_ping
     @pings_pages, @pings = paginate(:ping,:per_page => 30,:order_by => 'id DESC')

@@ -1,3 +1,12 @@
+2006-07-01  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* VERSION: up to 1.1.1.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::test_banlist): New method. It is used for checking Banlist entry.
+	* donrails/lib/antispam.rb (AntiSpam::scan_ipaddr): Fix to calling scan_ipaddr_white.
+	* donrails/app/views/login/manage_trackback.rhtml: Fix to display invlid format of trackback entry.
+	* donrails/app/views/shared/add_banlist.rhtml (format): Add test_banlist form.
+
 2006-06-28  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* README_1.1.html: New file.

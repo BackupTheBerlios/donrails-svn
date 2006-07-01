@@ -66,12 +66,11 @@ class AntiSpam
 
   def scan_ipaddr(ip_address)
     logger.info("[SP] Scanning IP #{ip_address}")
-    return false if scan_ipaddr_white(ip_address)
-    Banlist.find(:all, :conditions => ["format = ? AND white <> 1", "ipaddr"]).each do |bp|
+    return false if true == scan_ipaddr_white(ip_address)
+    Banlist.find(:all, :conditions => ["format = ?", "ipaddr"]).each do |bp|
       logger.info("[SP] Scanning banlist ipaddr #{bp.pattern}")
       throw :hit, "IPaddress #{bp.pattern} matched" if ip_address.match(/#{bp.pattern}/)
     end
-    
     @IP_RBL.each do |rbl|
       begin
         if IPSocket.getaddress((ip_address.split('.').reverse + [rbl]).join('.')) == "127.0.0.2"

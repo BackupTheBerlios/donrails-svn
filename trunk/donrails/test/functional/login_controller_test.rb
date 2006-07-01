@@ -11,15 +11,9 @@ class LoginControllerTest < Test::Unit::TestCase
     @response   = ActionController::TestResponse.new
   end
 
-  # Replace this with your real tests.
-#  def test_truth
-#    assert true
-#  end
-
   def test_delete_trackback
     get :delete_trackback,
     :deleteid => {'1' => 1}
-#    puts @response.body
     assert_response 302
   end
 end

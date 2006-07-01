@@ -24,3 +24,21 @@ whitelistとして登録する
 <%= check_box "banlist", "white" %>
 <%= submit_tag "追加する" %>
 <%= end_form_tag %>
+
+<div id="bantest">
+<%= secure_form_tag :action => "test_banlist" %>
+test pattern:
+<%= text_field "banlist", "pattern" %>
+<%= submit_tag "テスト" %>
+<%= end_form_tag %>
+
+<% if @flash[:note] %>
+<div id="notice">
+  <% if @flash[:ban] %>
+  <%= @flash[:note] %>はフィルタされます。(<%= @flash[:ban_message] %>)
+  <% else %>
+  <%= @flash[:note] %>は未登録です。(フィルタされません)
+  <% end %>
+</div>
+<% end %>
+</div>
