@@ -1,3 +1,11 @@
+2006-07-02  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/login_controller.rb (LoginController::add_banlist): Add to check pattern match before add Banlist.
+
+	* donrails/lib/antispam.rb (AntiSpam::scan_text): Fix: Banlist condition consists regexp and string is swapped.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::banlist_test_core): New private method.
+
 2006-07-01  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* VERSION: up to 1.1.1.

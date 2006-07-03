@@ -369,14 +369,51 @@ class LoginController < ApplicationController
     aris1 = Banlist.new("pattern" => c["pattern"],
                         "format" => @params["format"],
                         "white" => c["white"])
-    aris1.save
+    if c['add'] == '1' and c["pattern"].size > 0 and @params["format"]
+      banlist_test_by_valid(c["pattern"], @params["format"])
+      unless flash[:ban]
+        aris1.save 
+        flash[:note2] =  '"' + c["pattern"] + '" is saved as ' + @params["format"]
+      else
+        aris1.destroy
+      end
+    elsif c["pattern"].size > 0 and c["teststring"].size > 0 and @params["format"]
+      flash[:note2] =  ' XXX pattern: ' + c["pattern"] + ' XXX teststring: ' + c["teststring"]
+      if banlist_test_by_ar(c["pattern"], c["teststring"], @params["format"])
+        flash[:note2] =  'teststring: "' + c["teststring"] + '" is matched pattern: "' + c["pattern"] + '"'
+      end
+      aris1.destroy
+    else
+      flash[:note2] =  'please input'
+      aris1.destroy
+    end
     redirect_to :action => "manage_banlist"
+  end
+
+  def banlist_test_by_ar(pattern, teststring, format)
+    p pattern, teststring, format
+    if format == "ipaddr" or format == "regexp" or format == "hostname"
+      return teststring.match(/#{pattern}/)
+    elsif format == "string"
+      return teststring.match(/#{Regexp.quote(pattern)}/)
+    end
   end
 
   def test_banlist
     checktext = @params["banlist"]["pattern"]
+    banlist_test_by_valid(checktext)
+    redirect_to :action => "manage_banlist"
+  end
+
+  def banlist_test_by_valid(checktext, format=nil)
     flash[:ban] = nil
     flash[:ban_message] = String.new
+
+    if format == nil
+      if checktext =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/
+        format = 'ipaddr'
+      end
+    end
 
     tb = Trackback.new
     tb.excerpt = checktext
@@ -392,7 +429,7 @@ class LoginController < ApplicationController
     end
 
     unless flash[:ban]
-      if checktext =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/
+      if format == 'ipaddr'
         tb = Trackback.new
         tb.ip = checktext
         tb.valid?
@@ -425,7 +462,6 @@ class LoginController < ApplicationController
       end
     end
     tb.destroy
-    redirect_to :action => "manage_banlist"
   end
 
   ## ping

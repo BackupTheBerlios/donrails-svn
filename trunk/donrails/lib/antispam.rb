@@ -135,12 +135,12 @@ class AntiSpam
     end
 
     # add banlist match here.
-    Banlist.find(:all, :conditions => ["format = ?", "regexp"]).each do |bp|
+    Banlist.find(:all, :conditions => ["format = ?", "string"]).each do |bp|
       logger.info("[SP] Scanning banlist text #{bp.pattern}")
       throw :hit, "String #{bp.pattern} matched" if string.match(/#{Regexp.quote(bp.pattern)}/)
     end
 
-    Banlist.find(:all, :conditions => ["format = ?", "string"]).each do |bp|
+    Banlist.find(:all, :conditions => ["format = ?", "regexp"]).each do |bp|
       logger.info("[SP] Scanning banlist text #{bp.pattern}")
       throw :hit, "Regex #{bp.pattern} matched" if string.match(/#{bp.pattern}/)
     end

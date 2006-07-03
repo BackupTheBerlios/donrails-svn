@@ -1,18 +1,20 @@
 以下ブラックリストformatをサポートしています。formatを指定して追加してください。
 <dl>
-  <dt>regexp</dt>
-  <dd>コメントに含まれてほしくない文字列をRubyの正規表現で記述します。</dd>
   <dt>string</dt>
   <dd>コメントに含まれてほしくない文字列を記述します。</dd>
+  <dt>regexp</dt>
+  <dd>コメントに含まれてほしくない文字列をRubyの正規表現で記述します。</dd>
   <dt>ipaddr(whitelistにチェックするとこのIPアドレスからのコメントを有効にします)</dt>
-  <dd>コメントを禁止するIPアドレスを指定します。</dd>
+  <dd>コメントを禁止するIPアドレスをRubyの正規表現で記述します。</dd>
   <dt>hostname</dt>
-  <dd>コメントを禁止するホスト名を指定します。</dd>
+  <dd>コメントを禁止するホスト名をRubyの正規表現で記述します。</dd>
 </dl>
-<p>
+
+<div class="banlist">
+<div class="notice">
+  <%= @flash[:note2] %>
+</div>
 <%= secure_form_tag :action => "add_banlist" %>
-pattern:
-<%= text_field "banlist", "pattern" %>
 format:
 <select name="format">
   <option value="regexp">regexp</option>
@@ -20,20 +22,23 @@ format:
   <option value="ipaddr">ipaddr</option>
   <option value="hostname">hostname</option>
 </select>
-whitelistとして登録する
-<%= check_box "banlist", "white" %>
-<%= submit_tag "追加する" %>
-<%= end_form_tag %>
-
-<div id="bantest">
-<%= secure_form_tag :action => "test_banlist" %>
-test pattern:
+<br>
+登録するpattern:
 <%= text_field "banlist", "pattern" %>
+<br>
+テスト対象:
+<%= text_field "banlist", "teststring" %>
+<br><%= check_box "banlist", "white" %>whitelist
+<br><%= check_box "banlist", "add" %>登録する(登録時はチェックする)
 <%= submit_tag "テスト" %>
 <%= end_form_tag %>
+</div>
 
+<div class="bantest">
+登録済みのbanlistを試す
 <% if @flash[:note] %>
-<div id="notice">
+<% unless @flash[:note2] %>
+<div class="notice">
   <% if @flash[:ban] %>
   <%= @flash[:note] %>はフィルタされます。(<%= @flash[:ban_message] %>)
   <% else %>
@@ -41,4 +46,11 @@ test pattern:
   <% end %>
 </div>
 <% end %>
+<% end %>
+
+<%= secure_form_tag :action => "test_banlist" %>
+test pattern:
+<%= text_field "banlist", "pattern" %>
+<%= submit_tag "テスト" %>
+<%= end_form_tag %>
 </div>
