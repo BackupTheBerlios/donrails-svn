@@ -109,4 +109,6 @@ clear: both;
 
 div.notice {color: red; font-weight: bold; }
 div.bantest {margin:3px; padding:5px; }
+
 div.banlist {margin:3px; padding:5px; }
+div.banlist div.notice {color: black; font-weight: bold; }

@@ -28,10 +28,12 @@ class NotesController < ApplicationController
     :rdf_search,
     :rdf_category,
     :trackback,
+    :pick_trackback_a,
     :catch_ping,
     :category_select_a,
     :comment_form_a,
     :comment_form,
+    :pick_comment_a,
     :category_tree_list_a
   ]
 
@@ -53,6 +55,17 @@ class NotesController < ApplicationController
     @rdf_category = @params['q']
     @heading = "検索結果:#{@params['q']}"
     render_action 'noteslist'
+  end
+
+  def pick_trackback_a
+    @headers["Content-Type"] = "text/html; charset=utf-8"
+    @trackback = Trackback.find(@params['pickid'].to_i)
+  end
+
+
+  def pick_comment_a
+    @headers["Content-Type"] = "text/html; charset=utf-8"
+    @comment = Comment.find(@params['pickid'].to_i)
   end
 
   def pick_article_a

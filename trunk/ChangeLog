@@ -1,3 +1,39 @@
+2006-07-09  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/public/stylesheets/login.css: Change for display add_banlist.rhtml
+	* donrails/app/views/shared/add_banlist.rhtml: fix for changing test_banlist.
+	* donrails/app/controllers/login_controller.rb 
+	add test file for all methods.
+	(LoginController::delete_comment): Fix for no @params['deleteid']
+	(LoginController::form_article): Fix for no @params['pickid']
+	(LoginController::fix_article): Fix for not enough input.
+	(LoginController::banlist_test_by_ar): Fix for not enough input.
+	(LoginController::test_banlist): Fix for not enough input.
+	(LoginController::add_blogping): Fix for not enough input.
+	(LoginController::add_author):  Fix for not enough input.
+
+2006-07-08  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/login_controller.rb 
+	(LoginController::test_banlist): Change redirect_to 'manage_banlist' to :back.
+	(LoginController::add_banlist): likewise.
+	(LoginController::authenticate): Fix for wrong POST.
+	(LoginController::add_category): Fix for no @paramas["category"].
+	(LoginController::manage_picture_detail): Fix for no @params['id']
+	(LoginController::delete_picture): Remove picture_get method.
+
+2006-07-07  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/lib/antispam.rb (AntiSpam::scan_uri): Cleanup.
+
+	* donrails/lib/antispam_test.rb: New file for test.
+
+2006-07-04  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/notes/pick_trackback_a.rhtml: New file.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::pick_trackback_a): New method.
+
 2006-07-02  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/login_controller.rb (LoginController::add_banlist): Add to check pattern match before add Banlist.

@@ -36,11 +36,15 @@ class LoginController < ApplicationController
   
   public
   def authenticate
+    name = String.new
+    password = String.new
     case @request.method
     when :post
       c = @params["nz"]
-      namae = c["n"]
-      password = c["p"]
+      if c
+        namae = c["n"]
+        password = c["p"]
+      end
       if namae == ADMIN_USER and password == ADMIN_PASSWORD
         @request.reset_session
         @session = @request.session
@@ -88,19 +92,21 @@ class LoginController < ApplicationController
 
   def add_category
     c = @params["category"]
-    parent = Category.find(:first, :conditions => ["name = ?", c["parent_name"]])
-    aris1 = Category.find(:first, :conditions => ["name = ?", c["name"]])
-
-    if parent and aris1
-      aris1.parent_id = parent.id
-    elsif parent
-      aris1 = parent.children.new("name" => c["name"]) # XXX
-    elsif aris1
-    else
-      aris1 = Category.new("name" => c["name"])      
+    if c
+      parent = Category.find(:first, :conditions => ["name = ?", c["parent_name"]])
+      aris1 = Category.find(:first, :conditions => ["name = ?", c["name"]])
+      
+      if parent and aris1
+        aris1.parent_id = parent.id
+      elsif parent
+        aris1 = parent.children.new("name" => c["name"]) # XXX
+      elsif aris1
+      else
+        aris1 = Category.new("name" => c["name"])      
+      end
+      aris1.description = c["description"]
+      aris1.save
     end
-    aris1.description = c["description"]
-    aris1.save
     redirect_to :action => "manage_category"
   end
 
@@ -127,11 +133,15 @@ class LoginController < ApplicationController
     @pictures_pages, @pictures = paginate(:picture,:per_page => 30,:order_by => 'id DESC')
   end
   def manage_picture_detail
-    @picture = Picture.find(@params["id"])
+    if @params["id"]
+      @picture = Picture.find(@params["id"])
+    else
+      redirect_to :back
+    end
   end
   def edit_picture
     p2 = @params["picture"]
-    if p2['id']
+    if p2 and p2['id']
       @picture = Picture.find(p2['id'])
       @picture.article_id = p2['article_id'] if p2['article_id']
       @picture.comment = p2['comment'] if p2['comment']
@@ -163,9 +173,6 @@ class LoginController < ApplicationController
     redirect_to :action => "manage_picture"
   end
 
-  def picture_get
-    @picture = Picture.new
-  end
 
   def picture_save
     begin
@@ -173,7 +180,7 @@ class LoginController < ApplicationController
       if @picture.save
         redirect_to :action => "manage_picture"
       else
-        render_action :picture_get
+        render :action => 'picture_get', :controller => 'notes'
       end
     rescue
       render :text => 'fail', :status => 403
@@ -208,7 +215,7 @@ class LoginController < ApplicationController
   end
 
   def delete_comment
-    c = @params["deleteid"]
+    c = @params["deleteid"].nil? ? [] : @params["deleteid"]
     c.each do |k, v|
       if v.to_i == 1
         b = Comment.find(k.to_i)
@@ -221,99 +228,111 @@ class LoginController < ApplicationController
   end
 
   def form_article
-    @article = Article.find(@params['pickid'].to_i)
+    if @params['pickid']
+      @article = Article.find(@params['pickid'].to_i)
+    else
+      render :text => 'no entry', :status => 404
+    end
   end
 
   def fix_article
-    c = @params["article"]
-    format = @params["format"]
-    catname = @params["catname"]
+    if c = @params["article"] and @params["newid"]
+      format = @params["format"]
+      catname = @params["catname"]
 
-    title = c["title"]
-    body = c["body"]
-    id = c["id"].to_i
+      title = c["title"]
+      body = c["body"]
+      id = c["id"].to_i
 
-    newcategory = @params["category"]['name']
-    
-    if @params["newid"]["#{id}"] == "0"
-      aris = Article.find(id)
-      aris.categories.clear
-    elsif @params["newid"]["#{id}"] == "1"
-      aris = Article.new
-    end
-
-    aris.title = title
-    aris.body = body
-    aris.format = format
-    aris.article_date = c["article_date"]
-
-    if c["author_name"] and c["author_name"].length > 0
-      au = Author.find(:first, :conditions => ["name = ?", c["author_name"]])
-      aris.author_id = au.id
-    end
-
-    if newcategory
-      nb = Category.find(:first, :conditions => ["name = ?", newcategory])
-      if nb
-        aris.categories.push_with_attributes(nb)
+      if @params[:category]
+        newcategory = @params['category']['name'].nil? ? nil : @params["category"]['name']
       end
-    end
+      
+      if @params["newid"]["#{id}"] == "0"
+        aris = Article.find(id)
+        aris.categories.clear
+      elsif @params["newid"]["#{id}"] == "1"
+        aris = Article.new
+      end
 
-    if catname
-      catname.each do |k, v|
-        begin
-          if v.to_i == 1
-            b = Category.find(k.to_i)
-            aris.categories.push_with_attributes(b)
-          else
-          end
-        rescue
+      if aris
+        aris.title = title
+        aris.body = body
+        aris.format = format
+        aris.article_date = c["article_date"]
+        
+        if c["author_name"] and c["author_name"].length > 0
+          au = Author.find(:first, :conditions => ["name = ?", c["author_name"]])
+          aris.author_id = au.id
         end
+
+        if newcategory
+          nb = Category.find(:first, :conditions => ["name = ?", newcategory])
+          if nb
+            aris.categories.push_with_attributes(nb)
+          end
+        end
+        
+        if catname
+          catname.each do |k, v|
+            begin
+              if v.to_i == 1
+                b = Category.find(k.to_i)
+                aris.categories.push_with_attributes(b)
+              else
+              end
+            rescue
+            end
+          end
+        end
+
+        aris.save
       end
     end
-
-    aris.save
     redirect_to :action => "manage_article"
   end
 
   def add_article
-    c = @params["article"]
-    title = c["title"]
-    body = c["body"]
-    format = @params["format"]
+    if c = @params["article"]
+      title = c["title"]
+      body = c["body"]
+      format = @params["format"]
 
-    if @params["category"]['name']
-      category0 = @params["category"]['name']
-      ca = category0.split(/\s+/)
-    end
-
-    if @params["author"]['name']
-      author_name = @params["author"]['name']
-      author = Author.find(:first, :conditions => ["name = ?", author_name])
-    end
-
-    get_ymd
-    aris1 = Article.new("title" => title,
-                        "body" => body,
-                        "size" => body.size,
-                        "format" => format,
-                        "article_date" => @ymd
-                        )
-    aris1.author_id = author.id if author
-
-    ca.each do |ca0|
-      b = Category.find(:first, :conditions => ["name = ?", ca0])
-      if b == nil
-        b = Category.new("name" => ca0)
-        b.save
+      if @params["category"] and @params["category"]['name']
+        category0 = @params["category"]['name']
+        ca = category0.split(/\s+/)
       end
-      aris1.categories.push_with_attributes(b)
+
+      if @params["author"] and @params["author"]['name']
+        author_name = @params["author"]['name']
+        author = Author.find(:first, :conditions => ["name = ?", author_name])
+      end
+
+      get_ymd
+      aris1 = Article.new("title" => title,
+                          "body" => body,
+                          "size" => body.size,
+                          "format" => format,
+                          "article_date" => @ymd
+                          )
+      aris1.author_id = author.id if author
+
+      ca.each do |ca0|
+        b = Category.find(:first, :conditions => ["name = ?", ca0])
+        if b == nil
+          b = Category.new("name" => ca0)
+          b.save
+        end
+        aris1.categories.push_with_attributes(b)
+      end
+      aris1.save
+      
+      ca.clear
+      c.clear
+      redirect_to :action => "manage_article"
+    else
+      render :text => 'invalid entry', :status => 404
     end
-    aris1.save
- 
-    ca.clear
-    c.clear
-    redirect_to :action => "manage_article"
   end
 
   def manage_article
@@ -365,46 +384,135 @@ class LoginController < ApplicationController
   end
 
   def add_banlist
-    c = @params["banlist"]
-    aris1 = Banlist.new("pattern" => c["pattern"],
-                        "format" => @params["format"],
-                        "white" => c["white"])
-    if c['add'] == '1' and c["pattern"].size > 0 and @params["format"]
-      banlist_test_by_valid(c["pattern"], @params["format"])
-      unless flash[:ban]
-        aris1.save 
-        flash[:note2] =  '"' + c["pattern"] + '" is saved as ' + @params["format"]
+    if c = @params["banlist"]
+      flash[:pattern] = c['pattern']
+      flash[:teststring] = c['teststring'] 
+      flash[:format] = @params['format']
+
+      if c['add'] == '1' and c["pattern"].size > 0 and @params["format"]
+        aris1 = Banlist.new("pattern" => c["pattern"],
+                            "format" => @params["format"],
+                            "white" => c["white"])
+        banlist_test_by_valid(c["pattern"], @params["format"])
+        unless flash[:ban]
+          aris1.save 
+          flash[:note2] =  '"' + c["pattern"] + '" is saved as ' + @params["format"]
+        else
+          aris1.destroy
+        end
+      elsif c["pattern"] and c["pattern"].size > 0 and @params["format"]
+        if banlist_test_by_ar(c["pattern"], c["teststring"], @params["format"])
+          flash[:note2] =  'teststring: "' + c["teststring"] + '" is matched pattern: "' + c["pattern"] + '"'
+        end
       else
-        aris1.destroy
+        flash[:note2] =  'please input'
       end
-    elsif c["pattern"].size > 0 and c["teststring"].size > 0 and @params["format"]
-      flash[:note2] =  ' XXX pattern: ' + c["pattern"] + ' XXX teststring: ' + c["teststring"]
-      if banlist_test_by_ar(c["pattern"], c["teststring"], @params["format"])
-        flash[:note2] =  'teststring: "' + c["teststring"] + '" is matched pattern: "' + c["pattern"] + '"'
-      end
-      aris1.destroy
-    else
-      flash[:note2] =  'please input'
-      aris1.destroy
+      flash[:hit_tbs] = @hit_tbs if @hit_tbs
+      flash[:hit_comments] = @hit_comments if @hit_comments
     end
-    redirect_to :action => "manage_banlist"
+    redirect_to :back
+  end
+
+  private
+  def banlist_test_by_ar_ipaddr(pattern, teststring)
+    @hit_tbs = Array.new
+    Trackback.find(:all, :limit => 10, :order => 'id DESC').each do |tb|
+      if tb.ip.match(/#{pattern}/)
+        @hit_tbs.push(tb)
+      end
+    end
+    @hit_comments = Array.new
+    Comment.find(:all, :limit => 10, :order => 'id DESC').each do |tb|
+      if tb.ipaddr.match(/#{pattern}/)
+        @hit_comments.push(tb)
+      end
+    end
+    if teststring.size > 0
+      return teststring.match(/#{pattern}/)
+    else
+      return nil
+    end
+  end
+
+  def banlist_test_by_ar_hostname(pattern, teststring)
+    @hit_tbs = Array.new
+    Trackback.find(:all, :limit => 10, :order => 'id DESC').each do |tb|
+      if tb.excerpt.match(/#{pattern}/) or tb.url.match(/#{pattern}/)
+        @hit_tbs.push(tb)
+      end
+    end
+    @hit_comments = Array.new
+    Comment.find(:all, :limit => 10, :order => 'id DESC').each do |tb|
+      if tb.title.match(/#{pattern}/) 
+        @hit_comments.push(tb)
+      elsif tb.url and tb.url.match(/#{pattern}/) 
+        @hit_comments.push(tb)
+      elsif tb.body and tb.body.match(/#{pattern}/)
+        @hit_comments.push(tb)
+      end
+    end
+    if teststring.size > 0
+      return teststring.match(/#{pattern}/)
+    else
+      return nil
+    end
+  end
+
+  def banlist_test_by_ar_regexp(pattern, teststring)
+    @hit_tbs = Array.new
+    Trackback.find(:all, :limit => 10, :order => 'id DESC').each do |tb|
+      if tb.blog_name.match(/#{pattern}/) or tb.title.match(/#{pattern}/) or tb.excerpt.match(/#{pattern}/)
+        @hit_tbs.push(tb)
+      end
+    end
+    @hit_comments = Array.new
+    Comment.find(:all, :limit => 10, :order => 'id DESC').each do |tb|
+      if tb.title.match(/#{pattern}/) or tb.body.match(/#{pattern}/)
+        @hit_comments.push(tb)
+      end
+    end
+    if teststring.size > 0
+      return teststring.match(/#{pattern}/)
+    else
+      return nil
+    end
+  end
+
+  def banlist_test_by_ar_string(pattern, teststring)
+    @hit_tbs = Trackback.find(:all, :conditions => ["blogname = ? OR title = ? OR excerpt = ?", pattern, pattern, pattern], :limit => 10, :order => 'id DESC')
+    @hit_comments = Comment.find(:all, :conditions => ["title = ? OR body = ?", pattern, pattern], :limit => 10, :order => 'id DESC')
+
+    if teststring.size > 0
+      return teststring.match(/#{Regexp.quote(pattern)}/)
+    else
+      return nil
+    end
   end
 
   def banlist_test_by_ar(pattern, teststring, format)
-    p pattern, teststring, format
-    if format == "ipaddr" or format == "regexp" or format == "hostname"
-      return teststring.match(/#{pattern}/)
+    unless teststring
+      teststring = ''
+    end
+    if format == 'ipaddr'
+      banlist_test_by_ar_ipaddr(pattern, teststring)
     elsif format == "string"
-      return teststring.match(/#{Regexp.quote(pattern)}/)
+      banlist_test_by_ar_string(pattern, teststring)
+    elsif format == "regexp"
+      banlist_test_by_ar_regexp(pattern, teststring)
+    elsif format == "hostname"
+      banlist_test_by_ar_hostname(pattern, teststring)
     end
   end
 
+  public
   def test_banlist
-    checktext = @params["banlist"]["pattern"]
-    banlist_test_by_valid(checktext)
-    redirect_to :action => "manage_banlist"
+    if @params["banlist"] and checktext = @params["banlist"]["pattern"]
+      banlist_test_by_valid(checktext)
+    end
+    redirect_to :back
   end
 
+  private
   def banlist_test_by_valid(checktext, format=nil)
     flash[:ban] = nil
     flash[:ban_message] = String.new
@@ -464,6 +572,7 @@ class LoginController < ApplicationController
     tb.destroy
   end
 
+  public
   ## ping
   def manage_ping
     @pings_pages, @pings = paginate(:ping,:per_page => 30,:order_by => 'id DESC')
@@ -501,10 +610,11 @@ class LoginController < ApplicationController
   end
 
   def add_blogping
-    c = @params["blogping"]
+    if c = @params["blogping"]
     aris1 = Blogping.new("server_url" => c["server_url"])
     aris1.active = 1
     aris1.save
+    end
     redirect_to :action => "manage_blogping"
   end
 
@@ -544,20 +654,21 @@ class LoginController < ApplicationController
   end
 
   def add_author
-    c = @params["author"]
-    
-    aris1 = Author.find(:first, :conditions => ["name = ?", c["name"]])
-    unless aris1
-      aris1 = Author.new("name" => c["name"])
+    if c = @params["author"]
+      aris1 = Author.find(:first, :conditions => ["name = ?", c["name"]])
+      unless aris1
+        aris1 = Author.new("name" => c["name"])
+      end
+      aris1.pass = c["pass"]
+      aris1.nickname = c["nickname"]
+      aris1.summary = c["summary"]
+      aris1.writable = 1
+      aris1.save
     end
-    aris1.pass = c["pass"]
-    aris1.nickname = c["nickname"]
-    aris1.summary = c["summary"]
-    aris1.writable = 1
-    aris1.save
     redirect_to :action => "manage_author"
   end
 
+  # HNF
   def hnf_save_all
     @articles = Article.find(:all, :order => "article_date")
     rf = hnf_save_date_inner_all

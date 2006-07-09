@@ -94,23 +94,19 @@ class AntiSpam
   end
 
   def scan_uri(host)
-    logger.info(host)
-    host_parts = host.split('.').reverse
-    domain = Array.new
-    logger.info("[SP] Scanning domain #{domain.join('.')}")
+    logger.info("[SP] Scanning domain #{host}")
 
     Banlist.find(:all, :conditions => ["format = ?", "hostname"]).each do |bp|
       logger.info("[SP] Scanning banlist host #{bp.pattern}")
       throw :hit, "Hostname #{bp.pattern} matched" if host.match(/#{bp.pattern}/)
     end
-    
+
     @HOST_RBL.each do |rbl|
       begin
         if [
             IPSocket.getaddress([host, rbl].join('.')),
-            IPSocket.getaddress((domain + [rbl]).join('.'))
           ].include?("127.0.0.2")
-          throw :hit, "#{rbl} positively resolved #{domain.join('.')}"
+          throw :hit, "#{rbl} positively resolved #{host}"
         end
       rescue SocketError
       end
