@@ -1,3 +1,8 @@
+2006-07-12  Akira TAGOH  <at@gclab.org>
+
+	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::body_to_html):
+	fixed to parse [link name] syntax properly.
+
 2006-07-09  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/public/stylesheets/login.css: Change for display add_banlist.rhtml

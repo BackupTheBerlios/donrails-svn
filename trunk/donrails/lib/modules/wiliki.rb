@@ -218,7 +218,7 @@ module DonRails
             end
           elsif line =~ (/\[/) then
             if line =~ (/\[[^\[]*\]/) then
-              line.gsub!(/\[((?:(?:http|https|ftp):\/\/)[^\[]*)\s+([^\]]*)\]/, '<a href="\1">\2</a>')
+              line.gsub!(/\[((?:(?:http|https|ftp):\/\/)[^\[\s]*)\s+([^\]]*)\]/, '<a href="\1">\2</a>')
             else
               # try to look at next line.
               if lines[n] =~ (/\A~/) then
@@ -543,6 +543,7 @@ if $0 == __FILE__ then
       assert_equal("<p>[test test]</p>", __getobj__("[test test]\n").body_to_html)
       assert_equal("<p><a href=\"https://www.example.com/\">test</a></p>", __getobj__("[https://www.example.com/ test]\n").body_to_html)
       assert_equal("<p><a href=\"ftp://www.example.com/\">test</a></p>", __getobj__("[ftp://www.example.com/ test]\n").body_to_html)
+      assert_equal("<p><a href=\"ftp://www.example.com/\">test test</a></p>", __getobj__("[ftp://www.example.com/ test test]\n").body_to_html)
       assert_equal("<pre> test\n</pre>", __getobj__(" test\n").body_to_html)
       assert_equal("<pre> test\n test2\n</pre>", __getobj__(" test\n test2\n").body_to_html)
       assert_equal("<p>test</p><pre> test\n</pre>", __getobj__("test\n test\n").body_to_html)
