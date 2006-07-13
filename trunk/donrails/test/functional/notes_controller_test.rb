@@ -295,10 +295,17 @@ class NotesControllerTest < Test::Unit::TestCase
       "url" => "http://localhost/test.html", 
       "title" => "testtitle", 
       "body" => "testbody", "article_id" => 1}
-
     post :add_comment2, :comment => c
     assert_match(/^http:\/\/test.host\/notes\/id\/1\?post_at=\d+/, @response.headers['location'])
     assert_response 302
+
+    c = {"author" => "testauthor", "password" => "hoge5", 
+      "url" => "http://localhost/test.html", 
+      "title" => "testtitle", 
+      "body" => "123", "article_id" => 1}
+    post :add_comment2, :comment => c
+    assert_match('Body is too short (minimum is 5 characters)', @response.body)
+    assert_response 403
   end
 
   # get is not valid request.

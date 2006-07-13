@@ -533,10 +533,16 @@ class NotesController < ApplicationController
       a = Article.find(article_id)
       aris1.articles.push_with_attributes(a)
 
-      if aris1.save
+      aris1.valid?
+      if aris1.errors.empty?
+        aris1.save
         redirect_to :action => "show_title", :id => article_id, :post_at => Time.now.to_i
       else
-        redirect_to :action => "noteslist"
+        emg = ''
+        aris1.errors.each_full do |msg|
+          emg += msg
+        end
+        render :text => emg, :status => 403
       end
     else
       redirect_to :action => "noteslist"

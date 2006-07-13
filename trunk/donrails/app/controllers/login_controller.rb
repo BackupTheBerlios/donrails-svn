@@ -391,11 +391,19 @@ class LoginController < ApplicationController
         end
         aris1.categories.push_with_attributes(b)
       end
-      aris1.save
-      
-      ca.clear
-      c.clear
-      redirect_to :action => "manage_article"
+      aris1.valid?
+      if aris1.errors.empty?
+        aris1.save
+        ca.clear
+        c.clear
+        redirect_to :action => "manage_article"
+      else
+        emg = ''
+        aris1.errors.each_full do |msg|
+          emg += msg
+        end
+        render :text => emg, :status => 403
+      end
     else
       render :text => 'invalid entry', :status => 404
     end

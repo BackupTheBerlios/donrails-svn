@@ -1,5 +1,16 @@
 2006-07-13  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/test/functional/notes_controller_test.rb (NotesControllerTest::test_add_comment2): Add test.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::add_comment2): likewise.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::add_article): Change: When invalid input which is judged by article.valid? is coming, return 403.
+
+	* donrails/app/models/comment.rb (Comment): likewise.
+
+	* donrails/app/models/trackback.rb (Trackback): Change to invoke 'notify_by_mail' timing from after_save for after_create.
+	
+
 	* donrails/test/functional/notes_controller_test.rb (NotesControllerTest::test_rdf_article): add test for missing :id.
 
 	* donrails/app/controllers/notes_controller.rb (NotesController::rdf_article): Chage for apply Article.hidden.
