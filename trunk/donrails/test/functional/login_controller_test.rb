@@ -11,12 +11,6 @@ class LoginControllerTest < Test::Unit::TestCase
     @response   = ActionController::TestResponse.new
   end
 
-  def test_delete_trackback
-    get :delete_trackback,
-    :deleteid => {'1' => 1}
-    assert_response 302
-  end
-
   def test_login_index
     get :login_index
     assert_response 200
@@ -130,6 +124,29 @@ class LoginControllerTest < Test::Unit::TestCase
     post :delete_picture
     assert_redirected_to :action => 'login_index'
   end
+  def test_delete_picture_2
+    @request.session['person'] = 'ok'
+    post :delete_picture, 
+    :filedeleteid => {'1' => '1'}
+    assert_equal "<br>Delete File:1", flash[:note2]
+    assert_redirected_to :action => 'manage_picture'
+
+    post :delete_picture, 
+    :deleteid => {'1' => '1'}
+    assert_equal "<br>Delete:1", flash[:note2]
+    assert_redirected_to :action => 'manage_picture'
+
+    post :delete_picture, 
+    :hideid => {'2' => '1'}
+    assert_equal "<br>Hyde status:2 is 0", flash[:note2]
+    assert_redirected_to :action => 'manage_picture'
+
+    post :delete_picture, 
+    :hideid => {'2' => '1'}
+    assert_equal "<br>Hyde status:2 is 1", flash[:note2]
+    assert_redirected_to :action => 'manage_picture'
+  end
+
 
   def test_picture_save
     @request.session['person'] = 'ok'
@@ -147,6 +164,21 @@ class LoginControllerTest < Test::Unit::TestCase
     @request.session['person'] = 'ok'
     post :delete_trackback
     assert_redirected_to :action => 'manage_trackback'
+
+    post :delete_trackback,
+    :deleteid => {'1' => '1'}
+    assert_equal "<br>Delete:1", flash[:note2]
+    assert_redirected_to :action => 'manage_trackback'
+
+    post :delete_trackback, 
+    :hideid => {'2' => '1'}
+    assert_equal "<br>Hyde status:2 is 0", flash[:note2]
+    assert_redirected_to :action => 'manage_trackback'
+
+    post :delete_trackback, 
+    :hideid => {'2' => '1'}
+    assert_equal "<br>Hyde status:2 is 1", flash[:note2]
+    assert_redirected_to :action => 'manage_trackback'
   end
 
   def test_manage_comment
@@ -159,7 +191,23 @@ class LoginControllerTest < Test::Unit::TestCase
     @request.session['person'] = 'ok'
     post :delete_comment
     assert_redirected_to :action => 'manage_comment'
+
+    post :delete_comment,
+    :deleteid => {'1' => '1'}
+    assert_equal "<br>Delete:1", flash[:note2]
+    assert_redirected_to :action => 'manage_comment'
+
+    post :delete_comment, 
+    :hideid => {'3' => '1'}
+    assert_equal "<br>Hyde status:3 is 0", flash[:note2]
+    assert_redirected_to :action => 'manage_comment'
+
+    post :delete_comment, 
+    :hideid => {'3' => '1'}
+    assert_equal "<br>Hyde status:3 is 1", flash[:note2]
+    assert_redirected_to :action => 'manage_comment'
   end
+
 
   def test_form_article
     @request.session['person'] = 'ok'
@@ -214,7 +262,19 @@ class LoginControllerTest < Test::Unit::TestCase
     assert_redirected_to :action => 'manage_article'
 
     post :delete_article, :deleteid => {'1' => '1'}
+    assert_equal "<br>Delete:1", flash[:note2]
     assert_redirected_to :action => 'manage_article'
+
+    post :delete_article,
+    :hideid => {'4' => '1'}
+    assert_equal "<br>Hyde status:4 is 0", flash[:note2]
+    assert_redirected_to :action => 'manage_article'
+
+    post :delete_article, 
+    :hideid => {'4' => '1'}
+    assert_equal "<br>Hyde status:4 is 1", flash[:note2]
+    assert_redirected_to :action => 'manage_article'
+
   end
 
   def test_manage_banlist

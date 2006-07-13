@@ -21,37 +21,48 @@
 </div>
 
 <ul>
-  <li>Delete?ボックスをチェックすると、pictureがdb上から削除されます</li>
-  <li>File Delet?ボックスをチェックすると、pictureのファイルが削除されます</li>
-  <li>Edit? をクリックするとpictureと記事を関連づけたり、より詳細な情報を見ることができます</li>
+  <li>Hide?ボックスをチェックすると、hiddenステータスの1/0を切りかえます。</li>
+  <li>Delete?ボックスをチェックすると、pictureをdbから削除します。(fileは残ります)</li>
+  <li>File Delete?ボックスをチェックすると、pictureをdbから削除し、ファイルも削除します。</li>
+  <li>Edit? をクリックするとpictureと記事を関連づけたり、より詳細な情報を見ることができます。</li>
 </ul>
+
+<div class="notice">
+  <%= @flash[:note] %>
+  <%= @flash[:note2] %>
+</div>
 
 <%= submit_tag %>
 <table  border="1" cellspacing="0">
    <tr>
      <td>id</td>
+     <td>article_id</td>
      <td>image</td>
-     <td>Delete?/Edit?</td>
+     <td>Hide?/Edit?</td>
 <!--
      <td>size</td>
      <td>content_type</td>
 -->
      <td>name</td>
      
-     <td>File Delete?</td>
+     <td>Delete/File Delete?</td>
    </tr>
 
    <% @pictures.each do |pic| %>
    <% rpath = '/' + pic.path.split('/public/').last %>
    <tr>
-     <td><%= link_to pic.id, {:controller => 'notes', :action => 'show_image', :id => pic.id} %></td>     
-     <td><%= image_tag(rpath, :size => '100') %></td>
+     <td><%= link_to pic.id, {:controller => 'notes', :action => 'show_image', :id => pic.id} %></td>
      <td>
-       <%= check_box "deleteid", pic.id %>/
        <% if pic.article_id %>
        <%= link_to_remote(pic.article_id, :update => "ca", :url => {:controller => "notes", :action => "pick_article_a", :pickid => pic.article_id }) %>
-       <% else %>
+       <% end %>
+     </td>
+     <td><%= image_tag(rpath, :size => '100') %></td>
+     <td>
+       <%= check_box "hideid", pic.id %>/
        <%= link_to("edit", :action => "manage_picture_detail", :id => pic.id) %>
+       <% if pic.hidden == 1 %>
+       (hidden)
        <% end %>
      </td>
 <!--
@@ -63,7 +74,10 @@
      </td>
 -->     
      <td><%= pic.name if pic.name %></td>
-     <td><%= check_box "filedeleteid", pic.id %></td>
+     <td>
+       <%= check_box "deleteid", pic.id %>/
+       <%= check_box "filedeleteid", pic.id %>
+     </td>
    </tr>
    <% end %>
  </table>

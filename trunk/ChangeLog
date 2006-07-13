@@ -1,7 +1,58 @@
+2006-07-13  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/test/functional/notes_controller_test.rb (NotesControllerTest::test_rdf_article): add test for missing :id.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::rdf_article): Chage for apply Article.hidden.
+	(NotesController::rdf_recent): likewise.
+	(NotesController::rdf_category): likewise.
+	(NotesController::recent): likewise.
+	(NotesController::recent_trigger_title_a): likewise.
+
 2006-07-12  Akira TAGOH  <at@gclab.org>
 
 	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::body_to_html):
 	fixed to parse [link name] syntax properly.
+
+2006-07-12  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/models/article.rb (Article::self.search): Chage for apply Article.hidden.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::rdf_recent): Chage for apply Article.hidden.
+
+	* donrails/app/views/shared/comment2.rhtml: Fix for apply Comment.hidden and Tracback.hidden.
+
+	* donrails/app/views/shared/comment-noadd.rhtml: Fix for apply Comment.hidden and Tracback.hidden.
+
+	* donrails/public/stylesheets/login.css: Change table font-size.
+
+	* donrails/test/functional/login_controller_test.rb (LoginControllerTest::test_delete_comment): test for comment.hidden.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::delete_comment): Change to support Comment.hidden.
+
+	* donrails/app/views/shared/table_trackback.rhtml: New file.
+
+	* donrails/app/views/shared/add_banlist.rhtml: Change to use table_comment.rhtml.
+
+	* donrails/app/views/shared/table_comment.rhtml: New file.
+
+2006-07-11  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/test/functional/login_controller_test.rb (LoginControllerTest::test_delete_picture_2): test for picture.hidden.
+
+2006-07-10  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/test/functional/notes_controller_test.rb (NotesControllerTest::test_show_image): test for Picture.hidden.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::show_image): likewise.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::delete_picture): likewise
+
+	* donrails/test/fixtures/pictures.yml (second): likewise.
+
+	* donrails/app/views/login/manage_picture.rhtml: Change to support Picture.hidden.
+
+	* donrails/tool/tables-{postgresql,sqlite,mysql}: add hidden column in picutures,comments,articles,trackbacks.
+
 
 2006-07-09  ARAKI Yasuhiro  <yasu@debian.or.jp>
 

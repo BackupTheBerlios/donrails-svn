@@ -151,24 +151,49 @@ class LoginController < ApplicationController
   end
 
   def delete_picture
+    @flash[:note] = ''
+    @flash[:note2] = ''
     begin
       if cf = @params["filedeleteid"]
         cf.each do |k, v|
           if v.to_i == 1
             pf = Picture.find(k.to_i)
-            File.delete pf.path
-            Picture.delete(k.to_i)
-          end
-        end
-      elsif c = @params["deleteid"]
-        c.each do |k, v|
-          if v.to_i == 1
+            begin
+              File.delete pf.path
+            rescue
+              @flash[:note] += '<br>' + $!
+            end
+            @flash[:note2] += '<br>Delete File:' + k
             Picture.delete(k.to_i)
           end
         end
       end
+      if c = @params["deleteid"]
+        c.each do |k, v|
+          if v.to_i == 1
+            Picture.delete(k.to_i)
+            @flash[:note2] += '<br>Delete:' + k
+          end
+        end
+      end
+      if c = @params["hideid"]
+        c.each do |k, v|
+          if v.to_i == 1
+            pf = Picture.find(k.to_i)
+            if pf.hidden == 1
+              pf.hidden = 0
+              pf.save
+              @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
+            else
+              pf.hidden = 1
+              pf.save
+              @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
+            end
+          end
+        end
+      end
     rescue
-      @heading = $!
+      @flash[:note] += '<br>' + $!
     end
     redirect_to :action => "manage_picture"
   end
@@ -195,11 +220,31 @@ class LoginController < ApplicationController
   end
 
   def delete_trackback
+    @flash[:note] = ''
+    @flash[:note2] = ''
     begin
-      c = @params["deleteid"]
-      c.each do |k, v|
-        if v.to_i == 1
-          Trackback.delete(k.to_i)
+      if c = @params["deleteid"]
+        c.each do |k, v|
+          if v.to_i == 1
+            Trackback.delete(k.to_i)
+            @flash[:note2] += '<br>Delete:' + k
+          end
+        end
+      end
+      if c = @params["hideid"]
+        c.each do |k, v|
+          if v.to_i == 1
+            pf = Trackback.find(k.to_i)
+            if pf.hidden == 1
+              pf.hidden = 0
+              pf.save
+              @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
+            else
+              pf.hidden = 1
+              pf.save
+              @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
+            end
+          end
         end
       end
     rescue
@@ -215,15 +260,36 @@ class LoginController < ApplicationController
   end
 
   def delete_comment
-    c = @params["deleteid"].nil? ? [] : @params["deleteid"]
-    c.each do |k, v|
-      if v.to_i == 1
-        b = Comment.find(k.to_i)
-        b_art = b.articles
-        b.articles.delete(b_art)
-        Comment.delete(k.to_i)
+    @flash[:note] = ''
+    @flash[:note2] = ''
+    if c = @params["deleteid"]
+      c.each do |k, v|
+        if v.to_i == 1
+          b = Comment.find(k.to_i)
+          b_art = b.articles
+          b.articles.delete(b_art)
+          Comment.delete(k.to_i)
+          @flash[:note2] += '<br>Delete:' + k
+        end
       end
     end
+    if c = @params["hideid"]
+      c.each do |k, v|
+        if v.to_i == 1
+          pf = Comment.find(k.to_i)
+          if pf.hidden == 1
+            pf.hidden = 0
+            pf.save
+            @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
+          else
+            pf.hidden = 1
+            pf.save
+            @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
+          end
+        end
+      end
+    end
+
     redirect_to :action => "manage_comment"
   end
 
@@ -342,6 +408,8 @@ class LoginController < ApplicationController
   end
 
   def delete_article
+    @flash[:note] = ''
+    @flash[:note2] = ''
     c = @params["deleteid"].nil? ? [] : @params["deleteid"]
     c.each do |k, v|
       if v.to_i == 1
@@ -359,8 +427,25 @@ class LoginController < ApplicationController
           bp.article_id = nil
           bp.save
         end
-
+        @flash[:note2] += '<br>Delete:' + k
         b.destroy
+      end
+    end
+    if c = @params["hideid"]
+      c.each do |k, v|
+        if v.to_i == 1
+          pf = Article.find(k.to_i)
+          if pf.hidden == 1
+            pf.hidden = 0
+            pf.save
+            @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
+          else
+            pf.hidden = 1
+            pf.save
+            @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
+          end
+          
+        end
       end
     end
     redirect_to :action => "manage_article"

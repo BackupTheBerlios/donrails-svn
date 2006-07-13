@@ -62,7 +62,6 @@ class NotesController < ApplicationController
     @trackback = Trackback.find(@params['pickid'].to_i)
   end
 
-
   def pick_comment_a
     @headers["Content-Type"] = "text/html; charset=utf-8"
     @comment = Comment.find(@params['pickid'].to_i)
@@ -197,17 +196,20 @@ class NotesController < ApplicationController
 
   def rdf_recent
     @headers["Content-Type"] = "application/xml; charset=utf-8"
-    @recent_articles = Article.find(:all, :order => "article_mtime DESC", :limit => 20)
+    @recent_articles = Article.find(:all, :order => "article_mtime DESC", :limit => 20, :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
     unless @recent_articles.empty? then
       @lm = @recent_articles.first.article_mtime.gmtime if @recent_articles.first.article_mtime
     end
   end
 
   def rdf_article
-    @headers["Content-Type"] = "application/xml; charset=utf-8"
-    @article = Article.find(@params['id'])
-    @rdf_article = @article.id
-    @lm = @article.article_mtime.gmtime if @article and @article.article_mtime
+    if @params['id'] and @article = Article.find(@params['id'], :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
+      @rdf_article = @article.id
+      @lm = @article.article_mtime.gmtime if @article and @article.article_mtime
+      @headers["Content-Type"] = "application/xml; charset=utf-8"
+    else
+      render :text => "no entry", :status => 404
+    end
   end
 
   def rdf_search
@@ -230,7 +232,8 @@ class NotesController < ApplicationController
       @recent_articles_pages, 
       @recent_articles = paginate(:article, :per_page => 20,
                                   :order_by => 'id DESC',
-                                  :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
+                                  :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})",
+                                  :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"]
                                   )
       @rdf_category = @category.name
       unless @recent_articles.empty? then
@@ -240,25 +243,30 @@ class NotesController < ApplicationController
   end
 
   def recent
-    @recent_articles = Article.find(:all, :order => "id DESC", :limit => 10)
+    @recent_articles = Article.find(:all, :order => "id DESC", 
+                                    :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"],
+                                    :limit => 10)
     unless @recent_articles.empty? then
       @lm = @recent_articles.first.article_mtime.gmtime if @recent_articles.first.article_mtime
     end
     @recent_comments = Article.find(:all, :order => "articles.article_date DESC", :limit => 30,
+                                    :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"],
                                     :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id)"
                                    )
 
     @rt = Article.find(:all, 
                        :order => "articles.article_date DESC", 
                        :limit => 30,
-                       :joins => "JOIN trackbacks on (trackbacks.article_id=articles.id)"
+                       :joins => "JOIN trackbacks on (trackbacks.article_id=articles.id)",
+                       :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"]
                        )
     aid = Array.new
     @rt.each do |rt|
       aid.push rt.article_id
     end
-    @recent_trackbacks = Article.find(aid)
-    @long_articles = Article.find(:all, :order => "size DESC", :limit => 10)
+    @recent_trackbacks = Article.find(aid, :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
+    @long_articles = Article.find(:all, :order => "size DESC", :limit => 10,
+                                  :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
   end
   private :recent
 
@@ -274,13 +282,13 @@ class NotesController < ApplicationController
   def recent_trigger_title_a
     @headers["Content-Type"] = "text/html; charset=utf-8"
     if @params['trigger'] == 'recents'
-      @articles = Article.find(:all, :order => "id DESC", :limit => 10)
+      @articles = Article.find(:all, :order => "id DESC", :limit => 10, :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
     elsif @params['trigger'] == 'trackbacks'
-      @articles = Article.find(:all, :order => "articles.article_date DESC", :limit => 30, :joins => "JOIN trackbacks on (trackbacks.article_id=articles.id)")
+      @articles = Article.find(:all, :order => "articles.article_date DESC", :limit => 30, :joins => "JOIN trackbacks on (trackbacks.article_id=articles.id)", :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
     elsif @params['trigger'] == 'comments'
-      @articles = Article.find(:all, :order => "articles.article_date DESC", :limit => 30, :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id)")
+      @articles = Article.find(:all, :order => "articles.article_date DESC", :limit => 30, :joins => "JOIN comments_articles on (comments_articles.article_id=articles.id)", :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
     elsif @params['trigger'] == 'long'
-      @articles = Article.find(:all, :order => "size DESC", :limit => 10)
+      @articles = Article.find(:all, :order => "size DESC", :limit => 10, :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
     end
     unless @articles.empty? then
       @lm = @articles.first.article_mtime.gmtime if @articles.first.article_mtime
@@ -541,10 +549,14 @@ class NotesController < ApplicationController
 
   def show_image 
     @image = Picture.find(@params['id'])
-    if $IMAGE_BASE_PATH
-      redirect_to $IMAGE_BASE_PATH + @image.path.split('/public/')[1]
+    if @image.hidden == 1
+      render :text => 'image hidden', :status => 403
     else
-      redirect_to '/' + @image.path.split('/public/')[1]
+      if $IMAGE_BASE_PATH
+        redirect_to $IMAGE_BASE_PATH + @image.path.split('/public/')[1]
+      else
+        redirect_to '/' + @image.path.split('/public/')[1]
+      end
     end
   end
 

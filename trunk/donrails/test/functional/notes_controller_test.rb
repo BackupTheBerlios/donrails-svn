@@ -143,6 +143,9 @@ class NotesControllerTest < Test::Unit::TestCase
   def test_rdf_article
     get :rdf_article, :id => 1
     assert_response :success
+
+    get :rdf_article
+    assert_response :missing
   end
 
   def test_rdf_search
@@ -324,6 +327,14 @@ class NotesControllerTest < Test::Unit::TestCase
     post :catch_ping, :category => 'misc', :blog_name => 'test blog',
     :title => 'test title', :excerpt => 'test excerpt', :url => 'http://localhost/test/blog'
     assert_response :success
+  end
+
+  def test_show_image
+    get :show_image, :id => 1
+    assert_response :redirect
+
+    get :show_image, :id => 2
+    assert_response 403
   end
 
 end

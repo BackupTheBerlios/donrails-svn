@@ -1,7 +1,7 @@
 #!/usr/bin/make
 
 NAME = donrails
-VERSION = 1.1.0
+VERSION = 1.2.0pre1
 
 all: link
 

@@ -21,63 +21,20 @@
   <% if @flash[:hit_tbs] and @flash[:hit_tbs].size > 0 %>
   <%= secure_form_tag :action => "delete_trackback" %>
   <%= @flash[:hit_tbs].size %>件のトラックバックがマッチします。
+  <% @trackbacks = @flash[:hit_tbs] %>
   <%= submit_tag "チェックしたトラックバックを削除する" %>
-  <table  border="1" cellspacing="0">
-    <tr>
-      <td>Delete?</td>
-      <td>blog_name</td>
-      <td>title</td>
-      <td>url</td>
-      <td>ip</td>
-      <td>excerpt</td>
-    </tr>
-  <% @flash[:hit_tbs].each do |co| %>
-    <tr>
-      <td>
-	<%= check_box "deleteid", co.id %>
-	<% if co.article %>
-	<%= link_to_remote("[記事]", :update => "trackback_ajax", :url => {:controller => "notes", :action => "pick_article_a", :pickid => co.article.id }) %>
-	<% else %>
-	<% end %>
-      </td>
-      <td><%=h co.blog_name if co.blog_name %></td>
-      <td><%=h don_mb_truncate(co.title) if co.title %></td>
-      <td><%=h co.url if co.url %></td>
-      <td><%=h co.ip if co.ip %></td>
-      <td><%=h don_mb_truncate(co.excerpt) if co.excerpt %></td>
-    </tr>
-  <% end %>
-  </table>
+  <%= render('shared/table_trackback') %>
+  <%= submit_tag "チェックしたトラックバックを削除する" %>
   <%= end_form_tag %>
   <% end %>
 
   <% if @flash[:hit_comments] and @flash[:hit_comments].size > 0 %>
   <%= secure_form_tag :action => "delete_comment" %>
   <%= @flash[:hit_comments].size %>件のコメントがマッチします。
+  <% @comments = @flash[:hit_comments] %>
   <%= submit_tag "チェックしたコメントを削除する" %>  
-  <table  border="1" cellspacing="0">
-    <tr>
-      <td>Delete</td>
-      <td>title</td>
-      <td>author</td>
-      <td>ipaddr</td>
-      <td>body</td>
-    </tr>
-					  
-  <% @flash[:hit_comments].each do |co| %>
-  <tr>
-    <td>
-      <%= check_box "deleteid", co.id %>
-      <%= link_to_remote("[記事]", :update => "trackback_ajax", :url => {:controller => "notes", :action => "pick_article_a", :pickid => co.articles.first.id }) if co.articles.first %>
-      <%= link_to_remote("[コメント]", :update => "trackback_ajax", :url => {:controller => "notes", :action => "pick_comment_a", :pickid => co.id }) %>
-    </td>
-    <td><%= don_mb_truncate(co.title) %></td>
-    <td><%= co.author %></td>
-    <td><%= co.ipaddr %></td>
-    <td><%= don_mb_truncate(co.body) %></td>
-  </tr>
-  <% end %>
-  </table>
+  <%= render('shared/table_comment') %>
+  <%= submit_tag "チェックしたコメントを削除する" %>  
   <% end %>
 </div>
 

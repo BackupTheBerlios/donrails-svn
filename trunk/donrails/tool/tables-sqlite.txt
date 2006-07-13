@@ -6,6 +6,7 @@ path      VARCHAR,
 size      INTEGER,
 content_type   VARCHAR,
 comment        VARCHAR,
+hidden	       INTEGER,
 article_id     INTEGER
 );
 
@@ -19,6 +20,7 @@ author   VARCHAR,
 url      VARCHAR,
 
 ipaddr   VARCHAR,
+hidden	       INTEGER,
 body     VARCHAR
 );
 
@@ -39,6 +41,7 @@ article_date     TIMESTAMP,
 article_mtime    TIMESTAMP,
 hnfid    INTEGER,
 author_id  INTEGER,
+hidden	       INTEGER,
 format   VARCHAR
 );
 
@@ -105,6 +108,7 @@ title       VARCHAR DEFAULT NULL,
 excerpt     VARCHAR DEFAULT NULL,
 url         VARCHAR DEFAULT NULL,
 ip          VARCHAR DEFAULT NULL,
+hidden	       INTEGER,
 created_at  DATETIME DEFAULT NULL
 );
 

@@ -26,3 +26,14 @@ sendmail_article:
   article_mtime: 1999-01-03 00:00:01
   format: plain
   author_id : 1
+foreth_article:
+  id: 4
+  title: 4 sendmail
+  body: sendmail is too old to use
+  size: 26
+  article_date: 1999-01-03 00:00:00
+  article_mtime: 1999-01-03 00:00:01
+  format: plain
+  author_id : 1
+  hidden: 1
+

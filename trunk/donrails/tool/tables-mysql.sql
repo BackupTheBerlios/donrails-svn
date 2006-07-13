@@ -7,6 +7,7 @@ size      INTEGER,
 content_type   VARCHAR(100),
 comment        TEXT,
 article_id     INTEGER,
+hidden	       INTEGER,
 primary key (id)
 );
 
@@ -21,6 +22,7 @@ url      VARCHAR(100),
 
 ipaddr   VARCHAR(100),
 body     TEXT,
+hidden	       INTEGER,
 primary key (id)
 );
 
@@ -43,6 +45,7 @@ article_mtime    TIMESTAMP,
 hnfid    INTEGER,
 author_id  INTEGER,
 format   VARCHAR(100),
+hidden	       INTEGER,
 primary key (id)
 );
 
@@ -115,6 +118,7 @@ excerpt     TEXT,
 url         VARCHAR(100) DEFAULT NULL,
 ip          VARCHAR(100) DEFAULT NULL,
 created_at  DATETIME DEFAULT NULL,
+hidden	       INTEGER,
 primary key (id)
 );
 

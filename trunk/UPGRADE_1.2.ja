@@ -1,0 +1,12 @@
+1.1から1.2にUPGRADEする方へ。互換性がない機能と変更についての案内です。
+
+----
+* テーブルのcolumnにhiddenが追加されました。
+
+テーブルの内容を表示させないオプションに伴いhiddenコラムが追加されまし
+た。
+
+alter table pictures add column hidden INTEGER;
+alter table comments add column hidden INTEGER;
+alter table articles add column hidden INTEGER;
+alter table trackbacks add column hidden INTEGER;
