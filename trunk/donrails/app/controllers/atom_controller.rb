@@ -27,17 +27,17 @@ class AtomController < ApplicationController
 
   # atom endpoint 
   def index
-    @latest_article = Article.find(:first, :order => 'id DESC')
-    @recent_articles = Article.find(:all, :order => 'id DESC', :limit => 20)
+    @latest_article = Article.find(:first, :order => 'id DESC', :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
+    @recent_articles = Article.find(:all, :order => 'id DESC', :limit => 20, :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
   end
 
   # atom feed
   def feed
     if @params['id'] == nil
-      @articles_pages, @articles = paginate(:article, :per_page => 20, :order_by => 'id DESC')
+      @articles_pages, @articles = paginate(:article, :per_page => 20, :order_by => 'id DESC', :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
     else
       begin
-        @article = Article.find(@params['id'])
+        @article = Article.find(@params['id'], :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
       rescue
         render :text => "no this id", :status => 403
       end
@@ -103,7 +103,7 @@ class AtomController < ApplicationController
 
     if @params['id']
       begin
-        @article = Article.find(@params['id'])
+        @article = Article.find(@params['id'], :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
       rescue
         render :text => "no this id", :status => 400
       end

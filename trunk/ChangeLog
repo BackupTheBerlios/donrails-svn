@@ -1,3 +1,9 @@
+2006-07-14  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/controllers/login_controller.rb (LoginController): Add mothods which are checked by cache_sweeper. Chage for apply Article.hidden.
+
+	* donrails/app/controllers/atom_controller.rb: Chage for apply Article.hidden.
+
 2006-07-13  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/test/functional/notes_controller_test.rb (NotesControllerTest::test_add_comment2): Add test.
