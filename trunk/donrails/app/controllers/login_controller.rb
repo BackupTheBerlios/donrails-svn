@@ -98,11 +98,16 @@ class LoginController < ApplicationController
       
       if parent and aris1
         aris1.parent_id = parent.id
+        flash[:note] = "Change #{c['name']}'s parent. New parent is #{c["parent_name"]}."
       elsif parent
-        aris1 = parent.children.new("name" => c["name"]) # XXX
+        aris1 = Category.new("name" => c["name"])
+        aris1.save
+        parent.add_child(aris1)
+        flash[:note] = "Add new category:#{c['name']}. Her parent is #{c["parent_name"]}."
       elsif aris1
       else
-        aris1 = Category.new("name" => c["name"])      
+        aris1 = Category.new("name" => c["name"])
+        flash[:note] = "Add new category:#{c['name']}."
       end
       aris1.description = c["description"]
       aris1.save

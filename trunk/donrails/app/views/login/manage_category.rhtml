@@ -9,6 +9,9 @@
 <%= render("shared/edit_category") %>
 <hr>
 <h2>カテゴリの管理</h2>
+<div class="notice">
+  <%= @flash[:note] %>
+</div>
 <ul>
   <li>Delete?ボックスをチェックすると、categoryがdb上から削除されます</li>
   <li>File Delet?ボックスをチェックすると、categoryのファイルが削除されます</li>

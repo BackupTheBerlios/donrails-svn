@@ -1,3 +1,9 @@
+2006-07-18  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/test/functional/login_controller_test.rb (LoginControllerTest::test_add_category): Added test: When add to a category under other category.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::add_category): Fixed: When add to a category under other category.
+
 2006-07-18  Akira TAGOH  <at@gclab.org>
 
 	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::body_to_html):

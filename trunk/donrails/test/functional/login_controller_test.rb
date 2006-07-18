@@ -64,7 +64,21 @@ class LoginControllerTest < Test::Unit::TestCase
     @request.session['person'] = 'ok'
     post :add_category
     assert_redirected_to :action => 'manage_category'
+    assert_nil flash[:note] 
+
+    post :add_category, :category => {:parent_name => 'misc', :name => 'misc child'}
+    assert_redirected_to :action => 'manage_category'
+    assert_equal "Add new category:misc child. Her parent is misc.", flash[:note]
+
+    post :add_category, :category => {:name => 'misc child2'}
+    assert_redirected_to :action => 'manage_category'
+    assert_equal "Add new category:misc child2.", flash[:note]
+
+    post :add_category, :category => {:parent_name => 'none', :name => 'orphan'}
+    assert_redirected_to :action => 'manage_category'
+    assert_equal "Add new category:orphan.", flash[:note]
   end
+
   def test_add_category_1
     post :add_category
     assert_redirected_to :action => 'login_index'
