@@ -1,5 +1,9 @@
 2006-07-18  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/controllers/login_controller.rb (LoginController::delete_{picute,trackback,comment,article}): Change to show checkbox checked or not checked.
+	* donrails/test/functional/login_controller_test.rb (LoginControllerTest::test_delete_{picute,trackback,comment,article}): Change to test for this change.
+
+
 	* donrails/test/functional/login_controller_test.rb (LoginControllerTest::test_add_category): Added test: When add to a category under other category.
 
 	* donrails/app/controllers/login_controller.rb (LoginController::add_category): Fixed: When add to a category under other category.

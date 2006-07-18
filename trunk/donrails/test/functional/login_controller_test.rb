@@ -151,7 +151,7 @@ class LoginControllerTest < Test::Unit::TestCase
     assert_redirected_to :action => 'manage_picture'
 
     post :delete_picture, 
-    :hideid => {'2' => '1'}
+    :hideid => {'2' => '0'}
     assert_equal "<br>Hyde status:2 is 0", flash[:note2]
     assert_redirected_to :action => 'manage_picture'
 
@@ -185,7 +185,7 @@ class LoginControllerTest < Test::Unit::TestCase
     assert_redirected_to :action => 'manage_trackback'
 
     post :delete_trackback, 
-    :hideid => {'2' => '1'}
+    :hideid => {'2' => '0'}
     assert_equal "<br>Hyde status:2 is 0", flash[:note2]
     assert_redirected_to :action => 'manage_trackback'
 
@@ -212,7 +212,7 @@ class LoginControllerTest < Test::Unit::TestCase
     assert_redirected_to :action => 'manage_comment'
 
     post :delete_comment, 
-    :hideid => {'3' => '1'}
+    :hideid => {'3' => '0'}
     assert_equal "<br>Hyde status:3 is 0", flash[:note2]
     assert_redirected_to :action => 'manage_comment'
 
@@ -280,7 +280,7 @@ class LoginControllerTest < Test::Unit::TestCase
     assert_redirected_to :action => 'manage_article'
 
     post :delete_article,
-    :hideid => {'4' => '1'}
+    :hideid => {'4' => '0'}
     assert_equal "<br>Hyde status:4 is 0", flash[:note2]
     assert_redirected_to :action => 'manage_article'
 

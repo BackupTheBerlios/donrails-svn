@@ -11,7 +11,13 @@
   </tr>
   <% @trackbacks.each do |co| %>
   <tr>
-    <td><%= check_box "hideid", co.id %></td>
+    <td>
+      <% if co.hidden == 1 %>
+      <%= check_box "hideid", co.id, :checked => 'checked' %>
+      <% else %>
+      <%= check_box "hideid", co.id %>
+      <% end %>
+    </td>
     <td><%= check_box "deleteid", co.id %></td>
     <td><% if co.hidden == 1 %>(hidden)<% else %>normal<% end %></td>
     <td>

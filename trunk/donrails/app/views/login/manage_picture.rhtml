@@ -59,11 +59,13 @@
      </td>
      <td><%= image_tag(rpath, :size => '100') %></td>
      <td>
-       <%= check_box "hideid", pic.id %>/
-       <%= link_to("edit", :action => "manage_picture_detail", :id => pic.id) %>
        <% if pic.hidden == 1 %>
-       (hidden)
+       <%= check_box "hideid", pic.id, :checked => 'checked' %>
+       <% else %>
+       <%= check_box "hideid", pic.id %>
        <% end %>
+       /
+       <%= link_to("edit", :action => "manage_picture_detail", :id => pic.id) %>
      </td>
 <!--
      <td><%= pic.size if pic.size %></td>

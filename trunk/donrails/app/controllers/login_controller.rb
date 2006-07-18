@@ -183,17 +183,16 @@ class LoginController < ApplicationController
       end
       if c = @params["hideid"]
         c.each do |k, v|
+          pf = Picture.find(k.to_i)
+          stmp = pf.hidden
           if v.to_i == 1
-            pf = Picture.find(k.to_i)
-            if pf.hidden == 1
-              pf.hidden = 0
-              pf.save
-              @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
-            else
-              pf.hidden = 1
-              pf.save
-              @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
-            end
+            pf.hidden = 1
+          elsif v.to_i == 0
+            pf.hidden = 0
+          end
+          pf.save
+          unless stmp == pf.hidden
+            @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
           end
         end
       end
@@ -238,17 +237,16 @@ class LoginController < ApplicationController
       end
       if c = @params["hideid"]
         c.each do |k, v|
+          pf = Trackback.find(k.to_i)
+          stmp = pf.hidden
           if v.to_i == 1
-            pf = Trackback.find(k.to_i)
-            if pf.hidden == 1
-              pf.hidden = 0
-              pf.save
-              @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
-            else
-              pf.hidden = 1
-              pf.save
-              @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
-            end
+            pf.hidden = 1
+          elsif v.to_i == 0
+            pf.hidden = 0
+          end
+          pf.save
+          unless stmp == pf.hidden
+            @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
           end
         end
       end
@@ -280,17 +278,16 @@ class LoginController < ApplicationController
     end
     if c = @params["hideid"]
       c.each do |k, v|
+        pf = Comment.find(k.to_i)
+        stmp = pf.hidden
         if v.to_i == 1
-          pf = Comment.find(k.to_i)
-          if pf.hidden == 1
-            pf.hidden = 0
-            pf.save
-            @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
-          else
-            pf.hidden = 1
-            pf.save
-            @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
-          end
+          pf.hidden = 1
+        elsif v.to_i == 0
+          pf.hidden = 0
+        end
+        pf.save
+        unless stmp == pf.hidden
+          @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
         end
       end
     end
@@ -446,18 +443,16 @@ class LoginController < ApplicationController
     end
     if c = @params["hideid"]
       c.each do |k, v|
+        pf = Article.find(k.to_i)
+        stmp = pf.hidden
         if v.to_i == 1
-          pf = Article.find(k.to_i)
-          if pf.hidden == 1
-            pf.hidden = 0
-            pf.save
-            @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
-          else
-            pf.hidden = 1
-            pf.save
-            @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
-          end
-          
+          pf.hidden = 1
+        elsif v.to_i == 0
+          pf.hidden = 0
+        end
+        pf.save
+        unless stmp == pf.hidden
+          @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
         end
       end
     end
