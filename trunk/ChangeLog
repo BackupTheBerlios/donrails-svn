@@ -1,5 +1,9 @@
 2006-07-18  Akira TAGOH  <at@gclab.org>
 
+	* donrails/lib/modules/wiliki.rb (DonRails::Wiliki::body_to_html):
+	fixed to not generate the unexpected html with the blockquote and
+	one-liner pre syntax.
+
 	* donrails/app/controllers/notes_controller.rb (articles_long):
 	check hidden flag to find articles.
 	(articles_author): likewise.

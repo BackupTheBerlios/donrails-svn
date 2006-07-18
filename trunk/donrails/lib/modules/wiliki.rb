@@ -268,7 +268,9 @@ module DonRails
             end
             next
           elsif line =~ (/\A\s+/) then
-            if block_stack[-1] != 'pre' then
+            if block_stack[-2] == 'blockquote' && block_stack[-1] == 'p' && buf.empty? then
+              block_stack[-1] = 'pre'
+            elsif block_stack[-1] != 'pre' then
               unless list_stack.empty? then
                 list_stack.push(nil)
                 retval << _output_list(buf, list_stack, list_stack.length, list_stack[-1])
@@ -392,7 +394,8 @@ module DonRails
 
       return "" if buf.empty?
 
-      if block[-2] == 'blockquote' && block[-1] == 'p' then
+      if block[-2] == 'blockquote' &&
+          (block[-1] == 'p' || block[-1] == 'pre') then
         retval << sprintf("<%s><%s>", block[-2], block[-1])
       elsif block.empty? then
         retval << "<p>"
@@ -580,6 +583,7 @@ if $0 == __FILE__ then
       assert_equal("<blockquote><p>test</p><blockquote><p>test</p></blockquote><p>test</p></blockquote>", __getobj__("<<<\ntest\n<<<\ntest\n>>>\ntest\n>>>\n").body_to_html)
       assert_equal("<blockquote><p>test</p><pre> test\n</pre><pre>test\n</pre></blockquote>", __getobj__("<<<\ntest\n test\n{{{\ntest\n}}}\n>>>\n").body_to_html)
       assert_equal("<blockquote><p>test</p></blockquote>", __getobj__("<<<\ntest\n").body_to_html)
+      assert_equal("<blockquote><pre> - foobar\n   barbaz\n</pre></blockquote>", __getobj__("<<<\n - foobar\n   barbaz\n>>>\n").body_to_html)
       assert_equal("<p>test</p><pre>;; test\n</pre>", __getobj__("test\r\n\r\n{{{\r\n;; test\r\n}}}\r\n").body_to_html)
       assert_equal("<p>test</p><pre>;; test\n</pre>", __getobj__("test\r\r{{{\r;; test\r}}}\r").body_to_html)
       assert_equal("<pre>&lt;&lt;&lt;\n</pre>", __getobj__("{{{\n<<<\n}}}\n").body_to_html)
