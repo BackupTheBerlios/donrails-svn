@@ -1,4 +1,19 @@
+2006-07-18  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/test/unit/article_test.rb (ArticleTest::test_send_pings2): New test method.
+
+2006-07-17  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/test/unit/ping_test.rb (PingTest::test_send_ping2): New test method.
+
+	* donrails/test/unit/article_test.rb (ArticleTest::test_renew_mtime): New test method.
+	(ArticleTest::test_search): New test method.
+
 2006-07-14  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/shared/comment-form.rhtml: Change to use don_get_object(article, 'xml') for remove HTML tag at title.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::add_comment2): Add '\n' at end of error output.
 
 	* donrails/app/controllers/login_controller.rb (LoginController): Add mothods which are checked by cache_sweeper. Chage for apply Article.hidden.
 

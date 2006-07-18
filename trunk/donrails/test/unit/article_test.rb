@@ -4,17 +4,36 @@ class ArticleTest < Test::Unit::TestCase
   fixtures :articles, :categories, :comments, :comments_articles, :categories_articles
 
   def setup
-#    @article = Article.find(1)
+    @a1 = Article.find(1)
     @article = Article.new
 #    p @article
 #    p 'moge'
-#    @urllist = ['http://localhost:3000/notes/catch_ping/']
+
   end
 
   # Replace this with your real tests.
   def test_truth
     assert_kind_of Article,  @article
 #    p @article
+  end
+
+  def test_renew_mtime
+    assert_nil @article.article_mtime
+    @article.renew_mtime
+    assert_not_nil(@article.article_mtime)
+
+    assert_equal('Fri Jan 01 00:00:01 JST 1999', @a1.article_mtime.to_s)
+  end
+
+  def test_search
+    result = Article.search('first body')
+    assert_equal(@a1, result.first)
+  end
+
+  def test_send_pings2
+    articleurl = ['http://localhost:3000/notes/id/1']
+    urllist = ['http://localhost:3000/notes/catch_ping']
+    @a1.send_pings2(articleurl, urllist)
   end
 
 end

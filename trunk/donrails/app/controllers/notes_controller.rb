@@ -543,7 +543,7 @@ class NotesController < ApplicationController
       else
         emg = ''
         aris1.errors.each_full do |msg|
-          emg += msg
+          emg += msg + "\n"
         end
         render :text => emg, :status => 403
       end

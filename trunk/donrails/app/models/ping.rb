@@ -6,7 +6,6 @@ class Ping < ActiveRecord::Base
 
   def send_ping2(pingurl, title, excerpt)
     uri = URI.parse(pingurl)
-
     post = "title=#{URI.escape(title)}"
     post << "&excerpt=#{URI.escape(excerpt)}"
     post << "&url=#{URI.escape(self.url)}"
