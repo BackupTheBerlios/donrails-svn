@@ -274,6 +274,7 @@ class NotesController < ApplicationController
 
   def recent_category(category)
     categories = Category.find(:first, :conditions => ["name = ?", category])
+
     return [] if categories.nil?
     articles = categories.articles
     return articles.reverse!
@@ -326,7 +327,7 @@ class NotesController < ApplicationController
     begin
       get_ymd
       if @ymd and @ymd31a
-        @articles =  Article.find(:all, :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd31a])
+        @articles =  Article.find(:all, :conditions => ["article_date >= ? AND article_date < ? AND (articles.hidden IS NULL OR articles.hidden = 0)", @ymd, @ymd31a])
       else
         render_text "no article", 404
       end
@@ -355,11 +356,11 @@ class NotesController < ApplicationController
       t2 = Time.local($1,$2,$3)
     end
     t3 = t2
-    @articles = Article.find(:all, :order => "id DESC", :conditions => ["article_date >= ? AND article_date < ?", t2, t2.tomorrow])
+    @articles = Article.find(:all, :order => "id DESC", :conditions => ["article_date >= ? AND article_date < ? AND (articles.hidden IS NULL OR articles.hidden = 0)", t2, t2.tomorrow])
     for i in 1..10
       t2 = t2.last_year
       i += 1
-      @articles += Article.find(:all, :order => "id DESC", :conditions => ["article_date >= ? AND article_date < ?", t2, t2.tomorrow])
+      @articles += Article.find(:all, :order => "id DESC", :conditions => ["article_date >= ? AND article_date < ? AND (articles.hidden IS NULL OR articles.hidden = 0)", t2, t2.tomorrow])
     end
     unless @articles.empty? then
       @notice = "#{t2.month}月 #{t2.day}日の記事(#{@articles.first.article_date.year}年から#{@articles.last.article_date.year}年まで)"
@@ -377,7 +378,7 @@ class NotesController < ApplicationController
   def show_date
     get_ymd
     if @ymd
-      @articles = Article.find(:all, :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd1a])
+      @articles = Article.find(:all, :conditions => ["article_date >= ? AND article_date < ? AND (articles.hidden IS NULL OR articles.hidden = 0)", @ymd, @ymd1a])
     else
       @notice = "正しく日付を指定してください" unless @notice
       redirect_to :action => 'noteslist', :notice => @notice
@@ -398,12 +399,12 @@ class NotesController < ApplicationController
 
   def show_title
     if @params['id']
-      @articles =  Article.find(:all, :conditions => ["id = ?", @params['id']]) 
+      @articles =  Article.find(:all, :conditions => ["id = ? AND (articles.hidden IS NULL OR articles.hidden = 0)", @params['id']]) 
     elsif @params['pickid']
-      @articles =  Article.find(:all, :conditions => ["id = ?", @params['pickid']]) 
+      @articles =  Article.find(:all, :conditions => ["id = ? AND (articles.hidden IS NULL OR articles.hidden = 0)", @params['pickid']]) 
       redirect_to :action => 'show_title', :id => @articles.first.id if @articles
     elsif @params['title'] and @params['title'].size > 0
-      @articles =  Article.find(:all, :conditions => ["title = ?", @params['title']]) 
+      @articles =  Article.find(:all, :conditions => ["title = ? AND (articles.hidden IS NULL OR articles.hidden = 0)", @params['title']]) 
       redirect_to :action => 'show_title', :id => @articles.first.id if @articles and @articles.first
     else
       render_text "no article", 404
@@ -420,11 +421,11 @@ class NotesController < ApplicationController
       cid = @articles.first.id
       @rdf_article = @articles.first.id
       begin
-        @lastarticle = Article.find(cid - 1)
+        @lastarticle = Article.find(cid - 1, :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
       rescue
       end
       begin
-        @nextarticle = Article.find(:first, :conditions => ["id > ?", cid])
+        @nextarticle = Article.find(:first, :conditions => ["id > ? AND (articles.hidden IS NULL OR articles.hidden = 0)", cid])
       rescue
       end
     else
@@ -450,9 +451,7 @@ class NotesController < ApplicationController
 		 :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"]
                  )
       @heading = "カテゴリ:#{@params['category']}"
-      @heading += '(' + @category.articles.size.to_s + ')'  # XXX
-#      @heading += ' + (' + @category.children.size.to_s + ')' if @category.children.size > 0
-#      @heading += ' + (' + @category.children_count.to_s + ')' if @category.children_count > 0 # XXX
+      @heading += '(' + @category.articles.size.to_s + ')'
 
       unless @articles.empty? then
         @lm = @articles.first.article_mtime.gmtime if @articles.first.article_mtime
@@ -478,7 +477,7 @@ class NotesController < ApplicationController
     get_ymd
     if @ymd
       @articles =  Article.find(:all, :limit => 30,
-                                :conditions => ["article_date >= ?", @ymd])
+                                :conditions => ["article_date >= ? AND (articles.hidden IS NULL OR articles.hidden = 0)", @ymd])
       if @articles.first
         a = don_get_object(@articles.first, 'html')
         @heading = don_chomp_tags(a.title_to_html)
@@ -499,7 +498,7 @@ class NotesController < ApplicationController
     @debug_oneday = @request.request_uri
     get_ymd
     @noindex = true
-    @articles = Article.find(:all, :conditions => ["article_date >= ? AND article_date < ?", @ymd, @ymd10a])
+    @articles = Article.find(:all, :conditions => ["article_date >= ? AND article_date < ? AND (articles.hidden IS NULL OR articles.hidden = 0)", @ymd, @ymd10a])
     if @articles.size > 0
       unless @articles.empty?
         @lm = @articles.first.article_mtime.gmtime if @articles.first.article_mtime
@@ -533,7 +532,7 @@ class NotesController < ApplicationController
                           "ipaddr" => @request.remote_ip,
                           "body" => body
                           )
-      a = Article.find(article_id)
+      a = Article.find(article_id, :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
       aris1.articles.push_with_attributes(a)
 
       aris1.valid?
@@ -576,7 +575,7 @@ class NotesController < ApplicationController
           @catched = false
           @message = 'need url and id '
         end
-        article = Article.find(@params['id'])
+        article = Article.find(@params['id'], :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"])
 
         unless article
           @catched = false

@@ -12,6 +12,16 @@
 
 2006-07-18  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/views/notes/noteslist.rhtml: cleanup.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::show_month): Fix to hyde when articles.hidden is 1.
+	(NotesController::show_nnen): likewise.
+	(NotesController::show_nnen): likewise.
+	(NotesController::show_title): likewise.
+	(NotesController::afterday): likewise.
+	(NotesController::tendays): likewise.
+	(NotesController::add_comment2): likewise.
+
 	* donrails/test/unit/article_test.rb (ArticleTest::test_send_pings2): New test method.
 
 2006-07-17  ARAKI Yasuhiro  <yasu@debian.or.jp>
