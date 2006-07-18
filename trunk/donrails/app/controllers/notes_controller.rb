@@ -92,7 +92,8 @@ class NotesController < ApplicationController
 
   def articles_long
     @articles_pages, @articles = paginate(:article, :per_page => 10,
-                                          :order_by => 'size DESC, id DESC'
+                                          :order_by => 'size DESC, id DESC',
+					  :conditions => ["hidden IS NULL OR hidden = 0"]
                                           )
     @heading = "記事サイズ順の表示"
     @noindex = true
@@ -106,7 +107,7 @@ class NotesController < ApplicationController
     begin
       @articles_pages, @articles = paginate(:article, :per_page => 10,
                                             :order_by => 'id DESC',
-                                            :conditions => ["author_id = ?", @params['id']]
+                                            :conditions => ["author_id = ? AND ( hidden IS NULL OR hidden = 0 )", @params['id']]
                                             )
       @author = Author.find(@params['id'])
       if @author
@@ -157,7 +158,8 @@ class NotesController < ApplicationController
     minTime = nil
     @articles_pages, 
     @articles = paginate(:article, :per_page => 30,
-                         :order_by => 'article_date DESC, id DESC'
+                         :order_by => 'article_date DESC, id DESC',
+			 :conditions => ["hidden IS NULL OR hidden = 0"]
                          )
     unless @articles.empty?
       @lm = @articles.first.article_mtime.gmtime if @articles.first.article_mtime
@@ -444,7 +446,8 @@ class NotesController < ApplicationController
         paginate(:article, 
                  :order_by => 'articles.article_date DESC',
                  :per_page => 30, 
-                 :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})"
+                 :join => "JOIN categories_articles on (categories_articles.article_id=articles.id and categories_articles.category_id=#{@category.id})",
+		 :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"]
                  )
       @heading = "カテゴリ:#{@params['category']}"
       @heading += '(' + @category.articles.size.to_s + ')'  # XXX
