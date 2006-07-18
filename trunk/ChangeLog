@@ -1,3 +1,11 @@
+2006-07-18  Akira TAGOH  <at@gclab.org>
+
+	* donrails/app/controllers/notes_controller.rb (articles_long):
+	check hidden flag to find articles.
+	(articles_author): likewise.
+	(noteslist): likewise.
+	(show_category): likewise.
+
 2006-07-18  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/test/unit/article_test.rb (ArticleTest::test_send_pings2): New test method.
