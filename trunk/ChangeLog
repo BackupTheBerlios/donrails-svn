@@ -1,5 +1,7 @@
 2006-07-22  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/config/routes.rb: add entry for :sitemap.
+
 	* donrails/app/models/article_sweeper.rb (ArticleSweeper::expire_for): Add cleaning entry for :sitemap .
 
 	* donrails/app/controllers/notes_controller.rb (NotesController): Add entry 'caches_page :sitemap'.

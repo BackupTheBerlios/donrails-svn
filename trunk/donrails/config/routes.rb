@@ -22,7 +22,6 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "notes/d/:category", :controller => "notes", 
   :action => "show_category_noteslist",
   :requirements => { 
-#    :category => /\w+/
     :category => /.+/
   }
   
@@ -132,6 +131,8 @@ ActionController::Routing::Routes.draw do |map|
   map.xml 'atom/feed.xml', :controller => 'atom', :action => "feed"
   map.xml 'atom/feed/page/:page/feed.xml', :controller => 'atom', :action => "feed", :page => /\d+/
   map.xml 'atom/feed/:id/feed.xml', :controller => 'atom', :action => "feed", :id => /\d+/
+
+  map.xml 'notes/sitemap.xml', :controller => 'notes', :action => "sitemap"
 
   # Here's a sample route:
   # map.connect 'products/:id', :controller => 'catalog', :action => 'view'
