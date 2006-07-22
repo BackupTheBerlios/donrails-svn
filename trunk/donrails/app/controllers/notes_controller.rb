@@ -13,7 +13,7 @@ class NotesController < ApplicationController
   caches_page :index, :rdf_recent, :rdf_article, :rdf_category, :show_month, :show_nnen, :show_date, :show_title, :show_category, :show_category_noteslist, :articles_long, :noteslist
 
   caches_page :category_select_a, :recent_trigger_title_a, :recent_category_title_a, :category_tree_list_a
-  caches_page :articles_author
+  caches_page :articles_author, :sitemap
   after_filter :add_cache_control
   after_filter :compress
   after_filter :clean_memory

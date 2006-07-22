@@ -1,5 +1,9 @@
 2006-07-22  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/models/article_sweeper.rb (ArticleSweeper::expire_for): Add cleaning entry for :sitemap .
+
+	* donrails/app/controllers/notes_controller.rb (NotesController): Add entry 'caches_page :sitemap'.
+
 	* donrails/test/functional/notes_controller_test.rb (NotesControllerTest::test_sitemap): add test.
 
 	* donrails/app/controllers/notes_controller.rb (NotesController::sitemap): New method for Google sitemap (http://www.google.com/webmasters/sitemaps/docs/en/protocol.html).
