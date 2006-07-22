@@ -98,6 +98,18 @@ class NotesControllerTest < Test::Unit::TestCase
   end
 
   def test_dateparse
+    get :dateparse, {'200607a' => ''}
+    assert_redirected_to :action => "tendays", :year => '2006', :month => '07', :day => "01"
+    get :dateparse, {'200607b' => ''}
+    assert_redirected_to :action => "tendays", :year => '2006', :month => '07', :day => "11"
+    get :dateparse, {'200607c' => ''}
+    assert_redirected_to :action => "tendays", :year => '2006', :month => '07', :day => "21"
+
+    get :dateparse, {'0601' => ''}
+    assert_redirected_to :action => "show_nnen", :month => '06', :day => "01"
+    get :dateparse, {'1213' => ''}
+    assert_redirected_to :action => "show_nnen", :month => '12', :day => "13"
+
   end
 
   def test_noteslist
@@ -222,6 +234,8 @@ class NotesControllerTest < Test::Unit::TestCase
   def test_show_title
     get :show_title, :id => 1
     assert_response 200
+    get :show_title, :pickid => 1
+    assert_redirected_to :action => 'show_title', :id => 1
   end 
 
 
@@ -232,6 +246,7 @@ class NotesControllerTest < Test::Unit::TestCase
   def test_show_title__3
     get :show_title, :title => 'first title in misc'
     assert_redirected_to :controller => 'notes', :id => 1
+    assert_redirected_to :action => 'show_title', :id => 1
   end 
   def test_show_title__4
     get :show_title, :id =>10000
@@ -248,6 +263,12 @@ class NotesControllerTest < Test::Unit::TestCase
 
   def test_show_category
     get :show_category, :category => 'misc'
+    assert_response 200
+
+    get :show_category, :id => 1
+    assert_response 200
+
+    get :show_category, :nocategory => 'misc'
     assert_response 200
   end
   def test_show_category__2
@@ -342,6 +363,11 @@ class NotesControllerTest < Test::Unit::TestCase
 
     get :show_image, :id => 2
     assert_response 403
+  end
+
+  def test_sitemap
+    get :sitemap
+    assert_response :success
   end
 
 end

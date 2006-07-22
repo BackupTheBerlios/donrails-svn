@@ -1,3 +1,13 @@
+2006-07-22  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/test/functional/notes_controller_test.rb (NotesControllerTest::test_sitemap): add test.
+
+	* donrails/app/controllers/notes_controller.rb (NotesController::sitemap): New method for Google sitemap (http://www.google.com/webmasters/sitemaps/docs/en/protocol.html).
+
+2006-07-20  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/test/functional/notes_controller_test.rb (NotesControllerTest::test_dateparse): add test.
+
 2006-07-18  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/login_controller.rb (LoginController::delete_{picute,trackback,comment,article}): Change to show checkbox checked or not checked.

@@ -34,7 +34,8 @@ class NotesController < ApplicationController
     :comment_form_a,
     :comment_form,
     :pick_comment_a,
-    :category_tree_list_a
+    :category_tree_list_a,
+    :sitemap                             
   ]
 
   def index
@@ -612,7 +613,6 @@ class NotesController < ApplicationController
     end
   end
 
-
   def catch_ping
     if request.method == :post
       category = @params['category'] if @params['category'] 
@@ -627,6 +627,10 @@ class NotesController < ApplicationController
     else
       @catched = false
     end
+  end
+
+  def sitemap
+    @articles = Article.find(:all, :conditions => ["articles.hidden IS NULL OR articles.hidden = 0"], :order => 'article_mtime DESC') 
   end
 
   protected
