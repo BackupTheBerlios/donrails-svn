@@ -674,7 +674,7 @@ class LoginController < ApplicationController
 
   ## blogping
   def manage_blogping
-    if BASEURL
+    if defined?(BASEURL)
       @flash[:note2] = 'BASEURL is ' + BASEURL
     else
       @flash[:note2] = '現在Ping送信機能は無効です'

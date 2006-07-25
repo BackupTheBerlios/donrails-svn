@@ -24,7 +24,7 @@ class Article < ActiveRecord::Base
   end
 
   def sendping
-    if BASEURL
+    if defined?(BASEURL)
       blogping = Blogping.find(:all, :conditions => ["active = 1"])
       articleurl = BASEURL + 'id/' + self.id.to_s
       

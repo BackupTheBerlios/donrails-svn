@@ -1,5 +1,9 @@
 2006-07-25  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/models/article.rb (Article::sendping): likewise.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::manage_blogping): Fix if BASEURL is not defined.
+
 	* donrails/test/functional/login_controller_test.rb (LoginControllerTest::test_delete_blogping): Add some test.
 
 	* donrails/app/views/notes/sitemap.rxml: Cleanup.
