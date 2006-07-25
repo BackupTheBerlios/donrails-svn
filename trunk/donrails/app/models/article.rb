@@ -9,7 +9,7 @@ class Article < ActiveRecord::Base
   has_many :trackbacks, :order => "id ASC"
   has_many :pictures, :order => "id ASC"
   belongs_to :author
-#  after_save :sendping
+  after_save :sendping
   before_save :renew_mtime
 
   # Fulltext searches the body of published articles
@@ -23,19 +23,20 @@ class Article < ActiveRecord::Base
     end
   end
 
-=begin
   def sendping
-    blogping = Blogping.find(:all, :conditions => ["active = 1"])
-    articleurl = article_url(self, false)
-    urllist = Array.new
-    blogping.each do |ba|
-      urllist.push(ba.server_url)
-    end
-    if urllist.size > 0
-      article.send_pings2(articleurl, urllist)
+    if BASEURL
+      blogping = Blogping.find(:all, :conditions => ["active = 1"])
+      articleurl = BASEURL + 'id/' + self.id.to_s
+      
+      urllist = Array.new
+      blogping.each do |ba|
+        urllist.push(ba.server_url)
+      end
+      if urllist.size > 0
+        send_pings2(articleurl, urllist)
+      end
     end
   end
-=end
 
   def send_pings2(articleurl, urllist)
     urllist.each do |url|

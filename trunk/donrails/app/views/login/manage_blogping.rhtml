@@ -1,6 +1,11 @@
 <h1>blogping management</h1>
-
 <hr>
+<div class="notice">
+  <%= @flash[:note2] %>
+</div>
+<div class="notice">
+  <%= @flash[:note] %>
+</div>
 新規pingする先の追加
 <p>
 <%= secure_form_tag :action => "add_blogping" %>
@@ -25,7 +30,6 @@ pingする先の管理(active=1の先は有効)
     <td>id</td>
     <td>server_url</td>
     <td>active</td>
-    <td>activeの変更</td>
   </tr>
 
   <% @blogpings.each do |co| %>
@@ -33,8 +37,13 @@ pingする先の管理(active=1の先は有効)
     <td><%= check_box "deleteid", co.id %></td>
     <td><%= co.id %></td>
     <td><%= co.server_url %></td>
-    <td><%= co.active %></td>
-    <td><%= check_box "acid", co.id %></td>
+    <td>
+      <% if co.active == 1%>
+      <%= check_box "acid", co.id, :checked => 'checked' %>
+      <% else %>
+      <%= check_box "acid", co.id %>
+      <% end %>
+    </td>
   </tr>
   <% end %>
 </table>

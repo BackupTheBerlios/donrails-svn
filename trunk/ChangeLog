@@ -1,3 +1,20 @@
+2006-07-25  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/test/functional/login_controller_test.rb (LoginControllerTest::test_delete_blogping): Add some test.
+
+	* donrails/app/views/notes/sitemap.rxml: Cleanup.
+
+2006-07-24  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/test/functional/login_controller_test.rb (LoginControllerTest::test_add_blogping): Add assert_equal test.
+
+	* donrails/test/unit/article_test.rb (ArticleTest::test_sendping): Test for article.sendping.
+
+	* donrails/app/models/article.rb (Article::sendping): New(re-enable) method for sending ping.
+
+	* donrails/app/views/login/manage_blogping.rhtml: add to show @flash[:note2] text.
+	* donrails/app/views/login/manage_ping.rhtml: add to show @flash[:note2] text.
+
 2006-07-22  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/config/routes.rb: add entry for :sitemap.

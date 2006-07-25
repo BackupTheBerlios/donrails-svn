@@ -4,9 +4,9 @@ xml.urlset('xmlns' => 'http://www.google.com/schemas/sitemap/0.84') do
   xml.url do
     xml.loc "#{@request.protocol}#{@request.host_with_port}#{url_for(:action => "noteslist")}"
     if @articles.first.article_mtime
-      xml.lastmod pub_date @articles.first.article_mtime
+      xml.lastmod(pub_date(@articles.first.article_mtime))
     elsif @articles.first.article_date
-      xml.lastmod pub_date @articles.first.article_date
+      xml.lastmod(pub_date(@articles.first.article_date))
     end
     xml.changefreq 'daily'
   end
@@ -15,9 +15,9 @@ xml.urlset('xmlns' => 'http://www.google.com/schemas/sitemap/0.84') do
     xml.url do
       xml.loc "#{@request.protocol}#{@request.host_with_port}#{url_for(:action => "show_title", :id => co.id)}"
       if co.article_mtime
-        xml.lastmod pub_date co.article_mtime
+        xml.lastmod(pub_date(co.article_mtime))
       elsif co.article_date
-        xml.lastmod pub_date co.article_date
+        xml.lastmod(pub_date(co.article_date))
       end
     end
   end

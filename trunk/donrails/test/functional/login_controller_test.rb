@@ -371,18 +371,22 @@ class LoginControllerTest < Test::Unit::TestCase
     post :delete_blogping,
     :acid => {'1' => '1'}
     assert_redirected_to :action => 'manage_blogping'
-
+    assert_equal '', flash[:note]
+    
     post :delete_blogping,
     :acid => {'1' => '0'}
     assert_redirected_to :action => 'manage_blogping'
+    assert_equal '[Deactivate] http://feeds.feedburner.com/yourblogname<br>', flash[:note]
 
     post :delete_blogping,
     :deleteid => {'1' => '1'}
     assert_redirected_to :action => 'manage_blogping'
+    assert_equal '[Delete] http://feeds.feedburner.com/yourblogname<br>', flash[:note]
 
     post :delete_blogping,
     :deleteid => {'1' => '0'}
     assert_redirected_to :action => 'manage_blogping'
+    assert_equal '', flash[:note]
   end
 
   def test_add_blogping
@@ -393,6 +397,7 @@ class LoginControllerTest < Test::Unit::TestCase
     post :add_blogping,
     :blogping => {:server_url => 'http://example.com/'}
     assert_redirected_to :action => 'manage_blogping'
+    assert_equal "[Add] http://example.com/<br>", flash[:note]
   end
 
   def test_manage_author

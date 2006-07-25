@@ -36,4 +36,8 @@ class ArticleTest < Test::Unit::TestCase
     @a1.send_pings2(articleurl, urllist)
   end
 
+  def test_sendping
+    @a1.sendping
+  end
+
 end

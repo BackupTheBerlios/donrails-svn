@@ -674,20 +674,26 @@ class LoginController < ApplicationController
 
   ## blogping
   def manage_blogping
+    if BASEURL
+      @flash[:note2] = 'BASEURL is ' + BASEURL
+    else
+      @flash[:note2] = '現在Ping送信機能は無効です'
+    end
     @blogpings_pages, @blogpings = paginate(:blogping,:per_page => 30,:order_by => 'id DESC')
   end
 
   def delete_blogping
     c = @params["acid"].nil? ? [] : @params["acid"]
+    flash[:note] = ''
     c.each do |k, v|
-      if v.to_i == 1
-        b = Blogping.find(k.to_i)
+      b = Blogping.find(k.to_i)
+      unless v.to_i == b.active
+        b.active = v.to_i
+        b.save
         if b.active == 1
-          b.active = 0
-          b.save
+          flash[:note] += '[Activate] ' + b.server_url + '<br>'
         else
-          b.active = 1
-          b.save
+          flash[:note] += '[Deactivate] ' + b.server_url + '<br>'
         end
       end
     end
@@ -696,6 +702,7 @@ class LoginController < ApplicationController
     c.each do |k, v|
       if v.to_i == 1
         b = Blogping.find(k.to_i)
+        flash[:note] += '[Delete] ' + b.server_url + '<br>'
         b.destroy
       end
     end
@@ -704,9 +711,10 @@ class LoginController < ApplicationController
 
   def add_blogping
     if c = @params["blogping"]
-    aris1 = Blogping.new("server_url" => c["server_url"])
-    aris1.active = 1
-    aris1.save
+      aris1 = Blogping.new("server_url" => c["server_url"])
+      aris1.active = 1
+      aris1.save
+      flash[:note] = '[Add] ' + aris1.server_url + '<br>'
     end
     redirect_to :action => "manage_blogping"
   end

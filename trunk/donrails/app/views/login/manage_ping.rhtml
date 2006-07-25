@@ -1,7 +1,10 @@
 <h1>ping management</h1>
 
 <hr>
-ping record
+<div class="notice">
+  <%= @flash[:note2] %>
+</div>
+ping record  
 <% if @pings %>
 <% if @pings_pages %>
 <%= pagination_links @pings_pages %>
