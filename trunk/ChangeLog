@@ -1,5 +1,16 @@
 2006-07-25  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
+	* donrails/app/controllers/login_controller.rb (LoginController::delete_comment): Fix: When change hidden status, existed trackback is filtered by antispam. (Change to use save -> update_attribute)
+	(LoginController::delete_trackback): likewise.
+	(LoginController::delete_picture): likewise.
+	(LoginController::form_article): Fix to show wrong id entry.
+
+	* donrails/test/fixtures/trackbacks.yml (third_trackback): Fixture added for this change.
+
+	* donrails/test/functional/login_controller_test.rb (LoginControllerTest::test_delete_trackback): Test added for this change.
+
+	* donrails/app/controllers/login_controller.rb (LoginController::delete_trackback): Fix: When change hidden status, existed trackback is filtered by antispam. (Change to use save -> update_attribute)
+
 	* donrails/app/models/article.rb (Article::sendping): likewise.
 
 	* donrails/app/controllers/login_controller.rb (LoginController::manage_blogping): Fix if BASEURL is not defined.

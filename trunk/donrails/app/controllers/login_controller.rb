@@ -186,11 +186,10 @@ class LoginController < ApplicationController
           pf = Picture.find(k.to_i)
           stmp = pf.hidden
           if v.to_i == 1
-            pf.hidden = 1
+            pf.update_attribute('hidden', 1)
           elsif v.to_i == 0
-            pf.hidden = 0
+            pf.update_attribute('hidden', 0)
           end
-          pf.save
           unless stmp == pf.hidden
             @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
           end
@@ -240,11 +239,10 @@ class LoginController < ApplicationController
           pf = Trackback.find(k.to_i)
           stmp = pf.hidden
           if v.to_i == 1
-            pf.hidden = 1
+            pf.update_attribute('hidden', 1)
           elsif v.to_i == 0
-            pf.hidden = 0
+            pf.update_attribute('hidden', 0)
           end
-          pf.save
           unless stmp == pf.hidden
             @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
           end
@@ -281,23 +279,25 @@ class LoginController < ApplicationController
         pf = Comment.find(k.to_i)
         stmp = pf.hidden
         if v.to_i == 1
-          pf.hidden = 1
+          pf.update_attribute('hidden', 1)
         elsif v.to_i == 0
-          pf.hidden = 0
+          pf.update_attribute('hidden', 0)
         end
-        pf.save
         unless stmp == pf.hidden
           @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
         end
       end
     end
-
     redirect_to :action => "manage_comment"
   end
 
   def form_article
     if @params['pickid']
-      @article = Article.find(@params['pickid'].to_i)
+      begin
+        @article = Article.find(@params['pickid'].to_i)
+      rescue
+        render :text => 'no entry', :status => 404
+      end
     else
       render :text => 'no entry', :status => 404
     end
@@ -446,11 +446,10 @@ class LoginController < ApplicationController
         pf = Article.find(k.to_i)
         stmp = pf.hidden
         if v.to_i == 1
-          pf.hidden = 1
+          pf.update_attribute('hidden', 1)
         elsif v.to_i == 0
-          pf.hidden = 0
+          pf.update_attribute('hidden', 0)
         end
-        pf.save
         unless stmp == pf.hidden
           @flash[:note2] += '<br>Hyde status:' + k + ' is ' + pf.hidden.to_s
         end

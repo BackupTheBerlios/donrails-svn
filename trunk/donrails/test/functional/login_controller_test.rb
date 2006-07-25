@@ -193,6 +193,16 @@ class LoginControllerTest < Test::Unit::TestCase
     :hideid => {'2' => '1'}
     assert_equal "<br>Hyde status:2 is 1", flash[:note2]
     assert_redirected_to :action => 'manage_trackback'
+
+    post :delete_trackback, 
+    :hideid => {'3' => '0'}
+    assert_equal "<br>Hyde status:3 is 0", flash[:note2]
+    assert_redirected_to :action => 'manage_trackback'
+
+    post :delete_trackback, 
+    :hideid => {'3' => '1'}
+    assert_equal "<br>Hyde status:3 is 1", flash[:note2]
+    assert_redirected_to :action => 'manage_trackback'
   end
 
   def test_manage_comment
@@ -229,6 +239,9 @@ class LoginControllerTest < Test::Unit::TestCase
     assert_response :success 
 
     post :form_article
+    assert_response 404
+
+    post :form_article, :pickid => 111
     assert_response 404
   end
 
