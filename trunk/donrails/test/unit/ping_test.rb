@@ -8,23 +8,24 @@ class PingTest < Test::Unit::TestCase
 
   def setup
     @ping = Ping.new
-#    unless @ping.article_id
-#     @ping.article_id = 4846
-#    end
-#    unless @ping.url
-#      @ping.url = "http://192.168.4.2:3000/notes/id/4846"
-#    end
-#    @ping.save
+  end
+
+  def test_send_trackback
+    @ping1 = Ping.find(1)
+    pingurl = "http://localhost:3000/notes/catch_trackback/"
+    title = "test title"
+    excerpt = "test excerpt"
+    rbody = @ping1.send_trackback(pingurl, title, excerpt)
+    xml = HTree.parse(rbody).to_rexml
+    assert_equal('0', xml.elements['response/error'].text)
   end
 
   def test_send_ping2
     @ping1 = Ping.find(1)
     pingurl = "http://localhost:3000/notes/catch_ping/"
-    title = "test title"
-    excerpt = "test excerpt"
-    rbody = @ping1.send_ping2(pingurl, title, excerpt)
+    rbody = @ping1.send_ping2(pingurl)
     xml = HTree.parse(rbody).to_rexml
-    assert_equal('0', xml.elements['response/error'].text)
+    assert_equal('0', xml.elements['methodResponse/params/param/value/struct/member/value/boolean'].text)
   end
 
 

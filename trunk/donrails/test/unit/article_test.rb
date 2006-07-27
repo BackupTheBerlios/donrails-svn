@@ -6,15 +6,11 @@ class ArticleTest < Test::Unit::TestCase
   def setup
     @a1 = Article.find(1)
     @article = Article.new
-#    p @article
-#    p 'moge'
-
   end
 
   # Replace this with your real tests.
   def test_truth
     assert_kind_of Article,  @article
-#    p @article
   end
 
   def test_renew_mtime
@@ -30,7 +26,13 @@ class ArticleTest < Test::Unit::TestCase
     assert_equal(@a1, result.first)
   end
 
-  def test_send_pings2
+  def test_send_trackback
+    articleurl = ['http://localhost:3000/notes/id/1']
+    urllist = ['http://localhost:3000/notes/catch_trackback']
+    @a1.send_trackback(articleurl, urllist)
+  end
+
+  def test_send_ping2
     articleurl = ['http://localhost:3000/notes/id/1']
     urllist = ['http://localhost:3000/notes/catch_ping']
     @a1.send_pings2(articleurl, urllist)

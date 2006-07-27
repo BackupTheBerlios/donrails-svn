@@ -42,11 +42,26 @@ class Article < ActiveRecord::Base
     urllist.each do |url|
       begin
         ping = pings.build("url" => url)
+        ping.send_ping2(url)
+        ping.save
+      rescue
+        p "ping.send_ping2 error"
+        p $!
+        # in case the remote server doesn't respond or gives an error,
+        # we should throw an xmlrpc error here.
+      end
+    end
+  end
+
+  def send_trackback(articleurl, urllist) # urllist is target url.
+    urllist.each do |url|
+      begin
+        ping = pings.build("url" => url)
         ar2 = don_get_object(self, 'html')
         title = "#{URI.escape(ar2.title_to_html)}"
         excerpt = "#{URI.escape(ar2.body_to_html.gsub(/<\/?\w+(?:\s+[^>]*)*>/m, ''))}" 
-
-        ping.send_ping2(url, title, excerpt)
+        
+        ping.send_trackback(url, title, excerpt)
         ping.save
       rescue
         p "ping.send_ping2 error"

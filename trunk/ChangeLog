@@ -1,3 +1,27 @@
+2006-07-27  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/app/views/notes/catch_trackback.rxml: Rename from catch_ping.
+
+	* donrails/app/views/notes/catch_ping.rxml: New file.
+
+	* donrails/app/controllers/notes_controller.rb 
+	(NotesController::catch_ping): New method. 
+	(NotesController::catch_trackback): Rename from catch_ping.
+
+	* donrails/app/models/article.rb 
+	(Article::send_pings2): Change to invoke NEW ping.send_ping2.
+	(Article::send_trackback): New method. It invokes ping.send_trackback.
+
+	* donrails/app/models/ping.rb 
+	(Ping::send_trackback): Rename send_ping2 to send_trackback. This method is used to send trackback.
+	(Ping::send_ping2): Change behavior: This method is used to send ping to ping hub (cf. feedburner). Now support REST version which defined in http://www.weblogs.com/api.html#7. Todo: XML-RPC version.
+
+	* donrails/test/unit/ping_test.rb (PingTest::test_send_trackback): New test.
+
+	* donrails/test/unit/article_test.rb (ArticleTest::test_send_trackback): New test.
+
+	* donrails/app/models/article.rb (Article::send_trackback): Rename method from send_ping2.
+
 2006-07-25  ARAKI Yasuhiro  <yasu@debian.or.jp>
 
 	* donrails/app/controllers/login_controller.rb (LoginController::delete_comment): Fix: When change hidden status, existed trackback is filtered by antispam. (Change to use save -> update_attribute)

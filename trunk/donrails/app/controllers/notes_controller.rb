@@ -30,6 +30,7 @@ class NotesController < ApplicationController
     :trackback,
     :pick_trackback_a,
     :catch_ping,
+    :catch_trackback,
     :category_select_a,
     :comment_form_a,
     :comment_form,
@@ -613,7 +614,7 @@ class NotesController < ApplicationController
     end
   end
 
-  def catch_ping
+  def catch_trackback
     if request.method == :post
       category = @params['category'] if @params['category'] 
       blog_name = @params['blog_name'] if @params['blog_name']
@@ -623,6 +624,14 @@ class NotesController < ApplicationController
       
       ip = request.remote_ip
       created_at = Time.now
+      @catched = true
+    else
+      @catched = false
+    end
+  end
+
+  def catch_ping
+    if request.method == :post
       @catched = true
     else
       @catched = false
