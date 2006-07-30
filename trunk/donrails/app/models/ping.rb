@@ -33,7 +33,6 @@ class Ping < ActiveRecord::Base
   #
   # Example HTTP GET request:
   # http://rpc.weblogs.com/pingSiteForm?name=InfraBlog&url=http%3A%2F%2Finfrablog.verisignlabs.com 
-#  def send_ping2(pingurl, title, excerpt)
   def send_ping2(pingurl)
     uri = URI.parse(pingurl)
     

@@ -113,3 +113,32 @@ div.bantest {margin:3px; padding:5px; }
 
 div.banlist {margin:3px; padding:5px; }
 div.banlist div.notice {color: black; font-weight: bold; }
+
+blockquote {
+    border-left: solid thick #ddbbaa;
+}
+blockquote > blockquote {
+    border-left: solid thick #bb9988;
+}
+blockquote > blockquote > blockquote {
+    border-left: solid thick #997766;
+}
+dt { font-weight: bold }
+
+table, th, td {
+                border-collapse: collapse; 
+                border: 1px solid black;
+}
+div.kakomi table { 
+        background: #dddddd; 
+        margin-top: 1em; 
+        margin-bottom: 1em; 
+        margin-left: 3em; 
+        margin-right: 3em; }
+
+ pre { 
+  white-space:  pre;
+  padding:      0.5em;
+  background: #eeeeee;
+  margin: 1em;
+ }

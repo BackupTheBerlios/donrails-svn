@@ -10,6 +10,7 @@
  div.comment_form_a { }
 
  div.mainarticle { width : 75%;  float : left; z-index: 2 }
+
  div.mainarticle dt { margin-top: 0.5em }
  div.mainarticle dd { margin-left: 1em; margin-right: 0 }
  div.mainarticle div.section { margin-bottom: 0.5em; margin-left: 1em; margin-right: 1em; margin-top: 0 }
@@ -20,6 +21,16 @@
  right: 3em;
  }
 
+ table { 
+        margin-top: 1em; 
+        margin-bottom: 1em; 
+        margin-left: 3em; 
+        margin-right: 3em; }
+ table, th, td { background: #dddddd; 
+                 border-collapse: collapse; 
+                 border: 1px solid black;
+ }
+ 
  div.notice { color: red; font-weight: bold }
  div.pagelink { margin:3px; padding:1px;color: red; font-weight: bold }
 
@@ -34,6 +45,13 @@
  div.rubytitle { margin-top: 5pt; color: red; font-weight: bold }
  div.roadtitle { margin-top: 5pt; color: blue; font-weight: bold }
  div.recenttitle { margin-top: 5pt; color: red; font-weight: bold }
+
+ div.recenttitle div.odd { background: #bbffff ; margin-right: 2pt }
+ div.recenttitle div.even { background: #ffffbb ; margin-right: 2pt }
+ div.rubytitle div.odd { background: #bbffff ; margin-right: 2pt }
+ div.rubytitle div.even { background: #ffffbb ; margin-right: 2pt }
+ div.roadtitle div.odd { background: #bbffff ; margin-right: 2pt }
+ div.roadtitle div.even { background: #ffffbb ; margin-right: 2pt }
 
  div.odd { background: #bbffff ; margin-right: 2pt }
  div.even { background: #ffffbb ; margin-right: 2pt }
@@ -60,10 +78,8 @@
  pre { 
   white-space:  pre;
   padding:      0.5em;
-  border-color: #ffeeb0;
-  border-style: outset;
-  border-width: 3px;
-  margin: 5px
+  background: #eeeeee;
+  margin: 1em;
  }
 
  cite { 
@@ -100,4 +116,18 @@ div.kakomi {
     overflow: auto;
 }
 div.kakomi pre { overflow: auto; }
+
+
+blockquote {
+    border-left: solid thick #ddbbaa;
+}
+blockquote > blockquote {
+    border-left: solid thick #bb9988;
+}
+blockquote > blockquote > blockquote {
+    border-left: solid thick #997766;
+}
+dt { font-weight: bold }
+
+
 

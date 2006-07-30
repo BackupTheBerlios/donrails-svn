@@ -14,3 +14,16 @@ security_extensions:
  $ svn export http://svn.aviditybytes.com/rails/plugins/
  security_extensions
 
+
+after that, following files are installed.
+
+$ find |grep security
+./vendor/plugins/security_extensions
+./vendor/plugins/security_extensions/CHANGELOG
+./vendor/plugins/security_extensions/LICENSE
+./vendor/plugins/security_extensions/init.rb
+./vendor/plugins/security_extensions/lib
+./vendor/plugins/security_extensions/lib/security_extensions.rb
+./vendor/plugins/security_extensions/lib/security_testing_extensions.rb
+./vendor/plugins/security_extensions/test
+

@@ -1,4 +1,17 @@
+2006-07-29  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* Makefile (plugin): Add to set secutity_extensions plugin.
+
+2006-07-28  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* SVN repository will remove to google code hosting.
+	svn checkout http://donrails.googlecode.com/svn/trunk/ donrails
+
 2006-07-27  ARAKI Yasuhiro  <yasu@debian.or.jp>
+
+	* donrails/public/stylesheets/araki.css: Some change: table and pre setting.
+
+	* donrails/public/stylesheets/login.css: Some change: table and pre setting.
 
 	* donrails/app/views/notes/catch_trackback.rxml: Rename from catch_ping.
 
